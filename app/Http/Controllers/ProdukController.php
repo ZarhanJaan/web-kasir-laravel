@@ -7,6 +7,8 @@ use App\Models\ProdukModel;
 
 class ProdukController extends Controller
 {
+    protected $ProdukModel;
+
     public function __construct(){
         $this->middleware('auth');
         $this->ProdukModel = new ProdukModel();

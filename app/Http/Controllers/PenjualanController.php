@@ -12,6 +12,8 @@ use PDF;
 
 class PenjualanController extends Controller
 {
+    protected $PenjualanModel;
+
     public function __construct()
     {
         $this->middleware('auth');
