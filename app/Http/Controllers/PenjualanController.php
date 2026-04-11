@@ -12,29 +12,34 @@ use PDF;
 
 class PenjualanController extends Controller
 {
-    public function __construct(){
+    public function __construct()
+    {
+        $this->middleware('auth');
         $this->PenjualanModel = new PenjualanModel();
     }
 
-    public function index(){
+    public function index()
+    {
         $data = [
-            'penjualan'=> $this->PenjualanModel->allData(),
+            'penjualan' => $this->PenjualanModel->allData(),
         ];
         return view('t_penjualan', $data);
     }
-    
-    public function pos(){
+
+    public function pos()
+    {
         $produk = ProdukModel::all();
         return view('t_transaksi_pos', compact('produk'));
     }
 
-    public function pos_insert(Request $request){
+    public function pos_insert(Request $request)
+    {
         $request->validate([
             'id_penjualan' => 'required',
-            'tanggal' => 'required',    
-            'nama_pelanggan' => 'required',         
-            'jumlah_barang' => 'required|array', 
-            'id_produk' =>  'required|array',
+            'tanggal' => 'required',
+            'nama_pelanggan' => 'required',
+            'jumlah_barang' => 'required|array',
+            'id_produk' => 'required|array',
             'total' => 'required',
             'metode_pembayaran' => 'required'
         ]);
@@ -45,13 +50,14 @@ class PenjualanController extends Controller
                 foreach ($request->id_produk as $i => $id_produk) {
                     $produk = ProdukModel::findOrFail($id_produk);
                     $jumlah = $request->jumlah_barang[$i];
-                    
-                    if(empty($id_produk) || $jumlah <= 0) continue; // Skip invalid entries
-                    
+
+                    if (empty($id_produk) || $jumlah <= 0)
+                        continue; // Skip invalid entries
+
                     if ($produk->stok < $jumlah) {
                         throw new \Exception('Stok tidak mencukupi untuk produk ' . $produk->nama_produk);
                     }
-                    
+
                     // 1. Kurangi stok produk
                     $produk->stok -= $jumlah;
                     $produk->save();
@@ -88,30 +94,34 @@ class PenjualanController extends Controller
         }
     }
 
-    public function struk($id_penjualan){
+    public function struk($id_penjualan)
+    {
         $trx = DB::table('t_penjualan')->where('id_penjualan', $id_penjualan)->first();
-        if(!$trx) abort(404);
-        
+        if (!$trx)
+            abort(404);
+
         $ids = explode(',', $trx->id_produk);
         $produk = DB::table('t_produk')->whereIn('id_produk', $ids)->get();
         return view('t_struk', compact('trx', 'produk'));
     }
 
-    public function add(){
-        $produkList = \App\Models\ProdukModel::all();
+    public function add()
+    {
+        $produkList = ProdukModel::all();
         return view('t_addpenjualan', compact('produkList'));
 
     }
 
-    public function insert(Request $request){
+    public function insert(Request $request)
+    {
         $request->validate([
             'id_penjualan' => 'required|unique:t_penjualan,id_penjualan|min:4|max:6',
-            'tanggal' => 'required',    
-            'nama_pelanggan' => 'required',         
-            'jumlah_barang' => 'required|array', 
-            'id_produk' =>  'required|array',
-            'total' => 'required',  
-        ],[
+            'tanggal' => 'required',
+            'nama_pelanggan' => 'required',
+            'jumlah_barang' => 'required|array',
+            'id_produk' => 'required|array',
+            'total' => 'required',
+        ], [
             'id_penjualan.required' => 'Silakan isi ID Penjualan.',
             'id_penjualan.unique' => 'ID Penjualan sudah ada.',
             'id_penjualan.min' => 'ID Penjualan minimal 4 karakter.',
@@ -146,31 +156,33 @@ class PenjualanController extends Controller
                 ];
                 $this->PenjualanModel->addData($data);
             });
-            return redirect()->route('penjualan')->with('pesan_sukses','Data Berhasil di Tambahkan');
+            return redirect()->route('penjualan')->with('pesan_sukses', 'Data Berhasil di Tambahkan');
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with('pesan_error', $e->getMessage());
         }
     }
 
-    public function edit($edit_penjualan){
+    public function edit($edit_penjualan)
+    {
 
         if (!$this->PenjualanModel->editData($edit_penjualan)) {
             abort(404);
         }
         $data = [
             'penjualan' => $this->PenjualanModel->editData($edit_penjualan),
-       ];
+        ];
         return view('t_editpenjualan', $data);
     }
 
-    public function update($edit_penjualan){
+    public function update($edit_penjualan)
+    {
         Request()->validate([
-            'tanggal' => 'required',    
-            'nama_pelanggan' => 'required',         
+            'tanggal' => 'required',
+            'nama_pelanggan' => 'required',
             'jumlah_barang' => 'required',
-            'id_produk' =>  'required', 
-            'total' => 'required',  
-        ],[
+            'id_produk' => 'required',
+            'total' => 'required',
+        ], [
             'tanggal.required' => 'Silakan isi Tanggal.',
             'nama_pelanggan.required' => 'Silakan isi nama Pelanggan.',
             'jumlah_barang.required' => 'Silakan isi jumlah barang.',
@@ -185,17 +197,18 @@ class PenjualanController extends Controller
             'jumlah_barang' => is_array(Request()->jumlah_barang) ? array_sum(Request()->jumlah_barang) : Request()->jumlah_barang,
             'id_produk' => is_array(Request()->id_produk) ? implode(',', Request()->id_produk) : Request()->id_produk,
             'total' => Request()->total,
-        ]; 
+        ];
 
         $this->PenjualanModel->updateData($edit_penjualan, $data);
-        return redirect()->route('penjualan')->with('pesan_sukses','Data Berhasil di Update');
+        return redirect()->route('penjualan')->with('pesan_sukses', 'Data Berhasil di Update');
     }
 
-    public function delete($id_penjualan){
+    public function delete($id_penjualan)
+    {
 
         $this->PenjualanModel->deleteData($id_penjualan);
-        return redirect()->route('penjualan')->with('pesan_hapus','Data Berhasil di Delete');
-        
+        return redirect()->route('penjualan')->with('pesan_hapus', 'Data Berhasil di Delete');
+
     }
 
     public function exportexcel()
@@ -216,11 +229,12 @@ class PenjualanController extends Controller
         return view('datapenjualan_tgl_pdf');
     }
 
-    public function cetak_tgl_pdf($tglawal, $tglakhir){
+    public function cetak_tgl_pdf($tglawal, $tglakhir)
+    {
         $cetakpertanggal = PenjualanModel::whereBetween('tanggal', [$tglawal, $tglakhir])->get();
         $pdf = PDF::loadview('cetak_pertanggal_pdf', compact('cetakpertanggal'));
         return $pdf->download('laporan-penjualan-pertanggal.pdf');
     }
 
- 
+
 }

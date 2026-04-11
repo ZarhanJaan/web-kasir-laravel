@@ -15,6 +15,7 @@ class StokController extends Controller
 
     public function __construct()
     {
+        $this->middleware('auth');
         $this->StokModel = new StokModel();
         $this->ProdukModel = new ProdukModel();
     }

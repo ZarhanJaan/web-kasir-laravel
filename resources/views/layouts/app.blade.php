@@ -102,12 +102,6 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/penjualan" aria-expanded="false" aria-controls="icons">
-                <span class="menu-title">Penjualan</span>
-                <i class="mdi mdi-contacts menu-icon"></i>
-              </a>
-            </li>
-            <li class="nav-item">
               <a class="nav-link" data-bs-toggle="collapse" href="#stok-menu" aria-expanded="false" aria-controls="stok-menu">
                 <span class="menu-title">Manajemen Stok</span>
                 <i class="menu-arrow"></i>
@@ -121,6 +115,12 @@
                   <li class="nav-item"> <a class="nav-link" href="/stok">Informasi Stok</a></li>
                 </ul>
               </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/penjualan" aria-expanded="false" aria-controls="icons">
+                <span class="menu-title">Riwayat Transaksi</span>
+                <i class="mdi mdi-contacts menu-icon"></i>
+              </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" data-bs-toggle="collapse" href="#forms" aria-expanded="false" aria-controls="forms">
@@ -258,5 +258,6 @@
     <script>
       AOS.init();
     </script>
+    @yield('scripts')
   </body>
 </html>
