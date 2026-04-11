@@ -96,10 +96,31 @@
               </a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" href="/pos" aria-expanded="false" aria-controls="pos">
+                <span class="menu-title text-success font-weight-bold">Kasir (POS)</span>
+                <i class="mdi mdi-calculator menu-icon text-success"></i>
+              </a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="/penjualan" aria-expanded="false" aria-controls="icons">
                 <span class="menu-title">Penjualan</span>
                 <i class="mdi mdi-contacts menu-icon"></i>
               </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="collapse" href="#stok-menu" aria-expanded="false" aria-controls="stok-menu">
+                <span class="menu-title">Manajemen Stok</span>
+                <i class="menu-arrow"></i>
+                <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+              </a>
+              <div class="collapse" id="stok-menu">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"> <a class="nav-link" href="/stok/add">Stok Masuk</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="/stok/keluar">Stok Keluar</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="/stok/riwayat">Riwayat Stok</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="/stok">Informasi Stok</a></li>
+                </ul>
+              </div>
             </li>
             <li class="nav-item">
               <a class="nav-link" data-bs-toggle="collapse" href="#forms" aria-expanded="false" aria-controls="forms">
@@ -125,18 +146,6 @@
                   </li>
                 </ul>
               </div>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/user" aria-expanded="false" aria-controls="icons">
-                <span class="menu-title">Manajemen User</span>
-                <i class="mdi mdi-account-multiple menu-icon"></i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/menu" aria-expanded="false" aria-controls="icons">
-                <span class="menu-title">Manajemen Menu</span>
-                <i class="mdi mdi-book-open-page-variant menu-icon"></i>
-              </a>
             </li>
           </ul>
         </nav>

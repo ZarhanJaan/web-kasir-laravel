@@ -49,19 +49,19 @@
                         @enderror
                     </div>
                     <br>
-                    <label for="">Daftar Menu & Jumlah Pesanan</label>
+                    <label for="">Daftar Produk & Jumlah</label>
                     <div id="produk-list">
                         @php
-                            $menuIds = explode(',', $penjualan->id_produk);
+                            $produkIds = explode(',', $penjualan->id_produk);
                             $jumlahs = is_array($penjualan->jumlah_barang) ? $penjualan->jumlah_barang : explode(',', $penjualan->jumlah_barang);
-                            if(count($jumlahs) < count($menuIds)) $jumlahs = array_pad($jumlahs, count($menuIds), '');
+                            if(count($jumlahs) < count($produkIds)) $jumlahs = array_pad($jumlahs, count($produkIds), '');
                         @endphp
-                        @foreach($menuIds as $i => $id_menu)
+                        @foreach($produkIds as $i => $id_produk)
                         <div class="row mb-2 produk-row">
                             <div class="col-7">
-                                <select name="id_menu[]" class="form-control">
-                                    @foreach(App\Models\MenuModel::all() as $menu)
-                                        <option value="{{ $menu->id_menu }}" @if($menu->id_menu == $id_menu) selected @endif>{{ $menu->nama_menu }}</option>
+                                <select name="id_produk[]" class="form-control">
+                                    @foreach(App\Models\ProdukModel::all() as $produk)
+                                        <option value="{{ $produk->id_produk }}" @if($produk->id_produk == $id_produk) selected @endif>{{ $produk->nama_produk }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -74,7 +74,7 @@
                         </div>
                         @endforeach
                     </div>
-                    <button type="button" class="btn btn-success btn-sm mt-2" id="add-produk">+ Tambah Menu</button>
+                    <button type="button" class="btn btn-success btn-sm mt-2" id="add-produk">+ Tambah Produk</button>
                     <br>
                 </div>
             </div>

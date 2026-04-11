@@ -23,10 +23,84 @@ class PenjualanController extends Controller
         return view('t_penjualan', $data);
     }
     
+    public function pos(){
+        $produk = ProdukModel::all();
+        return view('t_transaksi_pos', compact('produk'));
+    }
+
+    public function pos_insert(Request $request){
+        $request->validate([
+            'id_penjualan' => 'required',
+            'tanggal' => 'required',    
+            'nama_pelanggan' => 'required',         
+            'jumlah_barang' => 'required|array', 
+            'id_produk' =>  'required|array',
+            'total' => 'required',
+            'metode_pembayaran' => 'required'
+        ]);
+
+        try {
+            DB::transaction(function () use ($request) {
+                // Loop untuk setiap produk yang dipesan via POS
+                foreach ($request->id_produk as $i => $id_produk) {
+                    $produk = ProdukModel::findOrFail($id_produk);
+                    $jumlah = $request->jumlah_barang[$i];
+                    
+                    if(empty($id_produk) || $jumlah <= 0) continue; // Skip invalid entries
+                    
+                    if ($produk->stok < $jumlah) {
+                        throw new \Exception('Stok tidak mencukupi untuk produk ' . $produk->nama_produk);
+                    }
+                    
+                    // 1. Kurangi stok produk
+                    $produk->stok -= $jumlah;
+                    $produk->save();
+
+                    // 2. Catat di t_riwayat_stok
+                    DB::table('t_riwayat_stok')->insert([
+                        'id_produk' => $id_produk,
+                        'jenis' => 'keluar',
+                        'jumlah' => $jumlah,
+                        'total_harga' => ($jumlah * $produk->harga_jual),
+                        'tanggal' => date('Y-m-d'),
+                        'keterangan' => 'Stok Keluar (Transaksi penjualan)',
+                        'nama_pelanggan' => $request->nama_pelanggan,
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]);
+                }
+
+                // 3. Simpan rekap Data Penjualan Utama
+                $data = [
+                    'id_penjualan' => $request->id_penjualan,
+                    'tanggal' => $request->tanggal,
+                    'nama_pelanggan' => $request->nama_pelanggan,
+                    'jumlah_barang' => array_sum($request->jumlah_barang),
+                    'id_produk' => implode(',', $request->id_produk),
+                    'total' => $request->total,
+                    'metode_pembayaran' => $request->metode_pembayaran
+                ];
+                $this->PenjualanModel->addData($data);
+            });
+            return redirect()->route('pos')->with('pesan_sukses_trx', $request->id_penjualan);
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('pesan_error', $e->getMessage());
+        }
+    }
+
+    public function struk($id_penjualan){
+        $trx = DB::table('t_penjualan')->where('id_penjualan', $id_penjualan)->first();
+        if(!$trx) abort(404);
+        
+        $ids = explode(',', $trx->id_produk);
+        $produk = DB::table('t_produk')->whereIn('id_produk', $ids)->get();
+        return view('t_struk', compact('trx', 'produk'));
+    }
 
     public function add(){
-        $menuList = \App\Models\MenuModel::all();
-        return view('t_addpenjualan', compact('menuList'));
+        $produkList = \App\Models\ProdukModel::all();
+        return view('t_addpenjualan', compact('produkList'));
+
     }
 
     public function insert(Request $request){
@@ -35,7 +109,7 @@ class PenjualanController extends Controller
             'tanggal' => 'required',    
             'nama_pelanggan' => 'required',         
             'jumlah_barang' => 'required|array', 
-            'id_menu' =>  'required|array',
+            'id_produk' =>  'required|array',
             'total' => 'required',  
         ],[
             'id_penjualan.required' => 'Silakan isi ID Penjualan.',
@@ -44,41 +118,30 @@ class PenjualanController extends Controller
             'id_penjualan.max' => 'ID Penjualan maximal 6 karakter.',
             'tanggal.required' => 'Silakan isi Tanggal.',
             'nama_pelanggan.required' => 'Silakan isi nama Pelanggan.',
-            'jumlah_barang.required' => 'Silakan isi jumlah pesanan.',
-            'id_menu.required' => 'Silakan pilih menu.',
+            'jumlah_barang.required' => 'Silakan isi jumlah barang.',
+            'id_produk.required' => 'Silakan isi id produk.',
             'total.required' => 'Silakan isi total harga.',
         ]);
 
         try {
             DB::transaction(function () use ($request) {
-                // Loop untuk setiap Menu yang dipesan
-                foreach ($request->id_menu as $i => $id_menu) {
-                    $menu = \App\Models\MenuModel::with('details')->where('id_menu', $id_menu)->firstOrFail();
-                    $jumlah_beli_menu = $request->jumlah_barang[$i];
-                    
-                    // Reduce stock based on the recipe
-                    foreach ($menu->details as $detail) {
-                        $produk = ProdukModel::findOrFail($detail->id_produk);
-                        // Multiply recipe requirement with the exact order amount
-                        $total_dipakai = $detail->jumlah_dipakai * $jumlah_beli_menu;
-                        
-                        if ($produk->stok < $total_dipakai) {
-                            throw new \Exception('Stok tidak mencukupi untuk item resep ' . $produk->nama_produk . ' pada menu ' . $menu->nama_menu);
-                        }
-                        // Eloquent save vs Query builder update: ProdukModel might only be a DB wrapper here so we use DB mapping
-                        DB::table('t_produk')
-                            ->where('id_produk', $produk->id_produk)
-                            ->update(['stok' => $produk->stok - $total_dipakai]);
+                // Loop untuk setiap produk yang dipesan
+                foreach ($request->id_produk as $i => $id_produk) {
+                    $produk = ProdukModel::findOrFail($id_produk);
+                    $jumlah = $request->jumlah_barang[$i];
+                    if ($produk->stok < $jumlah) {
+                        throw new \Exception('Stok tidak mencukupi untuk produk ' . $produk->nama_produk);
                     }
+                    $produk->stok -= $jumlah;
+                    $produk->save();
                 }
-                
-                // Simpan data penjualan utama (saving id_menu as comma separated into id_produk field to reuse table structure)
+                // Simpan data penjualan utama
                 $data = [
                     'id_penjualan' => $request->id_penjualan,
                     'tanggal' => $request->tanggal,
                     'nama_pelanggan' => $request->nama_pelanggan,
                     'jumlah_barang' => array_sum($request->jumlah_barang),
-                    'id_produk' => implode(',', $request->id_menu), 
+                    'id_produk' => implode(',', $request->id_produk),
                     'total' => $request->total,
                 ];
                 $this->PenjualanModel->addData($data);
@@ -105,13 +168,13 @@ class PenjualanController extends Controller
             'tanggal' => 'required',    
             'nama_pelanggan' => 'required',         
             'jumlah_barang' => 'required',
-            'id_menu' =>  'required', 
+            'id_produk' =>  'required', 
             'total' => 'required',  
         ],[
             'tanggal.required' => 'Silakan isi Tanggal.',
             'nama_pelanggan.required' => 'Silakan isi nama Pelanggan.',
             'jumlah_barang.required' => 'Silakan isi jumlah barang.',
-            'id_menu.required' => 'Silakan isi id menu.',
+            'id_produk.required' => 'Silakan isi id produk.',
             'total.required' => 'Silakan isi total harga.',
         ]);
 
@@ -120,7 +183,7 @@ class PenjualanController extends Controller
             'tanggal' => Request()->tanggal,
             'nama_pelanggan' => Request()->nama_pelanggan,
             'jumlah_barang' => is_array(Request()->jumlah_barang) ? array_sum(Request()->jumlah_barang) : Request()->jumlah_barang,
-            'id_produk' => is_array(Request()->id_menu) ? implode(',', Request()->id_menu) : Request()->id_menu,
+            'id_produk' => is_array(Request()->id_produk) ? implode(',', Request()->id_produk) : Request()->id_produk,
             'total' => Request()->total,
         ]; 
 

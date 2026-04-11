@@ -58,6 +58,20 @@
                               @enderror
                         </div>
                         <br>
+                        <label for="">Kategori Produk</label>
+                        <select name="kategori" class="form-control">
+                              <option value="">-- Pilih Kategori --</option>
+                              <option value="Makanan" {{ $produk->kategori == 'Makanan' ? 'selected' : '' }}>Makanan</option>
+                              <option value="Minuman" {{ $produk->kategori == 'Minuman' ? 'selected' : '' }}>Minuman</option>
+                              <option value="Sembako" {{ $produk->kategori == 'Sembako' ? 'selected' : '' }}>Sembako</option>
+                              <option value="Bumbu" {{ $produk->kategori == 'Bumbu' ? 'selected' : '' }}>Bumbu</option>
+                        </select>
+                        <div class="text-danger">
+                              @error('kategori')
+                                  {{ $message }}
+                              @enderror
+                        </div>
+                        <br>
                         <label for="">Satuan</label>
                         <input name="satuan" class="form-control" value="{{ $produk->satuan }}">
                         <div class="text-danger">

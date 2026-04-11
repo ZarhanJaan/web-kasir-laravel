@@ -30,6 +30,7 @@ class ProdukController extends Controller
             'stok' => 'required',         
             'harga_beli' => 'required', 
             'harga_jual' => 'required', 
+            'kategori' => 'required', 
             'satuan' => 'required', 
 
         ],[
@@ -41,6 +42,7 @@ class ProdukController extends Controller
             'stok.required' => 'Silakan isi Stok Produk',
             'harga_beli.required' => 'Silakan isi Harga Beli.',
             'harga_jual.required' => 'Silakan isi Harga Jual.',
+            'kategori.required' => 'Silakan pilih Kategori.',
             'satuan.required' => 'Silakan isi Satuan Produk.'
         ]);
 
@@ -50,6 +52,7 @@ class ProdukController extends Controller
             'stok' => Request()->stok,
             'harga_beli' => Request()->harga_beli,
             'harga_jual' => Request()->harga_jual,
+            'kategori' => Request()->kategori,
             'satuan' => Request()->satuan,
         ]; 
 
@@ -75,6 +78,7 @@ class ProdukController extends Controller
             'stok' => 'required',         
             'harga_beli' => 'required', 
             'harga_jual' => 'required', 
+            'kategori' => 'required', 
             'satuan' => 'required', 
 
         ],[
@@ -86,6 +90,7 @@ class ProdukController extends Controller
             'stok.required' => 'Silakan isi Stok Produk',
             'harga_beli.required' => 'Silakan isi Harga Beli.',
             'harga_jual.required' => 'Silakan isi Harga Jual.',
+            'kategori.required' => 'Silakan pilih Kategori.',
             'satuan.required' => 'Silakan isi Satuan Produk.'
         ]);
 
@@ -95,6 +100,7 @@ class ProdukController extends Controller
             'stok' => Request()->stok,
             'harga_beli' => Request()->harga_beli,
             'harga_jual' => Request()->harga_jual,
+            'kategori' => Request()->kategori,
             'satuan' => Request()->satuan,
         ]; 
 

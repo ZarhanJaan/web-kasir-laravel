@@ -65,13 +65,13 @@
                               @enderror
                         </div>
                         <br>
-                        <label for="">Daftar Menu & Jumlah Pesanan</label>
+                        <label for="">Daftar Produk & Jumlah</label>
                         <div id="produk-list">
                             <div class="row mb-2 produk-row">
                                 <div class="col-7">
-                                    <select name="id_menu[]" class="form-control">
-                                        @foreach($menuList as $menu)
-                                            <option value="{{ $menu->id_menu }}">{{ $menu->nama_menu }} (Rp {{ $menu->harga_menu }})</option>
+                                    <select name="id_produk[]" class="form-control">
+                                        @foreach($produkList as $produk)
+                                            <option value="{{ $produk->id_produk }}">{{ $produk->nama_produk }}</option>
                                         @endforeach
                                     </select>
                                 </div>

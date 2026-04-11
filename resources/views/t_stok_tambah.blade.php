@@ -1,0 +1,72 @@
+@extends('layouts.app')
+
+@section('content')
+
+      <div class="content-wrapper">
+        <div class="page-header">
+          <h3 class="page-title">
+            <span class="page-title-icon bg-gradient-primary text-white me-2">
+                  <i class="mdi mdi-import menu-icon"></i>
+            </span> Stok Masuk
+          </h3>
+        </div>
+        <br>
+        @if (session('pesan_error'))
+        <div class="alert alert-danger" role="alert">
+            <i class="fa fa-exclamation-triangle"></i>
+            {{ session('pesan_error') }}
+        </div>
+        @endif
+
+        <div class="card shadow p-4 mb-5 bg-body rounded">
+        <form action="/stok/insert" method="POST">
+            @csrf
+            <div class="row g-3">
+            <div class="col-12 col-md-6">
+                        <label for="">Pilih Produk</label>
+                        <select name="id_produk" class="form-control" required>
+                            <option value="">-- Pilih Produk --</option>
+                            @foreach($produk as $p)
+                                <option value="{{ $p->id_produk }}">{{ $p->nama_produk }} (Stok saat ini: {{ $p->stok }})</option>
+                            @endforeach
+                        </select>
+                        <div class="text-danger">
+                              @error('id_produk') {{ $message }} @enderror
+                        </div>
+                        <br>
+                        
+                        <input type="hidden" name="jenis" value="masuk">
+
+                        <label for="">Jumlah (Pcs/Unit)</label>
+                        <input type="number" name="jumlah" class="form-control" value="{{ old('jumlah') }}" min="1" required>
+                        <div class="text-danger">
+                              @error('jumlah') {{ $message }} @enderror
+                        </div>
+            </div>
+            
+            <div class="col-12 col-md-6">
+                        <label for="">Tanggal Transaksi</label>
+                        <input type="date" name="tanggal" class="form-control" value="{{ old('tanggal', date('Y-m-d')) }}" required>
+                        <div class="text-danger">
+                              @error('tanggal') {{ $message }} @enderror
+                        </div>
+                        <br>
+
+                        <label for="">Keterangan (Opsional)</label>
+                        <textarea name="keterangan" class="form-control" rows="4" placeholder="Misal: Retur, Pembelian Baru, dll. Jika dikosongkan otomatis terisi 'Stok Masuk'">{{ old('keterangan') }}</textarea>
+                        <div class="text-danger">
+                              @error('keterangan') {{ $message }} @enderror
+                        </div>
+                        <br>
+            </div>
+            </div>
+            <br>
+            <div class="row">
+                  <div class="col-12 col-md-6">
+                        <button type="submit" class="btr btn bg-gradient-info text-white">Simpan Stok</button>
+                  </div>
+            </div>
+        </form>
+        </div>
+      </div>
+@endsection

@@ -77,15 +77,6 @@
 							</button>
 						</div>
 					</div>
-					<div class="flex-col-c p-t-25">
-						<span class="txt1 p-b-17">
-							Don't have an account?
-						</span>
-
-						<a href="{{ route('register') }}" class="txt2">
-							Register Now
-						</a>
-					</div>
 				</form>
 			</div>
 		</div>
