@@ -11,7 +11,6 @@
           </h3>
           <nav aria-label="breadcrumb">
             <div class="btn-group">
-                <a href="/produk/add" class="btn btn-gradient-primary text-white shadow-sm"><i class="mdi mdi-plus"></i> Add Menu</a>
                 <a href="/stok/bahan" class="btn btn-gradient-info text-white shadow-sm ms-2"><i class="mdi mdi-package-variant"></i> Daftar Bahan</a>
             </div>
           </nav>

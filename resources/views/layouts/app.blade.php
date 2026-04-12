@@ -124,7 +124,6 @@
                   <li class="nav-item"> <a class="nav-link" href="/stok/add">Stok Masuk</a></li>
                   <li class="nav-item"> <a class="nav-link" href="/stok/keluar">Stok Keluar</a></li>
                   <li class="nav-item"> <a class="nav-link" href="/stok/riwayat">Riwayat Transaksi Stok</a></li>
-                  <li class="nav-item"> <a class="nav-link" href="/stok/bahan">Daftar Stok Bahan</a></li>
                   <li class="nav-item"> <a class="nav-link" href="/stok">Informasi Stok</a></li>
                 </ul>
               </div>

@@ -28,17 +28,26 @@
                         <br>
                     </div>
                     <div class="col-12 col-md-6">
-                        <label for="">Pilih Bahan Baku</label>
-                        <select name="id_produk" class="form-control" required>
-                            <option value="">-- Pilih Bahan --</option>
+                        <label for="">Pilih Bahan Baku (Ketik ID atau Nama)</label>
+                        <input list="bahan_list" name="id_produk" class="form-control" placeholder="Contoh: Minyak Goreng" required>
+                        <datalist id="bahan_list">
                             @foreach($produk as $p)
-                                <option value="{{ $p->id_stok }}">{{ $p->nama_stok }} (ID: {{ $p->id_stok }} | Stok: {{ $p->stok }} {{ $p->satuan }})</option>
+                                <option value="{{ $p->id_stok }}">{{ $p->nama_stok }} (ID: {{ $p->id_stok }})</option>
                             @endforeach
-                        </select>
-                        <div class="text-danger">
-                              @error('id_produk') {{ $message }} @enderror
-                        </div>
+                        </datalist>
+                        <div class="text-danger small">@error('id_produk') {{ $message }} @enderror</div>
                         <br>
+
+                        <div class="card bg-light border-dashed p-3 mb-3">
+                            <h6 class="text-muted"><i class="mdi mdi-plus-circle-outline"></i> Informasi Bahan Baru (Opsional)</h6>
+                            <p class="text-muted extra-small mb-2">Hanya isi jika Anda mengetik nama bahan baru yang belum terdaftar.</p>
+                            <div class="row g-2">
+                                <div class="col-12">
+                                    <label class="small font-weight-bold">ID Bahan Baru</label>
+                                    <input name="id_stok_baru" class="form-control form-control-sm" placeholder="Contoh: 9001">
+                                </div>
+                            </div>
+                        </div>
                         
                         <input type="hidden" name="jenis" value="masuk">
 

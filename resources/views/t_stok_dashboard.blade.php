@@ -19,7 +19,7 @@
                 @if(count($stok_menipis) > 0)
                   <ul class="list-unstyled">
                     @foreach($stok_menipis as $item)
-                      <li><h5>{{ $item->nama_stok }} <span class="badge bg-white text-danger float-end">{{ $item->stok }} {{ $item->satuan }} tersisa</span></h5></li>
+                      <li><h5>{{ $item->nama_stok }} <span class="badge bg-white text-danger float-end">{{ $item->stok }} tersisa</span></h5></li>
                       <hr>
                     @endforeach
                   </ul>
@@ -63,7 +63,7 @@
                                     <th>ID Bahan</th>
                                     <th>Nama Bahan Baku</th>
                                     <th>Jumlah Stok</th>
-                                    <th>Satuan</th>
+                                    <th>Stok</th>
                                     <th>Status</th>
                               </tr>
                         </thead>
@@ -73,7 +73,7 @@
                                     <td>{{ $s->id_stok }}</td>
                                     <td class="font-weight-bold">{{ $s->nama_stok }}</td>
                                     <td>{{ $s->stok }}</td>
-                                    <td>{{ $s->satuan }}</td>
+                                    <td>{{ $s->stok }}</td>
                                     <td>
                                           @if($s->stok < 5)
                                                 <span class="badge bg-danger">Kritis</span>
