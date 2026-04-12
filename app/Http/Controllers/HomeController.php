@@ -32,12 +32,22 @@ class HomeController extends Controller
         $totalPenjualan = DB::table('t_penjualan')->sum('total');
         $totalData = DB::table('t_penjualan')->count();
 
+        // 3. Menu Terlaris (mengambil dari tabel riwayat_stok / produk)
+        $menu_terlaris = DB::table('t_riwayat_stok')
+            ->join('t_produk', 't_riwayat_stok.id_produk', '=', 't_produk.id_produk')
+            ->select('t_produk.nama_produk', DB::raw('SUM(t_riwayat_stok.jumlah) as total_terjual'))
+            ->where('t_riwayat_stok.jenis', 'keluar')
+            ->groupBy('t_produk.nama_produk')
+            ->orderBy('total_terjual', 'desc')
+            ->limit(5)
+            ->get();
+
         // Notifikasi barang/stok menipis (Ambil dari t_stok_item)
         $stok_menipis = DB::table('t_stok_item')
             ->where('stok', '<', 10)
             ->get();
 
         // Kirim data ke view
-        return view('home', compact('totalProduk', 'totalPenjualan', 'totalStok', 'totalData', 'stok_menipis'));
+        return view('home', compact('totalProduk', 'totalPenjualan', 'totalStok', 'totalData', 'stok_menipis', 'menu_terlaris'));
     }
 }

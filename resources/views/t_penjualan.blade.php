@@ -9,11 +9,13 @@
                               <i class="mdi mdi-table-large menu-icon"></i>
                         </span> Riwayat Transaksi
                   </h3>
+                  @if(Auth::user()->hasAnyRole(['owner', 'admin']))
                   <nav aria-label="breadcrumb">
                         <a href="/riwayat-transaksi/add" class="btn bg-gradient-primary text-white ">
                               Add +
                         </a>
                   </nav>
+                  @endif
             </div>
             @if (session('pesan_sukses'))
                   <div class="alert alert-success" role="alert">
@@ -40,7 +42,9 @@
                                                 <th>Jumlah Barang</th>
                                                 <th>Total Harga</th>
                                                 <th>Produk</th>
+                                                @if(Auth::user()->hasAnyRole(['owner', 'admin']))
                                                 <th>Action</th>
+                                                @endif
                                           </tr>
                                     </thead>
                                     <tbody>
@@ -58,6 +62,7 @@
                                                                   echo implode(', ', $namaProduk);
                                                             @endphp
                                                       </td>
+                                                      @if(Auth::user()->hasAnyRole(['owner', 'admin']))
                                                       <td>
                                                             <a href="/riwayat-transaksi/edit/{{ $data->id_penjualan }}"
                                                                   class="btn btn-gradient-warning">
@@ -69,11 +74,13 @@
                                                                   <i class="fa fa-trash-o"></i>
                                                             </button>
                                                       </td>
+                                                      @endif
                                                 </tr>
                                           @endforeach
                                     </tbody>
                               </table>
 
+                              @if(Auth::user()->hasAnyRole(['owner', 'admin']))
                               @foreach ($penjualan as $data)
                                     <!-- Modal -->
                                     <div class="modal fade" id="delete{{ $data->id_penjualan }}" tabindex="-1"
@@ -99,6 +106,7 @@
                                           </div>
                                     </div>
                               @endforeach
+                              @endif
 
                         </div>
                   </div>

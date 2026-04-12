@@ -96,13 +96,15 @@
             <i class="mdi mdi-home menu-icon"></i>
           </a>
         </li>
-        @if(Auth::user()->hasAnyRole(['owner', 'admin']))
+        @if(Auth::user()->hasAnyRole(['owner', 'admin', 'kasir']))
         <li class="nav-item {{ Request::is('menu', 'menu/*') ? 'active-ref active' : '' }}">
           <a class="nav-link" href="/menu" aria-expanded="false" aria-controls="tables">
             <span class="menu-title">Menu</span>
             <i class="mdi mdi-silverware menu-icon"></i>
           </a>
         </li>
+        @endif
+        @if(Auth::user()->hasAnyRole(['owner', 'admin']))
         <li class="nav-item {{ Request::is('resep', 'resep/*') ? 'active-ref active' : '' }}">
           <a class="nav-link" href="/resep">
             <span class="menu-title">Resep Menu</span>
@@ -118,13 +120,15 @@
             </a>
           </li>
         @endif
-        @if(Auth::user()->hasAnyRole(['owner', 'admin']))
+        @if(Auth::user()->hasAnyRole(['owner', 'admin', 'kasir']))
           <li class="nav-item {{ Request::is('riwayat-transaksi', 'riwayat-transaksi/*') ? 'active-ref active' : '' }}">
             <a class="nav-link" href="/riwayat-transaksi" aria-expanded="false" aria-controls="icons">
               <span class="menu-title">Riwayat Transaksi</span>
               <i class="mdi mdi-contacts menu-icon"></i>
             </a>
           </li>
+        @endif
+        @if(Auth::user()->hasAnyRole(['owner', 'admin']))
           <li class="nav-item {{ Request::is('stok', 'stok/*') ? 'active-ref active' : '' }}">
             <a class="nav-link" data-bs-toggle="collapse" href="#stok-menu" aria-expanded="{{ Request::is('stok', 'stok/*') ? 'true' : 'false' }}"
               aria-controls="stok-menu">
@@ -239,6 +243,7 @@
       // Untuk semua link kecuali anchor dengan # dan target _blank
       document.querySelectorAll('a').forEach(function (link) {
         link.addEventListener('click', function (e) {
+          if (e.defaultPrevented) return;
           var href = link.getAttribute('href');
           if (
             href &&
@@ -257,7 +262,8 @@
         });
       });
       document.querySelectorAll('form').forEach(function (form) {
-        form.addEventListener('submit', function () {
+        form.addEventListener('submit', function (e) {
+          if (e.defaultPrevented) return;
           overlay.classList.add('show');
         });
       });

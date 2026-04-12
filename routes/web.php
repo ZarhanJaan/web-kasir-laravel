@@ -33,14 +33,12 @@ Route::middleware(['auth'])->group(function () {
 
     // Owner and Admin only routes
     Route::middleware(['role:owner,admin'])->group(function () {
-        Route::get('/menu', [ProdukController::class, 'index'])->name('menu');
         Route::get('/menu/add', [ProdukController::class, 'add']);
         Route::post('/menu/insert', [ProdukController::class, 'insert']);
         Route::get('/menu/edit/{id_produk}', [ProdukController::class, 'edit']);
         Route::post('/menu/update/{id_produk}', [ProdukController::class, 'update']);
         Route::get('/menu/delete/{id_produk}', [ProdukController::class, 'delete']);
 
-        Route::get('/riwayat-transaksi', [PenjualanController::class, 'index'])->name('riwayat-transaksi');
         Route::get('/riwayat-transaksi/add', [PenjualanController::class, 'add']);
         Route::post('/riwayat-transaksi/insert', [PenjualanController::class, 'insert']);
         Route::get('/riwayat-transaksi/edit/{id_penjualan}', [PenjualanController::class, 'edit']);
@@ -85,6 +83,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Routes accessible by Kasir as well
     Route::middleware(['role:owner,admin,kasir'])->group(function () {
+        Route::get('/menu', [ProdukController::class, 'index'])->name('menu');
+        Route::get('/riwayat-transaksi', [PenjualanController::class, 'index'])->name('riwayat-transaksi');
         Route::get('/kasir', [PenjualanController::class, 'pos'])->name('kasir');
         Route::post('/kasir/insert', [PenjualanController::class, 'pos_insert'])->name('kasir.insert');
         Route::get('/struk/{id_penjualan}', [PenjualanController::class, 'struk'])->name('struk');

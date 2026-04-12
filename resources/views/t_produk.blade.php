@@ -9,11 +9,13 @@
                   <i class="mdi mdi-silverware menu-icon"></i>
             </span> Menu
           </h3>
+          @if(Auth::user()->hasAnyRole(['owner', 'admin']))
           <nav aria-label="breadcrumb">
             <div class="btn-group">
                 <a href="/stok/bahan" class="btn btn-gradient-info text-white shadow-sm ms-2"><i class="mdi mdi-package-variant"></i> Daftar Bahan</a>
             </div>
           </nav>
+          @endif
         </div>
          @if (session('pesan_sukses'))
             <div class="alert alert-success">
@@ -41,8 +43,10 @@
                                     <th>Nama Menu</th>
                                     <th>Harga Jual</th>
                                     <th>Kategori Menu</th>
+                                    @if(Auth::user()->hasAnyRole(['owner', 'admin']))
                                     <th>Action</th>
-                              </tr>
+                                    @endif
+                                </tr>
                         </thead>
                         <tbody>
                         @foreach ($produk as $data)
@@ -55,10 +59,12 @@
                                                 {{ $data->kategori }}
                                           </span>
                                     </td>
+                                    @if(Auth::user()->hasAnyRole(['owner', 'admin']))
                                     <td>
                                           <a href="/menu/edit/{{ $data->id_produk }}" class="btn btn-sm btn-warning mb-1"><i class="mdi mdi-border-color"></i></a>
                                           <a href="/menu/delete/{{ $data->id_produk }}" class="btn btn-sm btn-danger mb-1" onclick="return confirm('Apakah Anda yakin ingin menghapus menu ini?')"><i class="mdi mdi-delete"></i></a>
                                     </td>
+                                    @endif
                               </tr>
                         @endforeach
                         </tbody>
