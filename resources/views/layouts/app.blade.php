@@ -130,29 +130,10 @@
               </div>
             </li>
             <li class="nav-item">
-              <a class="nav-link" data-bs-toggle="collapse" href="#forms" aria-expanded="false" aria-controls="forms">
+              <a class="nav-link" href="/laporan">
                 <span class="menu-title">Laporan Penjualan</span>
                 <i class="mdi mdi-format-list-bulleted menu-icon"></i>
               </a>
-              <div class="collapse" id="forms">
-                <ul class="nav flex-column sub-menu">
-                  <li class="nav-item">
-                     <a href="/datapenjualan_tgl_pdf" class="text-danger btn btn-sm" >
-                     Cetak PDF Pertanggal
-                     </a>
-                  </li>
-                  <li class="nav-item">
-                     <a href="/exportpdf" class="text-danger btn btn-sm" >
-                     Cetak PDF
-                     </a>
-                  </li>
-                  <li class="nav-item">
-                     <a href="/exportexcel" class="text-success btn btn-sm" >
-                     Cetak Excel
-                     </a>
-                  </li>
-                </ul>
-              </div>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/manajemen-user">
@@ -251,7 +232,9 @@
               // pengecualian untuk link download file
               !href.includes('/exportpdf') &&
               !href.includes('/exportexcel') &&
-              !href.includes('/cetak_tgl_pdf')
+              !href.includes('/cetak_tgl_pdf') &&
+              !href.includes('/export-terlaris-pdf') &&
+              !href.includes('/export-stok-pdf')
             ) {
               overlay.classList.add('show');
             }

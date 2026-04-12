@@ -253,4 +253,80 @@ class PenjualanController extends Controller
     }
 
 
+    public function laporan()
+    {
+        // 1. Penjualan Hari Ini (Per Jam)
+        $penjualan_hari_ini = DB::table('t_penjualan')
+            ->select(DB::raw('HOUR(created_at) as jam'), DB::raw('SUM(total) as total_penjualan'))
+            ->whereDate('created_at', date('Y-m-d'))
+            ->groupBy('jam')
+            ->orderBy('jam', 'asc')
+            ->get();
+
+        // 2. Penjualan Bulanan (Tahun Ini)
+        $tahun_ini = date('Y');
+        $penjualan_bulanan = DB::table('t_penjualan')
+            ->select(DB::raw('MONTH(tanggal) as bulan'), DB::raw('SUM(total) as total_penjualan'))
+            ->whereYear('tanggal', $tahun_ini)
+            ->groupBy('bulan')
+            ->orderBy('bulan', 'asc')
+            ->get();
+
+        // 3. Menu Terlaris (mengambil dari tabel riwayat_stok / produk)
+        $menu_terlaris = DB::table('t_riwayat_stok')
+            ->join('t_produk', 't_riwayat_stok.id_produk', '=', 't_produk.id_produk')
+            ->select('t_produk.nama_produk', DB::raw('SUM(t_riwayat_stok.jumlah) as total_terjual'))
+            ->where('t_riwayat_stok.jenis', 'keluar')
+            ->groupBy('t_produk.nama_produk')
+            ->orderBy('total_terjual', 'desc')
+            ->limit(5)
+            ->get();
+
+        // 4. Laporan Stok Masuk & Keluar Harian (contoh 14 hari terakhir)
+        $tgl_mulai = now()->subDays(14)->format('Y-m-d');
+        $stok_in_out = DB::table('t_riwayat_stok')
+            ->select(DB::raw('DATE(tanggal) as tgl'), 'jenis', DB::raw('SUM(jumlah) as qty'))
+            ->where('tanggal', '>=', $tgl_mulai)
+            ->groupBy('tgl', 'jenis')
+            ->orderBy('tgl', 'asc')
+            ->get();
+
+        return view('t_laporan', compact(
+            'penjualan_hari_ini', 
+            'penjualan_bulanan', 
+            'menu_terlaris', 
+            'stok_in_out'
+        ));
+    }
+
+    public function exportTerlarisPdf()
+    {
+        $data = DB::table('t_riwayat_stok')
+            ->join('t_produk', 't_riwayat_stok.id_produk', '=', 't_produk.id_produk')
+            ->select('t_produk.nama_produk', DB::raw('SUM(t_riwayat_stok.jumlah) as total_terjual'))
+            ->where('t_riwayat_stok.jenis', 'keluar')
+            ->groupBy('t_produk.nama_produk')
+            ->orderBy('total_terjual', 'desc')
+            ->limit(20)
+            ->get();
+
+        $pdf = \PDF::loadview('t_laporan_terlaris_pdf', compact('data'));
+        return $pdf->download('laporan-menu-terlaris.pdf');
+    }
+
+    public function exportStokPdf()
+    {
+        $tgl_mulai = now()->subDays(30)->format('Y-m-d');
+        $data = DB::table('t_riwayat_stok')
+            ->leftJoin('t_produk', 't_riwayat_stok.id_produk', '=', 't_produk.id_produk')
+            ->leftJoin('t_stok_item', 't_riwayat_stok.id_stok', '=', 't_stok_item.id_stok')
+            ->select('t_riwayat_stok.*', 't_produk.nama_produk', 't_stok_item.nama_stok')
+            ->where('t_riwayat_stok.tanggal', '>=', $tgl_mulai)
+            ->orderBy('t_riwayat_stok.tanggal', 'desc')
+            ->orderBy('t_riwayat_stok.id_riwayat', 'desc')
+            ->get();
+
+        $pdf = \PDF::loadview('t_laporan_stok_pdf', compact('data', 'tgl_mulai'));
+        return $pdf->download('laporan-mutasi-stok.pdf');
+    }
 }
