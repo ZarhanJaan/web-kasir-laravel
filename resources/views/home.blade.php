@@ -13,6 +13,19 @@
           </nav>
         </div>
 
+        @if(Auth::user()->role_id == null)
+        <div class="row">
+          <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body text-center p-5">
+                <i class="mdi mdi-account-clock text-primary" style="font-size: 64px;"></i>
+                <h2 class="mt-4">Akun Menunggu Verifikasi</h2>
+                <p class="text-secondary lead">Akun Anda berhasil didaftarkan. Harap tunggu Administrator untuk memberikan akses (Role) agar Anda dapat menggunakan fitur aplikasi.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        @else
         @if(count($stok_menipis) > 0)
         <div class="row">
           <div class="col-12 grid-margin">
@@ -58,6 +71,7 @@
             </div>
           </div>
         </div>
+        @endif
         </div>
       </div>
      
