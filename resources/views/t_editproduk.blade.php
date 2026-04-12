@@ -32,24 +32,7 @@
                                   {{ $message }}
                               @enderror
                         </div>
-                        <br>
-                        <label for="">Stok Produk</label>
-                        <input name="stok" class="form-control" value="{{ $produk->stok }}">
-                        <div class="text-danger">
-                              @error('stok')
-                                  {{ $message }}
-                              @enderror
-                        </div>
             </div>
-            <div class="col-12 col-md-6">
-                        <label for="">Harga Beli</label>
-                        <input name="harga_beli" class="form-control" value="{{ $produk->harga_beli }}">
-                        <div class="text-danger">
-                              @error('harga_beli')
-                                  {{ $message }}
-                              @enderror
-                        </div>
-                        <br>
                         <label for="">Harga Jual</label>
                         <input name="harga_jual" class="form-control" value="{{ $produk->harga_jual }}">
                         <div class="text-danger">
@@ -68,14 +51,6 @@
                         </select>
                         <div class="text-danger">
                               @error('kategori')
-                                  {{ $message }}
-                              @enderror
-                        </div>
-                        <br>
-                        <label for="">Satuan</label>
-                        <input name="satuan" class="form-control" value="{{ $produk->satuan }}">
-                        <div class="text-danger">
-                              @error('satuan')
                                   {{ $message }}
                               @enderror
                         </div>

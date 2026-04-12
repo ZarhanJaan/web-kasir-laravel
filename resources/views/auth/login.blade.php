@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
 <head>
 	<title>Login Toko Sembako</title>
 	<meta charset="UTF-8">

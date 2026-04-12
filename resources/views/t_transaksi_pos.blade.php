@@ -50,6 +50,13 @@
                         </div>
                     </div>
 
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">ID Transaksi (Manual)</label>
+                        <div class="col-sm-9">
+                            <input type="number" name="id_penjualan" id="id_penjualan" class="form-control" placeholder="Contoh: 10001" required>
+                        </div>
+                    </div>
+                    
                     <h5 class="mt-4 mb-3">Daftar Belanja</h5>
                     <div id="keranjang">
                         <div class="row mb-2 item-row">
@@ -74,8 +81,7 @@
                     </div>
                     <button type="button" class="btn btn-inverse-success btn-sm mt-2" id="add-item"><i class="mdi mdi-plus"></i> Tambah Item</button>
                     
-                    <!-- Hidden auto generated values -->
-                    <input type="hidden" name="id_penjualan" value="{{ rand(10000,99999) }}">
+                    <!-- Total input -->
                     <input type="hidden" name="total" id="total_input" value="0">
                 </form>
             </div>

@@ -30,33 +30,26 @@ class ProdukController extends Controller
         Request()->validate([
             'id_produk' => 'required|unique:t_produk,id_produk|min:4|max:6',
             'nama_produk' => 'required',    
-            'stok' => 'required',         
-            'harga_beli' => 'required', 
             'harga_jual' => 'required', 
             'kategori' => 'required', 
-            'satuan' => 'required', 
-
         ],[
             'id_produk.required' => 'Silakan isi ID Produk.',
             'id_produk.unique' => 'ID Produk sudah ada.',
             'id_produk.min' => 'ID Produk minimal 4 karakter.',
             'id_produk.max' => 'ID Produk maximal 6 karakter.',
             'nama_produk.required' => 'Silakan isi Nama Produk.',
-            'stok.required' => 'Silakan isi Stok Produk',
-            'harga_beli.required' => 'Silakan isi Harga Beli.',
             'harga_jual.required' => 'Silakan isi Harga Jual.',
             'kategori.required' => 'Silakan pilih Kategori.',
-            'satuan.required' => 'Silakan isi Satuan Produk.'
         ]);
 
         $data = [
             'id_produk' => Request()->id_produk,
             'nama_produk' => Request()->nama_produk,
-            'stok' => Request()->stok,
-            'harga_beli' => Request()->harga_beli,
+            'stok' => 0,
+            'harga_beli' => 0,
             'harga_jual' => Request()->harga_jual,
             'kategori' => Request()->kategori,
-            'satuan' => Request()->satuan,
+            'satuan' => '-',
         ]; 
 
         $this->ProdukModel->addData($data);
@@ -78,33 +71,22 @@ class ProdukController extends Controller
         Request()->validate([
             'id_produk' => 'required|min:4|max:6',
             'nama_produk' => 'required',    
-            'stok' => 'required',         
-            'harga_beli' => 'required', 
             'harga_jual' => 'required', 
             'kategori' => 'required', 
-            'satuan' => 'required', 
-
         ],[
             'id_produk.required' => 'Silakan isi ID Produk.',
-            'id_produk.unique' => 'ID Produk sudah ada.',
             'id_produk.min' => 'ID Produk minimal 4 karakter.',
             'id_produk.max' => 'ID Produk maximal 6 karakter.',
             'nama_produk.required' => 'Silakan isi Nama Produk.',
-            'stok.required' => 'Silakan isi Stok Produk',
-            'harga_beli.required' => 'Silakan isi Harga Beli.',
             'harga_jual.required' => 'Silakan isi Harga Jual.',
             'kategori.required' => 'Silakan pilih Kategori.',
-            'satuan.required' => 'Silakan isi Satuan Produk.'
         ]);
 
         $data = [
             'id_produk' => Request()->id_produk,
             'nama_produk' => Request()->nama_produk,
-            'stok' => Request()->stok,
-            'harga_beli' => Request()->harga_beli,
             'harga_jual' => Request()->harga_jual,
             'kategori' => Request()->kategori,
-            'satuan' => Request()->satuan,
         ]; 
 
         $this->ProdukModel->updateData($edit_produk, $data);

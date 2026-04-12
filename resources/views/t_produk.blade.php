@@ -6,128 +6,68 @@
         <div class="page-header">
           <h3 class="page-title">
             <span class="page-title-icon bg-gradient-primary text-white me-2">
-                  <i class="mdi mdi-table-large menu-icon"></i>
-            </span> Produk
+                  <i class="mdi mdi-silverware menu-icon"></i>
+            </span> Menu
           </h3>
           <nav aria-label="breadcrumb">
-            <a href="/produk/add" class="btn bg-gradient-primary text-white">
-                  Add +
-            </a>
-            <button type="button" class="btn bg-gradient-info text-white ms-2" data-bs-toggle="modal" data-bs-target="#daftarBarangModal">
-                  Daftar Barang
-            </button>
+            <div class="btn-group">
+                <a href="/produk/add" class="btn btn-gradient-primary text-white shadow-sm"><i class="mdi mdi-plus"></i> Add Menu</a>
+                <a href="/stok/bahan" class="btn btn-gradient-info text-white shadow-sm ms-2"><i class="mdi mdi-package-variant"></i> Daftar Bahan</a>
+            </div>
           </nav>
         </div>
          @if (session('pesan_sukses'))
-        <div class="alert alert-success" role="alert">
-          <i class="fa fa-edit"></i>
-            {{session('pesan_sukses')}}
-        </div>     
-        @endif
-        @if (session('pesan_hapus'))
-        <div class="alert alert-danger" role="alert">
-          <i class="fa fa-trash-o"></i>
-            {{session('pesan_hapus')}}
-        </div>     
-        @endif
-        {{-- table produk --}}
-        <div class="card shadow p-3 mb-5 bg-body rounded">
-            <div class="container">
-                  <div class="table-responsive">
+            <div class="alert alert-success">
+                  <i class="fa fa-check-circle"></i> {{ session('pesan_sukses') }}
+            </div>
+      @endif
+
+      @if (session('pesan_hapus'))
+            <div class="alert alert-danger">
+                  <i class="fa fa-trash"></i> {{ session('pesan_hapus') }}
+            </div>
+      @endif
+
+
+        <div class="row">
+          <div class="col-12 grid-margin">
+            <div class="card shadow p-3 mb-5 bg-body rounded">
+              <div class="card-body">
+                <h4 class="card-title text-primary"><i class="mdi mdi-silverware"></i> Daftar Menu</h4>
+                <div class="table-responsive">
                   <table class="table table-bordered" id="mytable">
                         <thead>
                               <tr>
-                                    <th>ID Produk</th>
-                                    <th>Nama Produk</th>
-                                    <th>Stok</th>
-                                    <th>Harga Beli</th>
+                                    <th>ID Menu</th>
+                                    <th>Nama Menu</th>
                                     <th>Harga Jual</th>
-                                    <th>Kategori Produk</th>
-                                    <th>Satuan</th>
+                                    <th>Kategori Menu</th>
                                     <th>Action</th>
                               </tr>
                         </thead>
                         <tbody>
-                              @foreach ($produk as $data)
+                        @foreach ($produk as $data)
                               <tr>
-                                    <td>{{$data->id_produk}}</td>
-                                    <td>{{$data->nama_produk}}</td>
-                                    <td>{{$data->stok}}</td>
-                                    <td>Rp.{{$data->harga_beli}}</td>
-                                    <td>Rp.{{$data->harga_jual}}</td>
-                                    <td>{{$data->kategori}}</td>
-                                    <td>{{$data->satuan}}</td>
+                                    <td>{{ $data->id_produk }}</td>
+                                    <td>{{ $data->nama_produk }}</td>
+                                    <td>Rp.{{ number_format($data->harga_jual, 0, ',', '.') }}</td>
                                     <td>
-                                          <a href="/produk/edit/{{ $data->id_produk }}" class="btn btn-gradient-warning">
-                                                <i class="fa fa-edit"></i>
-                                          </a>
-                                          <button type="button" class="btn btn-gradient-danger" data-bs-toggle="modal" data-bs-target="#delete{{ $data->id_produk }}">
-                                                <i class="fa fa-trash-o"></i>
-                                          </button>
+                                          <span class="badge {{ $data->kategori == 'Makanan' ? 'bg-gradient-info' : 'bg-gradient-success' }}">
+                                                {{ $data->kategori }}
+                                          </span>
+                                    </td>
+                                    <td>
+                                          <a href="/produk/edit/{{ $data->id_produk }}" class="btn btn-sm btn-warning mb-1"><i class="mdi mdi-border-color"></i></a>
+                                          <a href="/produk/delete/{{ $data->id_produk }}" class="btn btn-sm btn-danger mb-1" onclick="return confirm('Apakah Anda yakin ingin menghapus menu ini?')"><i class="mdi mdi-delete"></i></a>
                                     </td>
                               </tr>
-                              @endforeach
+                        @endforeach
                         </tbody>
                   </table>
-
-                  @foreach ($produk as $data)
-                  <!-- Modal -->
-                  <div class="modal fade" id="delete{{ $data->id_produk }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                        <div class="modal-content">
-                        <div class="modal-header bg-gradient-primary text-white">
-                              <h5 class="modal-title" id="delete">{{ $data->nama_produk }}</h5>
-                              <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                              <p>Apakah Anda yakin ingin menghapus data tersebut?</p>
-                        </div>
-                        <div class="modal-footer">
-                              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                              <a href="/produk/delete/{{ $data->id_produk }}" class="btn btn-gradient-danger">Delete</a>
-                        </div>
-                        </div>
-                        </div>
-                  </div>
-                  @endforeach
-
-            </div>
-            </div>
-        </div>
-        
-        <!-- Modal Daftar Barang -->
-        <div class="modal fade" id="daftarBarangModal" tabindex="-1" aria-labelledby="daftarBarangModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable">
-                <div class="modal-content">
-                    <div class="modal-header bg-gradient-info text-white">
-                        <h5 class="modal-title" id="daftarBarangModalLabel">Daftar Nama Barang</h5>
-                        <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th width="10%" class="text-center">No</th>
-                                    <th>Nama Produk</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($produk as $index => $data)
-                                <tr>
-                                    <td class="text-center">{{ $index + 1 }}</td>
-                                    <td>{{ $data->nama_produk }}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Tutup</button>
-                    </div>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
-       
       </div>
-    
-    @endsection
+@endsection
