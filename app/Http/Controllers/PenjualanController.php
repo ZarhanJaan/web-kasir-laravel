@@ -30,7 +30,7 @@ class PenjualanController extends Controller
 
     public function pos_insert(Request $request){
         $request->validate([
-            'id_penjualan' => 'required',
+            'id_penjualan' => 'required|unique:t_penjualan,id_penjualan',
             'tanggal' => 'required',    
             'nama_pelanggan' => 'required',         
             'jumlah_barang' => 'required|array', 
@@ -41,33 +41,48 @@ class PenjualanController extends Controller
 
         try {
             DB::transaction(function () use ($request) {
+                $historyCount = 1;
                 // Loop untuk setiap produk yang dipesan via POS
                 foreach ($request->id_produk as $i => $id_produk) {
-                    $produk = ProdukModel::findOrFail($id_produk);
-                    $jumlah = $request->jumlah_barang[$i];
+                    $menu = DB::table('t_produk')->where('id_produk', $id_produk)->first();
+                    $jumlah_beli = $request->jumlah_barang[$i];
                     
-                    if(empty($id_produk) || $jumlah <= 0) continue; // Skip invalid entries
+                    if(empty($id_produk) || $jumlah_beli <= 0) continue; 
                     
-                    if ($produk->stok < $jumlah) {
-                        throw new \Exception('Stok tidak mencukupi untuk produk ' . $produk->nama_produk);
-                    }
+                    // Ambil RESEP untuk menu ini
+                    $resep = DB::table('t_menu_resep')->where('id_menu', $id_produk)->get();
                     
-                    // 1. Kurangi stok produk
-                    $produk->stok -= $jumlah;
-                    $produk->save();
+                    foreach ($resep as $item) {
+                        $total_kebutuhan = $item->jumlah * $jumlah_beli;
+                        $stok_item = DB::table('t_stok_item')->where('id_stok', $item->id_stok)->first();
+                        
+                        if (!$stok_item || $stok_item->stok < $total_kebutuhan) {
+                            throw new \Exception('Stok ' . ($stok_item->nama_stok ?? 'Bahan') . ' tidak mencukupi untuk ' . $menu->nama_produk);
+                        }
 
-                    // 2. Catat di t_riwayat_stok
-                    DB::table('t_riwayat_stok')->insert([
-                        'id_produk' => $id_produk,
-                        'jenis' => 'keluar',
-                        'jumlah' => $jumlah,
-                        'total_harga' => ($jumlah * $produk->harga_jual),
-                        'tanggal' => date('Y-m-d'),
-                        'keterangan' => 'Stok Keluar (Transaksi penjualan)',
-                        'nama_pelanggan' => $request->nama_pelanggan,
-                        'created_at' => now(),
-                        'updated_at' => now()
-                    ]);
+                        // Generate unique history ID based on Sale ID (Manual)
+                        // Example: Sale 10001 -> History 1000101, 1000102...
+                        $manual_riwayat_id = (int)($request->id_penjualan . str_pad($historyCount, 2, '0', STR_PAD_LEFT));
+                        $historyCount++;
+
+                        // 1. Kurangi stok bahan
+                        DB::table('t_stok_item')->where('id_stok', $item->id_stok)->decrement('stok', $total_kebutuhan);
+
+                        // 2. Catat di t_riwayat_stok
+                        DB::table('t_riwayat_stok')->insert([
+                            'id_riwayat' => $manual_riwayat_id,
+                            'id_produk' => $id_produk,
+                            'id_stok' => $item->id_stok,
+                            'jenis' => 'keluar',
+                            'jumlah' => $total_kebutuhan,
+                            'total_harga' => 0, 
+                            'tanggal' => date('Y-m-d'),
+                            'keterangan' => 'Terpakai (Menu: ' . $menu->nama_produk . ')',
+                            'nama_pelanggan' => $request->nama_pelanggan,
+                            'created_at' => now(),
+                            'updated_at' => now()
+                        ]);
+                    }
                 }
 
                 // 3. Simpan rekap Data Penjualan Utama

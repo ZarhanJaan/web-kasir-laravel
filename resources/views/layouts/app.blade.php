@@ -43,7 +43,7 @@
                   <span class="availability-status online"></span>
                 </div>
                 <div class="nav-profile-text">
-                  <p class="mb-1 text-black"> {{ Auth::user()->name }}</p>
+                  <p class="mb-1 text-black"> {{ Auth::user()->name ?? 'Admin' }}</p>
                 </div>
               </a>
               <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">
@@ -77,7 +77,7 @@
                   <!--change to offline or busy as needed-->
                 </div>
                 <div class="nav-profile-text d-flex flex-column">
-                  <span class="font-weight-bold mb-2">{{ Auth::user()->name }}</span>
+                  <span class="font-weight-bold mb-2">{{ Auth::user()->name ?? 'Admin' }}</span>
                   <span class="text-secondary text-small">Sebagai Admin</span>
                 </div>
                 <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
@@ -91,14 +91,20 @@
             </li>
             <li class="nav-item">
               <a class="nav-link"  href="/produk" aria-expanded="false" aria-controls="tables">
-                <span class="menu-title">Produk</span>
-                <i class="mdi mdi-table-large menu-icon"></i>
+                <span class="menu-title">Menu</span>
+                <i class="mdi mdi-silverware menu-icon"></i>
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/pos" aria-expanded="false" aria-controls="pos">
                 <span class="menu-title text-success font-weight-bold">Kasir (POS)</span>
                 <i class="mdi mdi-calculator menu-icon text-success"></i>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/resep">
+                <span class="menu-title">Resep Menu</span>
+                <i class="mdi mdi-book-open-page-variant menu-icon"></i>
               </a>
             </li>
             <li class="nav-item">
@@ -117,7 +123,8 @@
                 <ul class="nav flex-column sub-menu">
                   <li class="nav-item"> <a class="nav-link" href="/stok/add">Stok Masuk</a></li>
                   <li class="nav-item"> <a class="nav-link" href="/stok/keluar">Stok Keluar</a></li>
-                  <li class="nav-item"> <a class="nav-link" href="/stok/riwayat">Riwayat Stok</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="/stok/riwayat">Riwayat Transaksi Stok</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="/stok/bahan">Daftar Stok Bahan</a></li>
                   <li class="nav-item"> <a class="nav-link" href="/stok">Informasi Stok</a></li>
                 </ul>
               </div>

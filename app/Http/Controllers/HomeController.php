@@ -24,15 +24,20 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // Hitung total dari t_produk
+        // Hitung total dari t_produk (Sekarang Menu)
         $totalProduk = DB::table('t_produk')->count();
-        $totalStok = DB::table('t_produk')->sum('stok');
+        $totalStok = DB::table('t_stok_item')->sum('stok'); // Total bahan baku
 
         // Hitung total dari t_penjualan
         $totalPenjualan = DB::table('t_penjualan')->sum('total');
         $totalData = DB::table('t_penjualan')->count();
 
+        // Notifikasi barang/stok menipis (Ambil dari t_stok_item)
+        $stok_menipis = DB::table('t_stok_item')
+            ->where('stok', '<', 10)
+            ->get();
+
         // Kirim data ke view
-        return view('home', compact('totalProduk', 'totalPenjualan', 'totalStok', 'totalData'));
+        return view('home', compact('totalProduk', 'totalPenjualan', 'totalStok', 'totalData', 'stok_menipis'));
     }
 }
