@@ -60,14 +60,12 @@ class StokController extends Controller
         $request->validate([
             'id_stok' => 'required|unique:t_stok_item,id_stok',
             'nama_stok' => 'required',
-            'satuan' => 'required',
             'stok' => 'nullable|numeric'
         ]);
 
         DB::table('t_stok_item')->insert([
             'id_stok' => $request->id_stok,
             'nama_stok' => $request->nama_stok,
-            'satuan' => $request->satuan,
             'stok' => $request->stok ?? 0,
             'created_at' => now(),
             'updated_at' => now()
@@ -86,21 +84,53 @@ class StokController extends Controller
     {
         $request->validate([
             'id_riwayat' => 'required|unique:t_riwayat_stok,id_riwayat',
-            'id_produk' => 'required', // Ini sekarang id_stok
+            'id_produk' => 'required', // Input manual (ID atau Nama)
             'jenis' => 'required|in:masuk,keluar',
             'jumlah' => 'required|numeric|min:1',
             'harga_beli' => 'required|numeric|min:0',
             'tanggal' => 'required|date',
-            'keterangan' => 'nullable|string'
+            'keterangan' => 'nullable|string',
+            // Opsional untuk bahan baru
+            'id_stok_baru' => 'nullable|unique:t_stok_item,id_stok',
+        ], [
+            'id_riwayat.unique' => 'ID Riwayat sudah ada.',
+            'id_stok_baru.unique' => 'ID Bahan Baru sudah terdaftar.',
         ]);
 
         try {
             DB::transaction(function () use ($request) {
+                // Cari bahan berdasarkan ID atau Nama
+                $item = DB::table('t_stok_item')
+                    ->where('id_stok', $request->id_produk)
+                    ->orWhere('nama_stok', $request->id_produk)
+                    ->first();
+
+                $id_stok_fix = null;
+
+                if (!$item) {
+                    // Jika tidak ditemukan, coba registrasi sebagai bahan baru
+                    if (!$request->id_stok_baru) {
+                        throw new \Exception('Bahan baku "' . $request->id_produk . '" belum terdaftar. Silakan isi "ID Bahan Baru" di bawah untuk mendaftarkannya secara otomatis.');
+                    }
+
+                    // Registrasi bahan baru (Satuan otomatis pakai default DB: Pcs)
+                    DB::table('t_stok_item')->insert([
+                        'id_stok' => $request->id_stok_baru,
+                        'nama_stok' => $request->id_produk,
+                        'stok' => 0, 
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]);
+                    $id_stok_fix = $request->id_stok_baru;
+                } else {
+                    $id_stok_fix = $item->id_stok;
+                }
+
                 // Insert ke Riwayat Stok
                 $this->StokModel->addData([
                     'id_riwayat' => $request->id_riwayat,
-                    'id_produk' => null, 
-                    'id_stok' => $request->id_produk,
+                    'id_produk' => null,
+                    'id_stok' => $id_stok_fix,
                     'jenis' => $request->jenis,
                     'jumlah' => $request->jumlah,
                     'harga_beli' => $request->harga_beli,
@@ -111,16 +141,14 @@ class StokController extends Controller
                 ]);
 
                 // Update Stok di t_stok_item
-                $item = DB::table('t_stok_item')->where('id_stok', $request->id_produk)->first();
-                if ($item) {
-                    if ($request->jenis == 'masuk') {
-                        DB::table('t_stok_item')->where('id_stok', $request->id_produk)->increment('stok', $request->jumlah);
-                    } else {
-                        if ($item->stok < $request->jumlah) {
-                            throw new \Exception('Stok tidak mencukupi untuk dikeluarkan.');
-                        }
-                        DB::table('t_stok_item')->where('id_stok', $request->id_produk)->decrement('stok', $request->jumlah);
+                if ($request->jenis == 'masuk') {
+                    DB::table('t_stok_item')->where('id_stok', $id_stok_fix)->increment('stok', $request->jumlah);
+                } else {
+                    $currentItem = DB::table('t_stok_item')->where('id_stok', $id_stok_fix)->first();
+                    if ($currentItem->stok < $request->jumlah) {
+                        throw new \Exception('Stok tidak mencukupi untuk dikeluarkan.');
                     }
+                    DB::table('t_stok_item')->where('id_stok', $id_stok_fix)->decrement('stok', $request->jumlah);
                 }
             });
 
@@ -156,6 +184,7 @@ class StokController extends Controller
             ->leftJoin('t_produk', 't_riwayat_stok.id_produk', '=', 't_produk.id_produk')
             ->leftJoin('t_stok_item', 't_riwayat_stok.id_stok', '=', 't_stok_item.id_stok')
             ->where('t_riwayat_stok.jenis', 'keluar')
+            ->select('t_riwayat_stok.*', 't_produk.nama_produk', 't_stok_item.nama_stok')
             ->orderBy('t_riwayat_stok.tanggal', 'desc')
             ->orderBy('t_riwayat_stok.id_riwayat', 'desc')
             ->get();

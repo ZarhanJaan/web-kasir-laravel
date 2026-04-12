@@ -14,7 +14,7 @@ class ResepController extends Controller
             $menu->resep = DB::table('t_menu_resep')
                 ->join('t_stok_item', 't_menu_resep.id_stok', '=', 't_stok_item.id_stok')
                 ->where('t_menu_resep.id_menu', $menu->id_produk)
-                ->select('t_menu_resep.*', 't_stok_item.nama_stok', 't_stok_item.satuan')
+                ->select('t_menu_resep.*', 't_stok_item.nama_stok')
                 ->get();
         }
 
@@ -29,7 +29,7 @@ class ResepController extends Controller
         $resep = DB::table('t_menu_resep')
             ->join('t_stok_item', 't_menu_resep.id_stok', '=', 't_stok_item.id_stok')
             ->where('t_menu_resep.id_menu', $id_menu)
-            ->select('t_menu_resep.*', 't_stok_item.nama_stok', 't_stok_item.satuan')
+            ->select('t_menu_resep.*', 't_stok_item.nama_stok')
             ->get();
 
         $stok_items = DB::table('t_stok_item')->get();

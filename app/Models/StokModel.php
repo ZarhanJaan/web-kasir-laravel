@@ -15,7 +15,7 @@ class StokModel extends Model
     {
         return DB::table('t_riwayat_stok')
             ->join('t_produk', 't_riwayat_stok.id_produk', '=', 't_produk.id_produk')
-            ->select('t_riwayat_stok.*', 't_produk.nama_produk', 't_produk.satuan')
+            ->select('t_riwayat_stok.*', 't_produk.nama_produk')
             ->orderBy('t_riwayat_stok.created_at', 'desc')
             ->get();
     }
@@ -29,7 +29,7 @@ class StokModel extends Model
     {
         return DB::table('t_riwayat_stok')
             ->join('t_produk', 't_riwayat_stok.id_produk', '=', 't_produk.id_produk')
-            ->select('t_riwayat_stok.*', 't_produk.nama_produk', 't_produk.satuan')
+            ->select('t_riwayat_stok.*', 't_produk.nama_produk')
             ->whereBetween('t_riwayat_stok.tanggal', [$tglawal, $tglakhir])
             ->orderBy('t_riwayat_stok.created_at', 'desc')
             ->get();

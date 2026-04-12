@@ -21,7 +21,7 @@
               <hr>
               <ul class="mb-0">
                 @foreach($stok_menipis as $item)
-                  <li>{{ $item->nama_stok }} (Sisa: <b>{{ $item->stok }} {{ $item->satuan }}</b>)</li>
+                  <li>{{ $item->nama_stok }} (Sisa: <b>{{ $item->stok }}</b>)</li>
                 @endforeach
               </ul>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="this.parentElement.style.display='none';"></button>

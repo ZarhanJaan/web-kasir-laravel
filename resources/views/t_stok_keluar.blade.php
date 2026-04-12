@@ -37,8 +37,6 @@
                                 <th>Tanggal</th>
                                 <th>Nama Pelanggan</th>
                                 <th>Nama Produk</th>
-                                <th>Jumlah Keluar</th>
-                                <th>Total Harga</th>
                                 <th>Keterangan / Sumber</th>
                                 <th class="text-center">Aksi</th>
                             </tr>
@@ -49,9 +47,7 @@
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ \Carbon\Carbon::parse($data->tanggal)->format('d-m-Y') }}</td>
                                 <td>{{ $data->nama_pelanggan ?? '-' }}</td>
-                                <td class="font-weight-bold text-primary">{{ $data->nama_produk }}</td>
-                                <td><span class="badge bg-danger text-white">{{ $data->jumlah }} Pcs</span></td>
-                                <td class="text-success font-weight-bold">Rp{{ number_format((float)$data->total_harga, 0, ',', '.') }}</td>
+                                <td class="font-weight-bold text-primary">{{ $data->nama_produk ?? $data->nama_stok }}</td>
                                 <td>{{ $data->keterangan ?? '-' }}</td>
                                 <td class="text-center">
                                     <a href="/stok/keluar/edit/{{ $data->id_riwayat }}" class="btn btn-sm btn-primary py-1 px-2" title="Edit Data"><i class="mdi mdi-pencil"></i></a>
@@ -60,7 +56,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="8" class="text-center text-muted py-4">Belum ada data stok keluar...</td>
+                                <td colspan="6" class="text-center text-muted py-4">Belum ada data stok keluar...</td>
                             </tr>
                             @endforelse
                         </tbody>

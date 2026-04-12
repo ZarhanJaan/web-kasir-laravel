@@ -39,7 +39,6 @@
                               <tr>
                                     <th>Nama Bahan</th>
                                     <th>Jumlah</th>
-                                    <th>Satuan</th>
                                     <th>Hapus</th>
                               </tr>
                         </thead>
@@ -48,7 +47,6 @@
                               <tr>
                                     <td><b>{{ $item->nama_stok }}</b></td>
                                     <td>{{ $item->jumlah }}</td>
-                                    <td>{{ $item->satuan }}</td>
                                     <td>
                                           <a href="/resep/item/delete/{{ $item->id_resep }}" class="text-danger" onclick="return confirm('Hapus bahan ini dari resep?')"><i class="mdi mdi-delete-forever mdi-24px"></i></a>
                                     </td>

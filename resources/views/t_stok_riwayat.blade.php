@@ -49,7 +49,7 @@
                                     <th>Tanggal</th>
                                     <th>Nama Produk</th>
                                     <th>Jenis</th>
-                                    <th>Jumlah (Satuan)</th>
+                                    <th>Jumlah</th>
                                     <th>Keterangan</th>
                               </tr>
                         </thead>
@@ -58,7 +58,7 @@
                               <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ \Carbon\Carbon::parse($data->tanggal)->format('d/m/Y') }}</td>
-                                    <td>{{ $data->nama_produk }}</td>
+                                    <td>{{ $data->nama_produk ?? $data->nama_stok }}</td>
                                     <td>
                                         @if($data->jenis == 'masuk')
                                             <span class="badge bg-success">Stok Masuk</span>
@@ -66,7 +66,7 @@
                                             <span class="badge bg-danger">Stok Keluar</span>
                                         @endif
                                     </td>
-                                    <td>{{ $data->jumlah }} {{ $data->satuan }}</td>
+                                    <td>{{ $data->jumlah }}</td>
                                     <td>{{ $data->keterangan ?? '-' }}</td>
                               </tr>
                               @endforeach
