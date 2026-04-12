@@ -21,7 +21,7 @@
     <div class="row">
         <div class="col-md-8 grid-margin stretch-card">
             <div class="card shadow p-4 mb-5 bg-body rounded">
-                <form id="pos-form" action="/pos/insert" method="POST">
+                <form id="pos-form" action="/kasir/insert" method="POST">
                     @csrf
                     <h4 class="card-title text-primary"><i class="mdi mdi-cart-outline"></i> Detail Pesanan</h4>
                     <hr>

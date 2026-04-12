@@ -80,7 +80,7 @@ class ProdukController extends Controller
                 }
             });
 
-            return redirect()->route('produk')->with('pesan_sukses', 'Menu dan Resep berhasil ditambahkan.');
+            return redirect()->route('menu')->with('pesan_sukses', 'Menu dan Resep berhasil ditambahkan.');
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with('pesan_error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
@@ -120,7 +120,7 @@ class ProdukController extends Controller
         ]; 
 
         $this->ProdukModel->updateData($edit_produk, $data);
-        return redirect()->route('produk')->with('pesan_sukses','Data Berhasil di Update');
+        return redirect()->route('menu')->with('pesan_sukses','Data Berhasil di Update');
     }
 
     public function delete($id_produk)

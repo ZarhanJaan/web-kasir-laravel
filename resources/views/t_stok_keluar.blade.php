@@ -42,7 +42,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($riwayat_keluar as $index => $data)
+                            @foreach ($riwayat_keluar as $index => $data)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ \Carbon\Carbon::parse($data->tanggal)->format('d-m-Y') }}</td>
@@ -54,11 +54,7 @@
                                     <a href="/stok/keluar/delete/{{ $data->id_riwayat }}" class="btn btn-sm btn-danger py-1 px-2" onclick="return confirm('Yakin ingin menghapus? Stok barang ini akan dikembalikan ke t_produk!')" title="Hapus Data"><i class="mdi mdi-delete"></i></a>
                                 </td>
                             </tr>
-                            @empty
-                            <tr>
-                                <td colspan="6" class="text-center text-muted py-4">Belum ada data stok keluar...</td>
-                            </tr>
-                            @endforelse
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

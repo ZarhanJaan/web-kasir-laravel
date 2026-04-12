@@ -10,7 +10,7 @@
                         </span> Riwayat Transaksi
                   </h3>
                   <nav aria-label="breadcrumb">
-                        <a href="/penjualan/add" class="btn bg-gradient-primary text-white ">
+                        <a href="/riwayat-transaksi/add" class="btn bg-gradient-primary text-white ">
                               Add +
                         </a>
                   </nav>
@@ -59,7 +59,7 @@
                                                             @endphp
                                                       </td>
                                                       <td>
-                                                            <a href="/penjualan/edit/{{ $data->id_penjualan }}"
+                                                            <a href="/riwayat-transaksi/edit/{{ $data->id_penjualan }}"
                                                                   class="btn btn-gradient-warning">
                                                                   <i class="fa fa-edit"></i>
                                                             </a>
@@ -92,7 +92,7 @@
                                                       <div class="modal-footer">
                                                             <button type="button" class="btn btn-outline-secondary"
                                                                   data-bs-dismiss="modal">Cancel</button>
-                                                            <a href="/penjualan/delete/{{ $data->id_penjualan }}"
+                                                            <a href="/riwayat-transaksi/delete/{{ $data->id_penjualan }}"
                                                                   class="btn btn-gradient-danger">Delete</a>
                                                       </div>
                                                 </div>

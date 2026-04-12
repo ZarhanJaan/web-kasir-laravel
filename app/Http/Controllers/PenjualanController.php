@@ -104,7 +104,7 @@ class PenjualanController extends Controller
                 ];
                 $this->PenjualanModel->addData($data);
             });
-            return redirect()->route('pos')->with('pesan_sukses_trx', $request->id_penjualan);
+            return redirect()->route('kasir')->with('pesan_sukses_trx', $request->id_penjualan);
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with('pesan_error', $e->getMessage());
         }
@@ -172,7 +172,7 @@ class PenjualanController extends Controller
                 ];
                 $this->PenjualanModel->addData($data);
             });
-            return redirect()->route('penjualan')->with('pesan_sukses', 'Data Berhasil di Tambahkan');
+            return redirect()->route('riwayat-transaksi')->with('pesan_sukses', 'Data Berhasil di Tambahkan');
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with('pesan_error', $e->getMessage());
         }
@@ -216,14 +216,14 @@ class PenjualanController extends Controller
         ];
 
         $this->PenjualanModel->updateData($edit_penjualan, $data);
-        return redirect()->route('penjualan')->with('pesan_sukses', 'Data Berhasil di Update');
+        return redirect()->route('riwayat-transaksi')->with('pesan_sukses', 'Data Berhasil di Update');
     }
 
     public function delete($id_penjualan)
     {
 
         $this->PenjualanModel->deleteData($id_penjualan);
-        return redirect()->route('penjualan')->with('pesan_hapus', 'Data Berhasil di Delete');
+        return redirect()->route('riwayat-transaksi')->with('pesan_hapus', 'Data Berhasil di Delete');
 
     }
 
