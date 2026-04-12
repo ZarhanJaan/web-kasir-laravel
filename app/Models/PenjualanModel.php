@@ -16,7 +16,8 @@ class PenjualanModel extends Model
     }
 
     public function addData($data){
-        
+        $data['created_at'] = now();
+        $data['updated_at'] = now();
         DB::table('t_penjualan')->insert($data);
     }
 
