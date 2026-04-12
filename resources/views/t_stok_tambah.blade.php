@@ -22,12 +22,17 @@
         <form action="/stok/insert" method="POST">
             @csrf
             <div class="row g-3">
-            <div class="col-12 col-md-6">
-                        <label for="">Pilih Produk</label>
+                    <div class="col-12">
+                        <label for="">ID Riwayat (Manual)</label>
+                        <input type="number" name="id_riwayat" class="form-control" placeholder="Contoh: 5001" required>
+                        <br>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label for="">Pilih Bahan Baku</label>
                         <select name="id_produk" class="form-control" required>
-                            <option value="">-- Pilih Produk --</option>
+                            <option value="">-- Pilih Bahan --</option>
                             @foreach($produk as $p)
-                                <option value="{{ $p->id_produk }}">{{ $p->nama_produk }} (Stok saat ini: {{ $p->stok }})</option>
+                                <option value="{{ $p->id_stok }}">{{ $p->nama_stok }} (ID: {{ $p->id_stok }} | Stok: {{ $p->stok }} {{ $p->satuan }})</option>
                             @endforeach
                         </select>
                         <div class="text-danger">
@@ -41,6 +46,13 @@
                         <input type="number" name="jumlah" class="form-control" value="{{ old('jumlah') }}" min="1" required>
                         <div class="text-danger">
                               @error('jumlah') {{ $message }} @enderror
+                        </div>
+                        <br>
+
+                        <label for="">Harga Beli (Per Item)</label>
+                        <input type="number" name="harga_beli" class="form-control" value="{{ old('harga_beli') }}" min="0" required>
+                        <div class="text-danger">
+                                @error('harga_beli') {{ $message }} @enderror
                         </div>
             </div>
             

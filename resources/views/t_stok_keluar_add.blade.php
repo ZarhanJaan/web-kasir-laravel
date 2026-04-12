@@ -27,15 +27,19 @@
                     <hr>
                     
                     <div class="row mb-3">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
+                            <label class="form-label">ID Transaksi (Manual)</label>
+                            <input type="number" name="id_riwayat_base" class="form-control" placeholder="Contoh: 9001" required>
+                        </div>
+                        <div class="col-md-3">
                             <label class="form-label">Tgl. Keluar</label>
                             <input type="date" name="tanggal" class="form-control" value="{{ date('Y-m-d') }}" required>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label class="form-label">Nama Pelanggan / Entitas</label>
                             <input type="text" name="nama_pelanggan" id="nama_pelanggan" class="form-control" value="Umum" required>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label class="form-label">Keterangan / Sumber Batal</label>
                             <input type="text" name="keterangan" id="keterangan" class="form-control" placeholder="Misal: Barang Rusak, Hibah" value="Stok Keluar Manual">
                         </div>

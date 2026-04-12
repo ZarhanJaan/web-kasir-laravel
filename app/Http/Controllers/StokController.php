@@ -21,23 +21,12 @@ class StokController extends Controller
 
     public function dashboard()
     {
-        // Notifikasi barang/stok menipis
-        $stok_menipis = DB::table('t_produk')
+        // Notifikasi barang/stok menipis (Ambil dari t_stok_item)
+        $stok_menipis = DB::table('t_stok_item')
             ->where('stok', '<', 10)
             ->get();
 
-        // Informasi produk terlaris
-        // Menggunakan riwayat penjualan untuk menentukan produk terlaris (contoh: top 5 produk)
-        $produk_terlaris = DB::table('t_penjualan')
-            ->select('id_produk', DB::raw('SUM(jumlah_barang) as total_terjual'))
-            ->groupBy('id_produk')
-            ->orderBy('total_terjual', 'desc')
-            ->limit(5)
-            ->get();
-
-        // Di t_penjualan, id_produk bisa jadi comma-separated jika pembelian banyak tipe
-        // Karena struktur tabel sederhana, kita bisa gunakan grouping sederhana atau pendekatan manual
-        // Untuk mempermudah, kita ambil dari t_produk yang paling sedikit stoknya ATAU yang memiliki mutasi keluar terbanyak dari stok
+        // Informasi produk terlaris (Tetap dari t_penjualan)
         $top_terlaris = DB::table('t_riwayat_stok')
             ->join('t_produk', 't_riwayat_stok.id_produk', '=', 't_produk.id_produk')
             ->select('t_produk.nama_produk', DB::raw('SUM(t_riwayat_stok.jumlah) as total_terjual'))
@@ -47,152 +36,59 @@ class StokController extends Controller
             ->limit(5)
             ->get();
 
-        return view('t_stok_dashboard', compact('stok_menipis', 'top_terlaris'));
+        // Daftar Lengkap Stok Dimiliki (Request User #2)
+        $stok_lengkap = DB::table('t_stok_item')->get();
+
+        return view('t_stok_dashboard', compact('stok_menipis', 'top_terlaris', 'stok_lengkap'));
     }
 
     public function add()
     {
-        $produk = DB::table('t_produk')->get();
+        $produk = DB::table('t_stok_item')->get(); // Sekarang Stok Masuk memilih dari t_stok_item
         return view('t_stok_tambah', compact('produk'));
     }
 
-    public function keluar()
+    public function bahan()
     {
-        $riwayat_keluar = DB::table('t_riwayat_stok')
-            ->join('t_produk', 't_riwayat_stok.id_produk', '=', 't_produk.id_produk')
-            ->where('t_riwayat_stok.jenis', 'keluar')
-            ->orderBy('t_riwayat_stok.id_riwayat', 'desc')
-            ->get();
-        return view('t_stok_keluar', compact('riwayat_keluar'));
+        $bahan = DB::table('t_stok_item')->get();
+        return view('t_stok_bahan', compact('bahan'));
     }
 
-    public function keluar_edit($id_riwayat)
-    {
-        $riwayat = DB::table('t_riwayat_stok')
-            ->join('t_produk', 't_riwayat_stok.id_produk', '=', 't_produk.id_produk')
-            ->where('t_riwayat_stok.id_riwayat', $id_riwayat)
-            ->first();
-            
-        if(!$riwayat) return redirect('/stok/keluar')->with('pesan_error', 'Data riwayat tidak ditemukan');
-            
-        return view('t_stok_keluar_edit', compact('riwayat'));
-    }
-
-    public function keluar_update(Request $request, $id_riwayat)
+    public function bahan_insert(Request $request)
     {
         $request->validate([
-            'tanggal' => 'required|date',
-            'jumlah' => 'required|numeric|min:1',
-            'keterangan' => 'nullable|string',
-            'nama_pelanggan' => 'nullable|string',
+            'id_stok' => 'required|unique:t_stok_item,id_stok',
+            'nama_stok' => 'required',
+            'satuan' => 'required',
+            'stok' => 'nullable|numeric'
         ]);
 
-        $riwayat_lama = DB::table('t_riwayat_stok')->where('id_riwayat', $id_riwayat)->first();
-        if(!$riwayat_lama) return redirect()->back()->with('pesan_error', 'Data tidak ditemukan');
-
-        try {
-            DB::transaction(function () use ($request, $riwayat_lama, $id_riwayat) {
-                // Refund stok lama
-                DB::table('t_produk')->where('id_produk', $riwayat_lama->id_produk)->increment('stok', $riwayat_lama->jumlah);
-                
-                $produk = DB::table('t_produk')->where('id_produk', $riwayat_lama->id_produk)->first();
-                if ($produk->stok < $request->jumlah) {
-                    throw new \Exception('Stok master produk tidak mencukupi untuk update kuantitas ini.');
-                }
-
-                // Kurangi stok dengan jumlah baru
-                DB::table('t_produk')->where('id_produk', $riwayat_lama->id_produk)->decrement('stok', $request->jumlah);
-
-                // Update data riwayat
-                DB::table('t_riwayat_stok')->where('id_riwayat', $id_riwayat)->update([
-                    'jumlah' => $request->jumlah,
-                    'total_harga' => ($request->jumlah * $produk->harga_jual),
-                    'tanggal' => $request->tanggal,
-                    'keterangan' => $request->keterangan,
-                    'nama_pelanggan' => $request->nama_pelanggan,
-                    'updated_at' => now()
-                ]);
-            });
-            return redirect('/stok/keluar')->with('pesan_sukses', 'Data stok keluar berhasil diperbarui dan stok master tervalidasi.');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('pesan_error', $e->getMessage());
-        }
-    }
-
-    public function keluar_delete($id_riwayat)
-    {
-        try {
-            $riwayat = DB::table('t_riwayat_stok')->where('id_riwayat', $id_riwayat)->first();
-            if(!$riwayat) return redirect()->back()->with('pesan_error', 'Data tidak ditemukan');
-
-            DB::transaction(function () use ($riwayat, $id_riwayat) {
-                // Refund stok ke t_produk
-                DB::table('t_produk')->where('id_produk', $riwayat->id_produk)->increment('stok', $riwayat->jumlah);
-                
-                // Eksekusi delete riwayat
-                DB::table('t_riwayat_stok')->where('id_riwayat', $id_riwayat)->delete();
-            });
-            return redirect('/stok/keluar')->with('pesan_sukses', 'Riwayat dihapus dan stok barang terkait berhasil dikembalikan.');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('pesan_error', 'Gagal menghapus: ' . $e->getMessage());
-        }
-    }
-
-    public function keluar_add()
-    {
-        $produk = DB::table('t_produk')->get();
-        return view('t_stok_keluar_add', compact('produk'));
-    }
-
-    public function keluar_insert(Request $request)
-    {
-        $request->validate([
-            'tanggal' => 'required|date',
-            'nama_pelanggan' => 'required|string',
-            'id_produk' => 'required|array',
-            'jumlah_barang' => 'required|array',
+        DB::table('t_stok_item')->insert([
+            'id_stok' => $request->id_stok,
+            'nama_stok' => $request->nama_stok,
+            'satuan' => $request->satuan,
+            'stok' => $request->stok ?? 0,
+            'created_at' => now(),
+            'updated_at' => now()
         ]);
 
-        try {
-            DB::transaction(function () use ($request) {
-                foreach ($request->id_produk as $i => $id_produk) {
-                    $jumlah = $request->jumlah_barang[$i];
-                    if(empty($id_produk) || $jumlah <= 0) continue;
+        return redirect()->back()->with('pesan_sukses', 'Bahan berhasil ditambahkan.');
+    }
 
-                    $produk = DB::table('t_produk')->where('id_produk', $id_produk)->first();
-                    if ($produk->stok < $jumlah) {
-                        throw new \Exception('Stok tidak mencukupi untuk: ' . $produk->nama_produk);
-                    }
-
-                    // 1. Kurangi master
-                    DB::table('t_produk')->where('id_produk', $id_produk)->decrement('stok', $jumlah);
-
-                    // 2. Insert ke riwayat
-                    DB::table('t_riwayat_stok')->insert([
-                        'id_produk' => $id_produk,
-                        'jenis' => 'keluar',
-                        'jumlah' => $jumlah,
-                        'total_harga' => ($jumlah * $produk->harga_jual),
-                        'tanggal' => $request->tanggal,
-                        'keterangan' => $request->keterangan ?: 'Stok Keluar Manual',
-                        'nama_pelanggan' => $request->nama_pelanggan,
-                        'created_at' => now(),
-                        'updated_at' => now()
-                    ]);
-                }
-            });
-            return redirect('/stok/keluar')->with('pesan_sukses', 'Riwayat stok keluar manual berhasil dicatat!');
-        } catch (\Exception $e) {
-            return redirect()->back()->withInput()->with('pesan_error', $e->getMessage());
-        }
+    public function bahan_delete($id)
+    {
+        DB::table('t_stok_item')->where('id_stok', $id)->delete();
+        return redirect()->back()->with('pesan_sukses', 'Bahan berhasil dihapus.');
     }
 
     public function insert(Request $request)
     {
         $request->validate([
-            'id_produk' => 'required',
+            'id_riwayat' => 'required|unique:t_riwayat_stok,id_riwayat',
+            'id_produk' => 'required', // Ini sekarang id_stok
             'jenis' => 'required|in:masuk,keluar',
             'jumlah' => 'required|numeric|min:1',
+            'harga_beli' => 'required|numeric|min:0',
             'tanggal' => 'required|date',
             'keterangan' => 'nullable|string'
         ]);
@@ -201,31 +97,29 @@ class StokController extends Controller
             DB::transaction(function () use ($request) {
                 // Insert ke Riwayat Stok
                 $this->StokModel->addData([
-                    'id_produk' => $request->id_produk,
+                    'id_riwayat' => $request->id_riwayat,
+                    'id_produk' => null, 
+                    'id_stok' => $request->id_produk,
                     'jenis' => $request->jenis,
                     'jumlah' => $request->jumlah,
+                    'harga_beli' => $request->harga_beli,
                     'tanggal' => $request->tanggal,
                     'keterangan' => $request->keterangan ?: 'Stok Masuk',
                     'created_at' => now(),
                     'updated_at' => now()
                 ]);
 
-                // Update Stok di t_produk
-                $produk = DB::table('t_produk')->where('id_produk', $request->id_produk)->first();
-                if ($produk) {
-                    $stok_baru = $produk->stok;
+                // Update Stok di t_stok_item
+                $item = DB::table('t_stok_item')->where('id_stok', $request->id_produk)->first();
+                if ($item) {
                     if ($request->jenis == 'masuk') {
-                        $stok_baru += $request->jumlah;
+                        DB::table('t_stok_item')->where('id_stok', $request->id_produk)->increment('stok', $request->jumlah);
                     } else {
-                        if ($produk->stok < $request->jumlah) {
+                        if ($item->stok < $request->jumlah) {
                             throw new \Exception('Stok tidak mencukupi untuk dikeluarkan.');
                         }
-                        $stok_baru -= $request->jumlah;
+                        DB::table('t_stok_item')->where('id_stok', $request->id_produk)->decrement('stok', $request->jumlah);
                     }
-
-                    DB::table('t_produk')
-                        ->where('id_produk', $request->id_produk)
-                        ->update(['stok' => $stok_baru]);
                 }
             });
 
@@ -240,12 +134,99 @@ class StokController extends Controller
         $awal = $request->get('tgl_awal');
         $akhir = $request->get('tgl_akhir');
 
+        $query = DB::table('t_riwayat_stok')
+            ->leftJoin('t_produk', 't_riwayat_stok.id_produk', '=', 't_produk.id_produk')
+            ->leftJoin('t_stok_item', 't_riwayat_stok.id_stok', '=', 't_stok_item.id_stok')
+            ->select('t_riwayat_stok.*', 't_produk.nama_produk', 't_stok_item.nama_stok')
+            ->orderBy('t_riwayat_stok.created_at', 'desc');
+
         if ($awal && $akhir) {
-            $riwayat = $this->StokModel->filterByDate($awal, $akhir);
-        } else {
-            $riwayat = $this->StokModel->allData();
+            $query->whereBetween('t_riwayat_stok.tanggal', [$awal, $akhir]);
         }
 
+        $riwayat = $query->get();
+
         return view('t_stok_riwayat', compact('riwayat', 'awal', 'akhir'));
+    }
+
+    public function keluar()
+    {
+        $riwayat_keluar = DB::table('t_riwayat_stok')
+            ->leftJoin('t_produk', 't_riwayat_stok.id_produk', '=', 't_produk.id_produk')
+            ->leftJoin('t_stok_item', 't_riwayat_stok.id_stok', '=', 't_stok_item.id_stok')
+            ->where('t_riwayat_stok.jenis', 'keluar')
+            ->orderBy('t_riwayat_stok.tanggal', 'desc')
+            ->orderBy('t_riwayat_stok.id_riwayat', 'desc')
+            ->get();
+        return view('t_stok_keluar', compact('riwayat_keluar'));
+    }
+
+    public function keluar_add()
+    {
+        $produk = DB::table('t_stok_item')->get();
+        return view('t_stok_keluar_add', compact('produk'));
+    }
+
+    public function keluar_insert(Request $request)
+    {
+        $request->validate([
+            'id_riwayat_base' => 'required',
+            'id_produk' => 'required|array',
+            'jumlah_barang' => 'required|array',
+            'tanggal' => 'required|date',
+            'nama_pelanggan' => 'required',
+            'keterangan' => 'nullable'
+        ]);
+
+        try {
+            DB::transaction(function () use ($request) {
+                $historyCount = 1;
+                foreach ($request->id_produk as $i => $id_stok) {
+                    $jumlah = $request->jumlah_barang[$i];
+                    if (empty($id_stok) || $jumlah <= 0) continue;
+
+                    $item = DB::table('t_stok_item')->where('id_stok', $id_stok)->first();
+                    if (!$item || $item->stok < $jumlah) {
+                        throw new \Exception('Stok ' . ($item->nama_stok ?? 'Bahan') . ' tidak mencukupi.');
+                    }
+
+                    // Manual ID generation for history based on base ID
+                    $manual_id = (int)($request->id_riwayat_base . str_pad($historyCount, 2, '0', STR_PAD_LEFT));
+                    $historyCount++;
+
+                    // 1. Catat di t_riwayat_stok
+                    DB::table('t_riwayat_stok')->insert([
+                        'id_riwayat' => $manual_id,
+                        'id_stok' => $id_stok,
+                        'id_produk' => 'Bhn ' . $id_stok, // Filler for id_produk varchar column
+                        'jenis' => 'keluar',
+                        'jumlah' => $jumlah,
+                        'tanggal' => $request->tanggal,
+                        'nama_pelanggan' => $request->nama_pelanggan,
+                        'keterangan' => $request->keterangan ?? 'Stok Keluar Manual',
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]);
+
+                    // 2. Kurangi stok
+                    DB::table('t_stok_item')->where('id_stok', $id_stok)->decrement('stok', $jumlah);
+                }
+            });
+
+            return redirect()->route('stok.keluar')->with('pesan_sukses', 'Pengeluaran stok berhasil dicatat.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('pesan_error', $e->getMessage());
+        }
+    }
+
+    public function keluar_delete($id)
+    {
+        // Refund logic (Optional, but good for data integrity)
+        $riwayat = DB::table('t_riwayat_stok')->where('id_riwayat', $id)->first();
+        if ($riwayat && $riwayat->id_stok) {
+            DB::table('t_stok_item')->where('id_stok', $riwayat->id_stok)->increment('stok', $riwayat->jumlah);
+        }
+        DB::table('t_riwayat_stok')->where('id_riwayat', $id)->delete();
+        return redirect()->back()->with('pesan_sukses', 'Riwayat berhasil dihapus (Stok telah dikembalikan).');
     }
 }
