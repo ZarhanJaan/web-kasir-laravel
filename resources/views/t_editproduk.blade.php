@@ -26,7 +26,7 @@
                         </div>
                         <br>
                         <label for="">Nama Produk</label>
-                        <input name="nama_produk" class="form-control" value="{{ $produk->nama_produk }}">
+                        <input name="nama_produk" class="form-control" value="{{ $produk->nama_produk }}" required>
                         <div class="text-danger">
                               @error('nama_produk')
                                   {{ $message }}
@@ -34,7 +34,7 @@
                         </div>
             </div>
                         <label for="">Harga Jual</label>
-                        <input name="harga_jual" class="form-control" value="{{ $produk->harga_jual }}">
+                        <input name="harga_jual" class="form-control" value="{{ $produk->harga_jual }}" required>
                         <div class="text-danger">
                               @error('harga_jual')
                                   {{ $message }}
@@ -42,12 +42,10 @@
                         </div>
                         <br>
                         <label for="">Kategori Produk</label>
-                        <select name="kategori" class="form-control">
+                        <select name="kategori" class="form-control" required>
                               <option value="">-- Pilih Kategori --</option>
                               <option value="Makanan" {{ $produk->kategori == 'Makanan' ? 'selected' : '' }}>Makanan</option>
                               <option value="Minuman" {{ $produk->kategori == 'Minuman' ? 'selected' : '' }}>Minuman</option>
-                              <option value="Sembako" {{ $produk->kategori == 'Sembako' ? 'selected' : '' }}>Sembako</option>
-                              <option value="Bumbu" {{ $produk->kategori == 'Bumbu' ? 'selected' : '' }}>Bumbu</option>
                         </select>
                         <div class="text-danger">
                               @error('kategori')

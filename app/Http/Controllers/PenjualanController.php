@@ -30,7 +30,21 @@ class PenjualanController extends Controller
 
     public function pos()
     {
-        $produk = ProdukModel::all();
+        $produk = DB::table('t_produk as p')
+            ->select('p.*', DB::raw('
+                CASE 
+                    WHEN NOT EXISTS (SELECT 1 FROM t_menu_resep mr WHERE mr.id_menu = p.id_produk) THEN 1
+                    WHEN (
+                        SELECT COUNT(*) 
+                        FROM t_menu_resep mr 
+                        JOIN t_stok_item si ON mr.id_stok = si.id_stok 
+                        WHERE mr.id_menu = p.id_produk AND si.stok < mr.jumlah
+                    ) = 0 THEN 1
+                    ELSE 0
+                END as is_available
+            '))
+            ->get();
+            
         return view('t_transaksi_pos', compact('produk'));
     }
 

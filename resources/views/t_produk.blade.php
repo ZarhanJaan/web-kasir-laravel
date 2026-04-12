@@ -12,7 +12,7 @@
           @if(Auth::user()->hasAnyRole(['owner', 'admin']))
           <nav aria-label="breadcrumb">
             <div class="btn-group">
-                <a href="/stok/bahan" class="btn btn-gradient-info text-white shadow-sm ms-2"><i class="mdi mdi-package-variant"></i> Daftar Bahan</a>
+                <a href="/stok" class="btn btn-gradient-info text-white shadow-sm ms-2"><i class="mdi mdi-package-variant"></i> Daftar Stok</a>
             </div>
           </nav>
           @endif
