@@ -17,7 +17,7 @@
 </head>
 <body onload="window.print()">
     <div class="text-center mb-2">
-        <h2>Toko Sembako Lina</h2>
+        <h2>Restoran</h2>
         <p>Jl. Contoh Alamat No.123<br>Telp: 08123456789</p>
     </div>
     <hr>
@@ -55,7 +55,7 @@
     <hr>
     <div class="text-center mt-2">
         <p>TERIMA KASIH ATAS KUNJUNGAN ANDA</p>
-        <p>Barang yang sudah dibeli tidak dapat ditukar/dikembalikan.</p>
+
     </div>
 </body>
 </html>

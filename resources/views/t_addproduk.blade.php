@@ -54,9 +54,6 @@
                                     </option>
                                     <option value="Minuman" {{ old('kategori') == 'Minuman' ? 'selected' : '' }}>Minuman
                                     </option>
-                                    <option value="Sembako" {{ old('kategori') == 'Sembako' ? 'selected' : '' }}>Sembako
-                                    </option>
-                                    <option value="Bumbu" {{ old('kategori') == 'Bumbu' ? 'selected' : '' }}>Bumbu</option>
                                 </select>
                                 <div class="text-danger small">@error('kategori') {{ $message }} @enderror</div>
                             </div>

@@ -12,11 +12,6 @@
     </div>
     <br>
 
-    @if (session('pesan_error'))
-    <div class="alert alert-danger">
-        <i class="fa fa-exclamation-triangle"></i> {{ session('pesan_error') }}
-    </div>
-    @endif
 
     <div class="row">
         <div class="col-md-8 grid-margin stretch-card">
@@ -64,8 +59,12 @@
                                 <select name="id_produk[]" class="form-control produk-select" required>
                                     <option value="" data-harga="0">-- Pilih Produk --</option>
                                     @foreach($produk as $p)
-                                        <option value="{{ $p->id_produk }}" data-harga="{{ $p->harga_jual }}" data-nama="{{ $p->nama_produk }}">
-                                            {{ $p->nama_produk }} (Stok: {{ $p->stok }} | Rp{{ number_format($p->harga_jual,0,',','.') }})
+                                        <option value="{{ $p->id_produk }}" 
+                                                data-harga="{{ $p->harga_jual }}" 
+                                                data-nama="{{ $p->nama_produk }}"
+                                                {{ $p->is_available ? '' : 'disabled' }}
+                                                style="{{ $p->is_available ? '' : 'color: red;' }}">
+                                            {{ $p->nama_produk }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -92,7 +91,7 @@
                 <div class="card-body">
                     <h4 class="font-weight-normal mb-3">Total Tagihan</h4>
                     <h2 class="mb-5" style="font-size: 2.5rem;" id="grand-total-display">Rp 0</h2>
-                    <button type="button" class="btn btn-warning btn-lg btn-block text-dark mt-4 shadow font-weight-bold" id="btn-verifikasi" data-bs-toggle="modal" data-bs-target="#verifikasiModal">BAYAR SEKARANG</button>
+                    <button type="button" class="btn btn-warning btn-lg btn-block text-dark mt-4 shadow font-weight-bold" id="btn-verifikasi">BAYAR SEKARANG</button>
                 </div>
             </div>
         </div>
@@ -120,6 +119,29 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="mdi mdi-close"></i> Kembali (Batal)</button>
                 <button type="button" class="btn btn-success" id="btn-submit-form"><i class="mdi mdi-content-save"></i> Lanjutkan Pembayaran</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Sukses Pembayaran -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="p-3 d-flex justify-content-end">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center p-5 pt-0">
+                <div class="mb-4">
+                    <i class="mdi mdi-check-circle-outline text-success" style="font-size: 100px;"></i>
+                </div>
+                <h2 class="mb-3 font-weight-bold">Pembayaran Berhasil!</h2>
+                <p class="text-muted">Transaksi telah berhasil diproses dan dicatat dalam sistem.</p>
+            </div>
+            <div class="modal-footer border-0 d-flex justify-content-end">
+                <button type="button" class="btn btn-gradient-success text-white font-weight-bold" id="btn-cetak-struk-modal">
+                    <i class="mdi mdi-printer me-1"></i> Cetak Struk
+                </button>
             </div>
         </div>
     </div>
@@ -199,27 +221,34 @@
 
         // Verification Modal Logic
         const btnVerifikasi = document.getElementById('btn-verifikasi');
+        const posForm = document.getElementById('pos-form');
+        const verifikasiModal = new bootstrap.Modal(document.getElementById('verifikasiModal'));
+
         btnVerifikasi.addEventListener('click', function() {
-            document.getElementById('v-pelanggan').textContent = document.getElementById('nama_pelanggan').value || 'Tanpa Nama';
-            document.getElementById('v-metode').textContent = document.getElementById('metode_pembayaran').value;
-            document.getElementById('v-total').textContent = formatRupiah(totalInput.value);
-            
-            const vItems = document.getElementById('v-items');
-            vItems.innerHTML = '';
-            
-            const rows = document.querySelectorAll('.item-row');
-            rows.forEach(row => {
-                const select = row.querySelector('.produk-select');
-                const qty = row.querySelector('.jumlah-input').value;
-                if(select.selectedIndex > 0 && qty > 0) {
-                    const nama = select.options[select.selectedIndex].getAttribute('data-nama');
-                    const harga = select.options[select.selectedIndex].getAttribute('data-harga');
-                    const li = document.createElement('li');
-                    li.className = 'list-group-item d-flex justify-content-between align-items-center';
-                    li.innerHTML = `${nama} x${qty} <span>${formatRupiah(harga * qty)}</span>`;
-                    vItems.appendChild(li);
-                }
-            });
+            if (posForm.reportValidity()) {
+                document.getElementById('v-pelanggan').textContent = document.getElementById('nama_pelanggan').value || 'Tanpa Nama';
+                document.getElementById('v-metode').textContent = document.getElementById('metode_pembayaran').value;
+                document.getElementById('v-total').textContent = formatRupiah(totalInput.value);
+                
+                const vItems = document.getElementById('v-items');
+                vItems.innerHTML = '';
+                
+                const rows = document.querySelectorAll('.item-row');
+                rows.forEach(row => {
+                    const select = row.querySelector('.produk-select');
+                    const qty = row.querySelector('.jumlah-input').value;
+                    if(select.selectedIndex > 0 && qty > 0) {
+                        const nama = select.options[select.selectedIndex].getAttribute('data-nama');
+                        const harga = select.options[select.selectedIndex].getAttribute('data-harga');
+                        const li = document.createElement('li');
+                        li.className = 'list-group-item d-flex justify-content-between align-items-center';
+                        li.innerHTML = `${nama} x${qty} <span>${formatRupiah(harga * qty)}</span>`;
+                        vItems.appendChild(li);
+                    }
+                });
+
+                verifikasiModal.show();
+            }
         });
 
         // Submit Logic Form
@@ -236,17 +265,20 @@
 @if(session('pesan_sukses_trx'))
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Show success alert
-        alert("Transaksi Pembayaran Berhasil! Mengeluarkan Struk...");
+        // Show success modal
+        const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+        successModal.show();
         
-        // Open receipt in new popup window
-        const trxId = "{{ session('pesan_sukses_trx') }}";
-        const width = 400;
-        const height = 600;
-        const left = (screen.width/2)-(width/2);
-        const top = (screen.height/2)-(height/2);
-        
-        window.open('/struk/' + trxId, 'Struk Pembayaran', 'width='+width+',height='+height+',top='+top+',left='+left);
+        // Handle Print Receipt Button
+        document.getElementById('btn-cetak-struk-modal').addEventListener('click', function() {
+            const trxId = "{{ session('pesan_sukses_trx') }}";
+            const width = 400;
+            const height = 600;
+            const left = (screen.width/2)-(width/2);
+            const top = (screen.height/2)-(height/2);
+            
+            window.open('/struk/' + trxId, 'Struk Pembayaran', 'width='+width+',height='+height+',top='+top+',left='+left);
+        });
     });
 </script>
 @endif
