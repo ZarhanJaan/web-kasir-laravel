@@ -130,6 +130,12 @@
               </div>
             </li>
             <li class="nav-item">
+              <a class="nav-link" href="/penjualan" aria-expanded="false" aria-controls="icons">
+                <span class="menu-title">Riwayat Transaksi</span>
+                <i class="mdi mdi-contacts menu-icon"></i>
+              </a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" data-bs-toggle="collapse" href="#forms" aria-expanded="false" aria-controls="forms">
                 <span class="menu-title">Laporan Penjualan</span>
                 <i class="mdi mdi-format-list-bulleted menu-icon"></i>
@@ -265,5 +271,6 @@
     <script>
       AOS.init();
     </script>
+    @yield('scripts')
   </body>
 </html>
