@@ -13,7 +13,7 @@
         </div>
         <br><br>
         {{-- Edit produk --}}
-        <form action="/produk/update/{{ $produk->id_produk }}" method="POST">
+        <form action="/menu/update/{{ $produk->id_produk }}" method="POST">
             @csrf
             <div class="row g-3">
             <div class="col-12 col-md-6">

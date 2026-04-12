@@ -53,7 +53,6 @@ class ResetData extends Command
                 't_riwayat_stok',
                 't_stok_item',
                 't_menu_resep',
-                'users'
             ];
 
             foreach ($tables as $table) {
@@ -68,20 +67,9 @@ class ResetData extends Command
             // Re-enable foreign key checks
             DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-            // Create default admin user
-            User::create([
-                'name' => 'Admin Toko',
-                'email' => 'admin@gmail.com',
-                'password' => Hash::make('admin123'),
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
-
             $this->info('------------------------------------------');
             $this->info('Database reset completed successfully!');
-            $this->info('Default Admin Account Created:');
-            $this->info('Email: admin@gmail.com');
-            $this->info('Password: admin123');
+            $this->info('User accounts were preserved.');
             $this->info('------------------------------------------');
 
             return 0;

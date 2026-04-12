@@ -7,12 +7,12 @@
           <h3 class="page-title">
             <span class="page-title-icon bg-gradient-primary text-white me-2">
                   <i class="mdi mdi-table-large menu-icon"></i>
-            </span> Add Penjualan
+            </span> Tambah Transaksi
           </h3>
         </div>
         <br><br>
         {{-- add produk --}}
-        <form action="/penjualan/insert" method="POST">
+        <form action="/riwayat-transaksi/insert" method="POST">
             @csrf
             @if(session('pesan_sukses'))
                 <div class="alert alert-success">{{ session('pesan_sukses') }}</div>
@@ -31,7 +31,7 @@
             @endif
              <div class="row g-3">
             <div class="col-12 col-md-6">
-                        <label for="">ID Penjualan</label>
+                        <label for="">ID Transaksi</label>
                         <input name="id_penjualan" class="form-control" value="{{ old('id_penjualan') }}">
                         <div class="text-danger">
                               @error('id_penjualan')

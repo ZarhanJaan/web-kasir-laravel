@@ -90,7 +90,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link"  href="/produk" aria-expanded="false" aria-controls="tables">
+              <a class="nav-link"  href="/menu" aria-expanded="false" aria-controls="tables">
                 <span class="menu-title">Menu</span>
                 <i class="mdi mdi-silverware menu-icon"></i>
               </a>
@@ -102,13 +102,13 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/pos" aria-expanded="false" aria-controls="pos">
+              <a class="nav-link" href="/kasir" aria-expanded="false" aria-controls="pos">
                 <span class="menu-title text-success font-weight-bold">Kasir (transaksi)</span>
                 <i class="mdi mdi-calculator menu-icon text-success"></i>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/penjualan" aria-expanded="false" aria-controls="icons">
+              <a class="nav-link" href="/riwayat-transaksi" aria-expanded="false" aria-controls="icons">
                 <span class="menu-title">Riwayat Transaksi</span>
                 <i class="mdi mdi-contacts menu-icon"></i>
               </a>

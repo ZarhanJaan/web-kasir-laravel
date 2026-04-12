@@ -7,16 +7,16 @@
           <h3 class="page-title">
             <span class="page-title-icon bg-gradient-primary text-white me-2">
                   <i class="mdi mdi-table-large menu-icon"></i>
-            </span> Edit Penjualan
+            </span> Edit Transaksi
           </h3>
         </div>
         <br><br>
         {{-- Edit penjualan --}}
-        <form action="/penjualan/update/{{ $penjualan->id_penjualan }}" method="POST">
+        <form action="/riwayat-transaksi/update/{{ $penjualan->id_penjualan }}" method="POST">
             @csrf
             <div class="row g-3">
                 <div class="col-12 col-md-6">
-                    <label for="">ID Penjualan</label>
+                    <label for="">ID Transaksi</label>
                     <input name="id_penjualan" class="form-control" value="{{ $penjualan->id_penjualan }}" readonly>
                     <div class="text-danger">
                         @error('id_penjualan')

@@ -56,8 +56,8 @@
                                           </span>
                                     </td>
                                     <td>
-                                          <a href="/produk/edit/{{ $data->id_produk }}" class="btn btn-sm btn-warning mb-1"><i class="mdi mdi-border-color"></i></a>
-                                          <a href="/produk/delete/{{ $data->id_produk }}" class="btn btn-sm btn-danger mb-1" onclick="return confirm('Apakah Anda yakin ingin menghapus menu ini?')"><i class="mdi mdi-delete"></i></a>
+                                          <a href="/menu/edit/{{ $data->id_produk }}" class="btn btn-sm btn-warning mb-1"><i class="mdi mdi-border-color"></i></a>
+                                          <a href="/menu/delete/{{ $data->id_produk }}" class="btn btn-sm btn-danger mb-1" onclick="return confirm('Apakah Anda yakin ingin menghapus menu ini?')"><i class="mdi mdi-delete"></i></a>
                                     </td>
                               </tr>
                         @endforeach

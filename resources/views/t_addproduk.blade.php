@@ -13,7 +13,7 @@
         </div>
         <br><br>
         {{-- add produk --}}
-        <form action="/produk/insert" method="POST">
+        <form action="/resep/insert" method="POST">
             @csrf
             <div class="row">
                 <!-- Column 1: Basic Info -->
@@ -111,7 +111,7 @@
             <div class="row mt-3">
                 <div class="col-12 text-center">
                     <hr>
-                    <a href="/produk" class="btn btn-secondary me-2">Batal</a>
+                    <a href="/menu" class="btn btn-secondary me-2">Batal</a>
                     <button type="submit" class="btn bg-gradient-info text-white px-5">Simpan Menu & Resep</button>
                 </div>
             </div>

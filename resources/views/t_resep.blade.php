@@ -10,7 +10,7 @@
             </span> Manajemen Resep Menu
           </h3>
           <nav aria-label="breadcrumb">
-            <a href="/produk/add" class="btn btn-gradient-primary text-white font-weight-bold shadow-sm">
+            <a href="/resep/add" class="btn btn-gradient-primary text-white font-weight-bold shadow-sm">
                   <i class="mdi mdi-plus"></i> Add Menu
             </a>
           </nav>
@@ -31,7 +31,7 @@
                     <h4 class="card-title text-success mb-0"><i class="mdi mdi-silverware"></i> {{ $menu->nama_produk }}</h4>
                     <div class="btn-group">
                         <a href="/resep/edit/{{ $menu->id_produk }}" class="btn btn-sm btn-inverse-primary">Edit Resep</a>
-                        <a href="/produk/delete/{{ $menu->id_produk }}" class="btn btn-sm btn-inverse-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus menu ini? Semua resep terkait akan hilang.')"><i class="mdi mdi-delete"></i></a>
+                        <a href="/menu/delete/{{ $menu->id_produk }}" class="btn btn-sm btn-inverse-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus menu ini? Semua resep terkait akan hilang.')"><i class="mdi mdi-delete"></i></a>
                     </div>
                 </div>
                 <p class="text-muted small">ID Menu: {{ $menu->id_produk }} | Kategori: {{ $menu->kategori }}</p>

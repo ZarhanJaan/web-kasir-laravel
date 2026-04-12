@@ -31,21 +31,21 @@ Route::post('/logout', function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-    Route::get('/produk', [ProdukController::class, 'index'])->name('produk');
-    Route::get('/produk/add', [ProdukController::class, 'add']);
-    Route::post('/produk/insert', [ProdukController::class, 'insert']);
-    Route::get('/produk/edit/{id_produk}', [ProdukController::class, 'edit']);
-    Route::post('/produk/update/{id_produk}', [ProdukController::class, 'update']);
-    Route::get('/produk/delete/{id_produk}', [ProdukController::class, 'delete']);
+    Route::get('/menu', [ProdukController::class, 'index'])->name('menu');
+    Route::get('/menu/add', [ProdukController::class, 'add']);
+    Route::post('/menu/insert', [ProdukController::class, 'insert']);
+    Route::get('/menu/edit/{id_produk}', [ProdukController::class, 'edit']);
+    Route::post('/menu/update/{id_produk}', [ProdukController::class, 'update']);
+    Route::get('/menu/delete/{id_produk}', [ProdukController::class, 'delete']);
 
-    Route::get('/penjualan', [PenjualanController::class, 'index'])->name('penjualan');
-    Route::get('/penjualan/add', [PenjualanController::class, 'add']);
-    Route::post('/penjualan/insert', [PenjualanController::class, 'insert']);
-    Route::get('/penjualan/edit/{id_penjualan}', [PenjualanController::class, 'edit']);
-    Route::post('/penjualan/update/{id_penjualan}', [PenjualanController::class, 'update']);
-    Route::get('/penjualan/delete/{id_penjualan}', [PenjualanController::class, 'delete']);
-    Route::get('/pos', [PenjualanController::class, 'pos'])->name('pos');
-    Route::post('/pos/insert', [PenjualanController::class, 'pos_insert'])->name('pos.insert');
+    Route::get('/riwayat-transaksi', [PenjualanController::class, 'index'])->name('riwayat-transaksi');
+    Route::get('/riwayat-transaksi/add', [PenjualanController::class, 'add']);
+    Route::post('/riwayat-transaksi/insert', [PenjualanController::class, 'insert']);
+    Route::get('/riwayat-transaksi/edit/{id_penjualan}', [PenjualanController::class, 'edit']);
+    Route::post('/riwayat-transaksi/update/{id_penjualan}', [PenjualanController::class, 'update']);
+    Route::get('/riwayat-transaksi/delete/{id_penjualan}', [PenjualanController::class, 'delete']);
+    Route::get('/kasir', [PenjualanController::class, 'pos'])->name('kasir');
+    Route::post('/kasir/insert', [PenjualanController::class, 'pos_insert'])->name('kasir.insert');
     Route::get('/struk/{id_penjualan}', [PenjualanController::class, 'struk'])->name('struk');
 
     Route::get('/exportexcel', [PenjualanController::class, 'exportexcel'])->name('exportexcel');
@@ -66,6 +66,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/stok/bahan/delete/{id}', [StokController::class, 'bahan_delete'])->name('stok.bahan.delete');
 
     Route::get('/resep', [App\Http\Controllers\ResepController::class, 'index'])->name('resep');
+    Route::get('/resep/add', [ProdukController::class, 'add'])->name('resep.add');
+    Route::post('/resep/insert', [ProdukController::class, 'insert'])->name('resep.insert');
     Route::get('/resep/edit/{id_menu}', [App\Http\Controllers\ResepController::class, 'edit']);
     Route::post('/resep/update/{id_menu}', [App\Http\Controllers\ResepController::class, 'update']);
     Route::post('/resep/item/add', [App\Http\Controllers\ResepController::class, 'add_item']);
