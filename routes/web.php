@@ -73,4 +73,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/datapenjualan_tgl_pdf', [PenjualanController::class, 'datapenjualan_tgl_pdf'])->name('datapenjualan_tgl_pdf');
     Route::get('/cetak_tgl_pdf/{tglawal}/{tglakhir}', [PenjualanController::class, 'cetak_tgl_pdf'])->name('cetak_tgl_pdf');
+
+    Route::get('/manajemen-user', function () {
+        return view('manajemen_user');
+    })->name('manajemen-user');
 });

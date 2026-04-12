@@ -96,20 +96,20 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/pos" aria-expanded="false" aria-controls="pos">
-                <span class="menu-title text-success font-weight-bold">Kasir (POS)</span>
-                <i class="mdi mdi-calculator menu-icon text-success"></i>
-              </a>
-            </li>
-            <li class="nav-item">
               <a class="nav-link" href="/resep">
                 <span class="menu-title">Resep Menu</span>
                 <i class="mdi mdi-book-open-page-variant menu-icon"></i>
               </a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" href="/pos" aria-expanded="false" aria-controls="pos">
+                <span class="menu-title text-success font-weight-bold">Kasir (transaksi)</span>
+                <i class="mdi mdi-calculator menu-icon text-success"></i>
+              </a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="/penjualan" aria-expanded="false" aria-controls="icons">
-                <span class="menu-title">Penjualan</span>
+                <span class="menu-title">Riwayat Transaksi</span>
                 <i class="mdi mdi-contacts menu-icon"></i>
               </a>
             </li>
@@ -128,12 +128,6 @@
                   <li class="nav-item"> <a class="nav-link" href="/stok">Informasi Stok</a></li>
                 </ul>
               </div>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/penjualan" aria-expanded="false" aria-controls="icons">
-                <span class="menu-title">Riwayat Transaksi</span>
-                <i class="mdi mdi-contacts menu-icon"></i>
-              </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" data-bs-toggle="collapse" href="#forms" aria-expanded="false" aria-controls="forms">
@@ -159,6 +153,12 @@
                   </li>
                 </ul>
               </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/manajemen-user">
+                <span class="menu-title">Manajemen User</span>
+                <i class="mdi mdi-account-multiple menu-icon"></i>
+              </a>
             </li>
           </ul>
         </nav>
