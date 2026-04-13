@@ -28,17 +28,21 @@
   <link rel="shortcut icon" href="{{asset('template/')}}/assets/images/favicon.png" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+  <!-- Global Sidebar & Navbar Component -->
+  <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
 </head>
 
 <body>
   <!-- partial:partials/_navbar.html -->
   <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-    <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
-      <a class="navbar-brand brand-logo" style="color: blueviolet" href="index.html">
-        <h4 class="font-weight-bold">Toko Sembako Lina</h4>
+    <div class="navbar-brand-wrapper d-flex align-items-center justify-content-center">
+      <a class="navbar-brand brand-logo d-flex align-items-center m-0 p-0" href="/home">
+        <h4 class="font-weight-bold m-0 p-0" style="line-height: normal;">Toko Sembako Lina</h4>
       </a>
-      <a class="navbar-brand brand-logo-mini" href="/home"><img src="{{asset('template/')}}/assets/images/logo-mini.svg"
-          alt="logo" /></a>
+      <a class="navbar-brand brand-logo-mini d-flex align-items-center m-0 p-0" href="/home">
+        <img src="{{asset('template/')}}/assets/images/logo-mini.svg" alt="logo" />
+      </a>
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-stretch">
       <ul class="navbar-nav navbar-nav-right">
@@ -97,20 +101,20 @@
           </a>
         </li>
         @if(Auth::user()->hasAnyRole(['owner', 'admin', 'kasir']))
-        <li class="nav-item {{ Request::is('menu', 'menu/*') ? 'active-ref active' : '' }}">
-          <a class="nav-link" href="/menu" aria-expanded="false" aria-controls="tables">
-            <span class="menu-title">Menu</span>
-            <i class="mdi mdi-silverware menu-icon"></i>
-          </a>
-        </li>
+          <li class="nav-item {{ Request::is('menu', 'menu/*') ? 'active-ref active' : '' }}">
+            <a class="nav-link" href="/menu" aria-expanded="false" aria-controls="tables">
+              <span class="menu-title">Menu</span>
+              <i class="mdi mdi-silverware menu-icon"></i>
+            </a>
+          </li>
         @endif
         @if(Auth::user()->hasAnyRole(['owner', 'admin']))
-        <li class="nav-item {{ Request::is('resep', 'resep/*') ? 'active-ref active' : '' }}">
-          <a class="nav-link" href="/resep">
-            <span class="menu-title">Resep Menu</span>
-            <i class="mdi mdi-book-open-page-variant menu-icon"></i>
-          </a>
-        </li>
+          <li class="nav-item {{ Request::is('resep', 'resep/*') ? 'active-ref active' : '' }}">
+            <a class="nav-link" href="/resep">
+              <span class="menu-title">Resep Menu</span>
+              <i class="mdi mdi-book-open-page-variant menu-icon"></i>
+            </a>
+          </li>
         @endif
         @if(Auth::user()->hasAnyRole(['owner', 'admin', 'kasir']))
           <li class="nav-item {{ Request::is('kasir', 'kasir/*') ? 'active-ref active' : '' }}">
@@ -130,18 +134,23 @@
         @endif
         @if(Auth::user()->hasAnyRole(['owner', 'admin']))
           <li class="nav-item {{ Request::is('stok', 'stok/*') ? 'active-ref active' : '' }}">
-            <a class="nav-link" data-bs-toggle="collapse" href="#stok-menu" aria-expanded="{{ Request::is('stok', 'stok/*') ? 'true' : 'false' }}"
-              aria-controls="stok-menu">
+            <a class="nav-link" data-bs-toggle="collapse" href="#stok-menu"
+              aria-expanded="{{ Request::is('stok', 'stok/*') ? 'true' : 'false' }}" aria-controls="stok-menu">
               <span class="menu-title">Manajemen Stok</span>
               <i class="menu-arrow"></i>
               <i class="mdi mdi-format-list-bulleted menu-icon"></i>
             </a>
             <div class="collapse {{ Request::is('stok', 'stok/*') ? 'show' : '' }}" id="stok-menu">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link {{ Request::is('stok/add') ? 'active' : '' }}" href="/stok/add">Stok Masuk</a></li>
-                <li class="nav-item"> <a class="nav-link {{ Request::is('stok/keluar', 'stok/keluar/*') ? 'active' : '' }}" href="/stok/keluar">Stok Keluar</a></li>
-                <li class="nav-item"> <a class="nav-link {{ Request::is('stok/riwayat') ? 'active' : '' }}" href="/stok/riwayat">Riwayat Transaksi Stok</a></li>
-                <li class="nav-item"> <a class="nav-link {{ Request::is('stok') ? 'active' : '' }}" href="/stok">Informasi Stok</a></li>
+                <li class="nav-item"> <a class="nav-link {{ Request::is('stok/add') ? 'active' : '' }}"
+                    href="/stok/add">Stok Masuk</a></li>
+                <li class="nav-item"> <a
+                    class="nav-link {{ Request::is('stok/keluar', 'stok/keluar/*') ? 'active' : '' }}"
+                    href="/stok/keluar">Stok Keluar</a></li>
+                <li class="nav-item"> <a class="nav-link {{ Request::is('stok/riwayat') ? 'active' : '' }}"
+                    href="/stok/riwayat">Riwayat Transaksi Stok</a></li>
+                <li class="nav-item"> <a class="nav-link {{ Request::is('stok') ? 'active' : '' }}" href="/stok">Informasi
+                    Stok</a></li>
               </ul>
             </div>
           </li>
@@ -279,38 +288,38 @@
   <script>
     // Sidebar Active State Correction Script
     // This overrides the fuzzy URL matching in the theme's misc.js
-    $(document).ready(function() {
+    $(document).ready(function () {
       // Give time for misc.js to finish its initialization
-      setTimeout(function() {
+      setTimeout(function () {
         const currentPath = window.location.pathname;
-        
+
         // Clear all active/show states first to be sure
         $('.sidebar .nav-item').removeClass('active');
         $('.sidebar .collapse').removeClass('show');
         $('.sidebar .nav-link').removeClass('active');
 
         // 1. Activate based on exact patterns
-        $('.sidebar .nav-item').each(function() {
-            const $item = $(this);
-            if ($item.hasClass('active-ref')) {
-                $item.addClass('active');
-                if ($item.find('.collapse').length) {
-                    $item.find('.collapse').addClass('show');
-                }
+        $('.sidebar .nav-item').each(function () {
+          const $item = $(this);
+          if ($item.hasClass('active-ref')) {
+            $item.addClass('active');
+            if ($item.find('.collapse').length) {
+              $item.find('.collapse').addClass('show');
             }
+          }
         });
 
         // 2. Activate sub-menu items
-        $('.sidebar .nav-link').each(function() {
-            const $link = $(this);
-            const href = $link.attr('href');
-            if (href && currentPath === href) {
-                $link.addClass('active');
-                $link.closest('.collapse').addClass('show');
-                $link.parents('.nav-item').last().addClass('active');
-            }
+        $('.sidebar .nav-link').each(function () {
+          const $link = $(this);
+          const href = $link.attr('href');
+          if (href && currentPath === href) {
+            $link.addClass('active');
+            $link.closest('.collapse').addClass('show');
+            $link.parents('.nav-item').last().addClass('active');
+          }
         });
-      }, 100); 
+      }, 100);
     });
   </script>
   @yield('scripts')
