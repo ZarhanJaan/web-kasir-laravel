@@ -6,111 +6,128 @@
         <div class="page-header">
             <h3 class="page-title">
                 <span class="page-title-icon bg-gradient-primary text-white me-2">
-                    <i class="mdi mdi-table-large menu-icon"></i>
-                </span> Tambah Resep Menu
+                    <i class="mdi mdi-book-plus menu-icon"></i>
+                </span> Tambah Menu & Resep
             </h3>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/resep">Manajemen Resep</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Tambah Baru</li>
+                </ol>
+            </nav>
         </div>
-        <br><br>
-        {{-- add produk --}}
-        <form action="/resep/insert" method="POST">
+
+        @if (session('pesan_error'))
+        <div class="alert alert-danger" role="alert">
+            <i class="mdi mdi-alert-circle"></i>
+            {{ session('pesan_error') }}
+        </div>
+        @endif
+
+        <form action="/resep/insert" method="POST" class="forms-sample">
             @csrf
             <div class="row">
                 <!-- Column 1: Basic Info -->
-                <div class="col-md-5">
-                    <div class="card shadow-sm mb-4">
-                        <div class="card-body">
-                            <h4 class="card-title text-primary"><i class="mdi mdi-information-outline"></i> Informasi Menu
-                            </h4>
-                            <hr>
-                            <div class="form-group mb-3">
-                                <label class="font-weight-bold">ID Menu (Manual)</label>
-                                <input name="id_produk" class="form-control" value="{{ old('id_produk') }}"
-                                    placeholder="Contoh: 2001" required>
-                                <div class="text-danger small">@error('id_produk') {{ $message }} @enderror</div>
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <label class="font-weight-bold">Nama Menu</label>
-                                <input name="nama_produk" class="form-control" value="{{ old('nama_produk') }}"
-                                    placeholder="Contoh: Indomie Goreng Spesial" required>
-                                <div class="text-danger small">@error('nama_produk') {{ $message }} @enderror</div>
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <label class="font-weight-bold">Harga Jual</label>
+                <div class="col-md-5 grid-margin stretch-card">
+                    <div class="card shadow-sm border-0 bg-body rounded">
+                        <div class="card-body p-4">
+                            <h4 class="card-title text-primary mb-4"><i class="mdi mdi-information-outline"></i> Informasi Menu Utama</h4>
+                            <p class="card-description text-muted mb-4">Detail dasar untuk menu yang akan dijual.</p>
+                            
+                            <div class="form-group mb-4">
+                                <label class="font-weight-bold">ID Menu (Manual) <span class="text-danger">*</span></label>
                                 <div class="input-group">
-                                    <span class="input-group-text">Rp</span>
-                                    <input name="harga_jual" class="form-control" value="{{ old('harga_jual') }}"
-                                        placeholder="Contoh: 15000" required>
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-gradient-primary text-white"><i class="mdi mdi-numeric"></i></span>
+                                    </div>
+                                    <input name="id_produk" class="form-control" value="{{ old('id_produk') }}" placeholder="Contoh: 2001" required>
                                 </div>
-                                <div class="text-danger small">@error('harga_jual') {{ $message }} @enderror</div>
+                                @error('id_produk') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                             </div>
 
-                            <div class="form-group mb-3">
-                                <label class="font-weight-bold">Kategori Menu</label>
-                                <select name="kategori" class="form-control" required>
+                            <div class="form-group mb-4">
+                                <label class="font-weight-bold">Nama Menu <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-gradient-primary text-white"><i class="mdi mdi-food"></i></span>
+                                    </div>
+                                    <input name="nama_produk" class="form-control" value="{{ old('nama_produk') }}" placeholder="Contoh: Nasi Goreng Spesial" required>
+                                </div>
+                                @error('nama_produk') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+                            </div>
+
+                            <div class="form-group mb-4">
+                                <label class="font-weight-bold">Harga Jual <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-gradient-primary text-white">Rp</span>
+                                    </div>
+                                    <input name="harga_jual" class="form-control" value="{{ old('harga_jual') }}" placeholder="0" required>
+                                </div>
+                                @error('harga_jual') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+                            </div>
+
+                            <div class="form-group mb-4">
+                                <label class="font-weight-bold">Kategori Menu <span class="text-danger">*</span></label>
+                                <select name="kategori" class="form-control border-primary" required>
                                     <option value="">-- Pilih Kategori --</option>
-                                    <option value="Makanan" {{ old('kategori') == 'Makanan' ? 'selected' : '' }}>Makanan
-                                    </option>
-                                    <option value="Minuman" {{ old('kategori') == 'Minuman' ? 'selected' : '' }}>Minuman
-                                    </option>
+                                    <option value="Makanan" {{ old('kategori') == 'Makanan' ? 'selected' : '' }}>Makanan</option>
+                                    <option value="Minuman" {{ old('kategori') == 'Minuman' ? 'selected' : '' }}>Minuman</option>
                                 </select>
-                                <div class="text-danger small">@error('kategori') {{ $message }} @enderror</div>
+                                @error('kategori') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Column 2: Ingredients (Resep) -->
-                <div class="col-md-7">
-                    <div class="card shadow-sm mb-4">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h4 class="card-title text-success mb-0"><i class="mdi mdi-flask-outline"></i> Resep (Bahan
-                                    Baku)</h4>
-                                <button type="button" class="btn btn-sm btn-inverse-success" id="btn-add-bahan"><i
-                                        class="mdi mdi-plus"></i> Tambah Bahan</button>
+                <div class="col-md-7 grid-margin stretch-card">
+                    <div class="card shadow-sm border-0 bg-body rounded">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h4 class="card-title text-success mb-0"><i class="mdi mdi-flask-outline"></i> Komposisi Resep</h4>
+                                <button type="button" class="btn btn-inverse-success btn-sm" id="btn-add-bahan">
+                                    <i class="mdi mdi-plus"></i> Tambah Bahan
+                                </button>
                             </div>
-                            <hr>
-                            <p class="text-muted small mb-4">Tentukan bahan baku yang digunakan untuk membuat menu ini.
-                                Setiap penggunaan akan mengurangi stok bahan otomatis saat terjual.</p>
+                            <p class="text-muted small mb-4">Tentukan bahan baku yang digunakan. Stok akan berkurang otomatis saat menu terjual.</p>
 
                             <div class="table-responsive">
-                                <table class="table table-bordered table-hover" id="table-resep">
+                                <table class="table table-bordered table-hover">
                                     <thead class="bg-light">
                                         <tr>
-                                            <th>Bahan Baku</th>
-                                            <th style="width: 30%">Jumlah</th>
-                                            <th style="width: 50px"></th>
+                                            <th style="width: 60%">Bahan Baku</th>
+                                            <th style="width: 30%">Jumlah /Qty</th>
+                                            <th style="width: 10%" class="text-center">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody id="resep-body">
                                         <tr class="resep-row">
                                             <td>
-                                                <select name="id_stok[]" class="form-control form-control-sm select-bahan"
-                                                    required>
+                                                <select name="id_stok[]" class="form-control form-control-sm select-bahan" required>
                                                     <option value="">-- Pilih Bahan --</option>
                                                     @foreach($stok_items as $item)
-                                                        <option value="{{ $item->id_stok }}">{{ $item->nama_stok }} (ID:
-                                                            {{ $item->id_stok }})</option>
+                                                        <option value="{{ $item->id_stok }}">{{ $item->nama_stok }} (Tersedia: {{ $item->stok }})</option>
                                                     @endforeach
                                                 </select>
                                             </td>
                                             <td>
-                                                <input type="number" name="jumlah_resep[]"
-                                                    class="form-control form-control-sm" step="0.01" min="0.01" required>
+                                                <div class="input-group input-group-sm">
+                                                    <input type="number" name="jumlah_resep[]" class="form-control text-center" step="0.01" min="0.01" required>
+                                                </div>
                                             </td>
                                             <td class="text-center">
-                                                <button type="button" class="btn btn-sm btn-inverse-danger btn-remove-row"
-                                                    style="display:none;"><i class="mdi mdi-delete"></i></button>
+                                                <button type="button" class="btn btn-sm btn-outline-danger btn-remove-row" style="display:none;">
+                                                    <i class="mdi mdi-delete"></i>
+                                                </button>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="text-danger small mt-2">
-                                @if($errors->has('id_stok.*') || $errors->has('jumlah_resep.*') || $errors->has('id_resep.*'))
-                                    Ada kesalahan pada data resep. Pastikan semua kolom terisi dan unik.
+                            <div class="text-danger small mt-3">
+                                @if($errors->has('id_stok.*') || $errors->has('jumlah_resep.*'))
+                                    <i class="mdi mdi-alert-circle"></i> Ada kesalahan pada data resep. Pastikan semua kolom terisi.
                                 @endif
                             </div>
                         </div>
@@ -118,11 +135,12 @@
                 </div>
             </div>
 
-            <div class="row mt-3">
-                <div class="col-12 text-center">
-                    <hr>
-                    <a href="/menu" class="btn btn-secondary me-2">Batal</a>
-                    <button type="submit" class="btn bg-gradient-info text-white px-5">Simpan Menu & Resep</button>
+            <div class="row mt-4">
+                <div class="col-12 d-flex justify-content-center">
+                    <a href="/menu" class="btn btn-light me-3 px-4">Batal</a>
+                    <button type="submit" class="btn btn-gradient-primary btn-icon-text px-5">
+                        <i class="mdi mdi-checkbox-marked-circle-outline btn-icon-prepend"></i> Simpan Menu & Resep
+                    </button>
                 </div>
             </div>
         </form>
@@ -136,24 +154,27 @@
 
                 // Add row
                 btnAdd.addEventListener('click', function () {
-                    const lastRow = body.querySelector('.resep-row');
-                    const newRow = lastRow.cloneNode(true);
+                    const firstRow = body.querySelector('.resep-row');
+                    const newRow = firstRow.cloneNode(true);
 
                     // Clear inputs
-                    newRow.querySelectorAll('input').forEach(input => input.value = '');
                     newRow.querySelector('select').selectedIndex = 0;
+                    newRow.querySelector('input').value = '';
                     newRow.querySelector('.btn-remove-row').style.display = 'inline-block';
 
                     body.appendChild(newRow);
                     updateRemoveButtons();
                 });
 
-                // Remove row
+                // Remove row event delegation
                 body.addEventListener('click', function (e) {
                     if (e.target.closest('.btn-remove-row')) {
                         const row = e.target.closest('tr');
-                        row.remove();
-                        updateRemoveButtons();
+                        const rows = body.querySelectorAll('.resep-row');
+                        if (rows.length > 1) {
+                            row.remove();
+                            updateRemoveButtons();
+                        }
                     }
                 });
 
@@ -166,13 +187,9 @@
                         btns.forEach(btn => btn.style.display = 'none');
                     }
                 }
+                
+                updateRemoveButtons();
             });
         </script>
     @endsection
-
-
-    </div>
-
-
-
 @endsection

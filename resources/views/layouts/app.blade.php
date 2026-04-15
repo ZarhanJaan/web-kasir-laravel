@@ -148,7 +148,7 @@
                     class="nav-link {{ Request::is('stok/keluar', 'stok/keluar/*') ? 'active' : '' }}"
                     href="/stok/keluar">Stok Keluar</a></li>
                 <li class="nav-item"> <a class="nav-link {{ Request::is('stok/riwayat') ? 'active' : '' }}"
-                    href="/stok/riwayat">Riwayat Transaksi Stok</a></li>
+                    href="/stok/riwayat">Riwayat Stok</a></li>
                 <li class="nav-item"> <a class="nav-link {{ Request::is('stok') ? 'active' : '' }}" href="/stok">Informasi
                     Stok</a></li>
               </ul>

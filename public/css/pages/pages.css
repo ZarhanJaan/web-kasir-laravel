@@ -225,9 +225,9 @@
 .page-table thead th {
     background: transparent;
     border: none;
-    color: var(--text-muted);
+    color: var(--text-primary);
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
     padding: 10px 16px;
@@ -876,12 +876,23 @@ canvas { color-scheme: dark; }
 .dataTables_wrapper .dataTables_length select,
 .dataTables_wrapper .dataTables_filter input,
 .dataTables_wrapper .dt-search input,
-.dataTables_wrapper .dt-length select {
+.dataTables_wrapper .dt-length select,
+.dt-length .dt-input,
+.dt-search .dt-input {
     background: rgba(255,255,255,0.06) !important;
     border: 1px solid rgba(255,255,255,0.12) !important;
     border-radius: 10px !important;
     color: var(--text-primary) !important;
     padding: 6px 12px !important;
+    margin: 0 15px !important; /* Increased margin on both sides */
+}
+
+/* Ensure dropdown options have black text for better visibility */
+.dataTables_wrapper select option,
+.dt-length select option,
+.dt-length select.dt-input option {
+    color: #000 !important;
+    background-color: #fff !important;
 }
 
 .dataTables_wrapper .dataTables_length label,
@@ -890,7 +901,7 @@ canvas { color-scheme: dark; }
 .dataTables_wrapper .dt-length label,
 .dataTables_wrapper .dataTables_info,
 .dataTables_wrapper .dt-info {
-    color: var(--text-muted) !important;
+    color: var(--text-primary) !important;
     font-size: 13px !important;
 }
 
