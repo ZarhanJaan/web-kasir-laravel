@@ -35,6 +35,11 @@ class UserController extends Controller
         ]);
 
         $user = User::findOrFail($request->user_id);
+
+        if (auth()->user()->role->role == 'admin' && $user->role && $user->role->role == 'owner') {
+            return redirect()->back()->with('error', 'Anda tidak dapat mengubah role owner.');
+        }
+
         $user->role_id = $request->role_id;
         $user->save();
 
@@ -54,6 +59,11 @@ class UserController extends Controller
         }
 
         $user = User::findOrFail($id);
+
+        if (auth()->user()->role->role == 'admin' && $user->role && $user->role->role == 'owner') {
+            return redirect()->back()->with('error', 'Anda tidak dapat menghapus owner.');
+        }
+
         $user->delete();
 
         return redirect()->back()->with('success', 'User berhasil dihapus.');

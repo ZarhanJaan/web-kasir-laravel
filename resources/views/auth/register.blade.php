@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-	<title>Register Toko Sembako</title>
+	<title>Register {{ $store_name ?? 'web' }}</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- CSRF Token -->
@@ -59,7 +59,7 @@
 					</span>
 					<span>
 						<center>
-							<p>Toko Sembako Lina</p>
+							<p>{{ $store_name ?? 'web' }}</p>
 						</center>
 					</span>
 					<br>

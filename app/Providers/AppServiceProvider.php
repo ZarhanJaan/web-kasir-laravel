@@ -4,6 +4,9 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\File;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -23,6 +26,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $settingsPath = storage_path('app/settings.json');
+        $storeName = 'web';
+        if (File::exists($settingsPath)) {
+            $settings = json_decode(File::get($settingsPath), true);
+            if (isset($settings['store_name'])) {
+                $storeName = $settings['store_name'];
+            }
+        }
+        View::share('store_name', $storeName);
     }
 }

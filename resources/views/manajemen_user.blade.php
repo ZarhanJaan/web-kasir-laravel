@@ -57,26 +57,38 @@
                                                 @csrf
                                                 <input type="hidden" name="user_id" value="{{ $user->id }}">
                                                 <td>
-                                                    <select name="role_id" class="form-control form-control-sm" required>
-                                                        <option value="">Pilih Role</option>
-                                                        @foreach($roles as $role)
-                                                            <option value="{{ $role->id }}" {{ $user->role_id == $role->id ? 'selected' : '' }}>
-                                                                {{ ucfirst($role->role) }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
+                                                    @if(auth()->user()->role && auth()->user()->role->role == 'admin' && $user->role && $user->role->role == 'owner')
+                                                        <span class="badge badge-secondary" style="color: gray">Akses ditolak</span>
+                                                    @else
+                                                        <select name="role_id" class="form-control form-control-sm" required>
+                                                            <option value="">Pilih Role</option>
+                                                            @foreach($roles as $role)
+                                                                <option value="{{ $role->id }}" {{ $user->role_id == $role->id ? 'selected' : '' }}>
+                                                                    {{ ucfirst($role->role) }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    @endif
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('manajemen-user.delete', $user->id) }}"
-                                                        class="btn btn-gradient-danger btn-sm"
-                                                        onclick="return confirm('Apakah Anda yakin ingin menghapus user ini?')">
-                                                        Hapus
-                                                    </a>
+                                                    @if(auth()->user()->role && auth()->user()->role->role == 'admin' && $user->role && $user->role->role == 'owner')
+                                                        <span class="badge badge-secondary" style="color: gray">-</span>
+                                                    @else
+                                                        <a href="{{ route('manajemen-user.delete', $user->id) }}"
+                                                            class="btn btn-gradient-danger btn-sm"
+                                                            onclick="return confirm('Apakah Anda yakin ingin menghapus user ini?')">
+                                                            Hapus
+                                                        </a>
+                                                    @endif
                                                 </td>
                                                 <td>
-                                                    <button type="submit" class="btn btn-gradient-primary btn-sm">
-                                                        Simpan
-                                                    </button>
+                                                    @if(auth()->user()->role && auth()->user()->role->role == 'admin' && $user->role && $user->role->role == 'owner')
+                                                        <span class="badge badge-secondary" style="color: gray">-</span>
+                                                    @else
+                                                        <button type="submit" class="btn btn-gradient-primary btn-sm">
+                                                            Simpan
+                                                        </button>
+                                                    @endif
                                                 </td>
                                             </form>
                                         </tr>

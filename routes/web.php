@@ -33,6 +33,17 @@ Route::middleware(['auth'])->group(function () {
 
     // Owner and Admin only routes
     Route::middleware(['role:owner,admin'])->group(function () {
+        Route::post('/update-store-name', function(\Illuminate\Http\Request $request) {
+            $settingsPath = storage_path('app/settings.json');
+            $settings = [];
+            if (\Illuminate\Support\Facades\File::exists($settingsPath)) {
+                $settings = json_decode(\Illuminate\Support\Facades\File::get($settingsPath), true);
+            }
+            $settings['store_name'] = $request->input('store_name');
+            \Illuminate\Support\Facades\File::put($settingsPath, json_encode($settings));
+            return response()->json(['success' => true]);
+        })->name('update-store-name');
+
         Route::get('/menu/add', [ProdukController::class, 'add']);
         Route::post('/menu/insert', [ProdukController::class, 'insert']);
         Route::get('/menu/edit/{id_produk}', [ProdukController::class, 'edit']);

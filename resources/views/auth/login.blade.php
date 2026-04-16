@@ -2,10 +2,10 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    <title>Login — Toko Sembako Lina</title>
+    <title>Login — {{ $store_name ?? 'web' }}</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Login ke sistem kasir Toko Sembako Lina">
+    <meta name="description" content="Login ke sistem kasir">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/png" href="{{ asset('login_template/images/icons/favicon.ico') }}" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,7 +40,7 @@
                         <path d="M12 3v6" />
                     </svg>
                 </div>
-                <h1 class="brand-title">Toko Sembako Lina</h1>
+                <h1 class="brand-title">{{ $store_name ?? 'web' }}</h1>
                 <p class="brand-subtitle">Masuk ke akun Anda untuk melanjutkan</p>
             </div>
 
