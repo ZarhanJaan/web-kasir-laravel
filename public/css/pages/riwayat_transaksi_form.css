@@ -1,0 +1,413 @@
+/* ===================================================================
+   RIWAYAT_TRANSAKSI_FORM.CSS
+   Styling untuk halaman Add & Edit Riwayat Transaksi
+   Selaras dengan riwayat_transaksi.css (glassmorphism)
+   (Sidebar & Navbar sudah dihandle oleh sidebar.css global)
+   =================================================================== */
+
+
+/* =================================================================
+   CONTENT PADDING
+   ================================================================= */
+.content-wrapper {
+    padding: 28px 32px !important;
+}
+
+
+/* =================================================================
+   ALERT
+   ================================================================= */
+.mu-alert-success {
+    background: rgba(81, 207, 102, 0.08) !important;
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(81, 207, 102, 0.15) !important;
+    border-left: 4px solid var(--success-color) !important;
+    border-radius: 16px !important;
+    color: var(--text-secondary) !important;
+    padding: 16px 24px !important;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 16px;
+}
+
+.mu-alert-danger {
+    background: rgba(255, 107, 107, 0.08) !important;
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 107, 107, 0.15) !important;
+    border-left: 4px solid var(--error-color) !important;
+    border-radius: 16px !important;
+    color: var(--text-secondary) !important;
+    padding: 16px 24px !important;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 16px;
+}
+
+.mu-alert-danger ul {
+    margin: 0;
+    padding-left: 18px;
+}
+
+.mu-alert-danger ul li {
+    color: var(--text-secondary);
+    margin-bottom: 2px;
+}
+
+
+/* =================================================================
+   FORM CARD — Glassmorphism
+   ================================================================= */
+.mu-form-card {
+    background: var(--card-bg) !important;
+    backdrop-filter: blur(20px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
+    border: 1px solid var(--card-border) !important;
+    border-radius: 24px !important;
+    box-shadow: var(--card-shadow) !important;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Top accent glow line */
+.mu-form-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--accent-start), var(--accent-end), transparent);
+    border-radius: 0 0 4px 4px;
+}
+
+.mu-form-card .card-body {
+    padding: 36px 40px !important;
+}
+
+
+/* =================================================================
+   CARD TITLE ROW
+   ================================================================= */
+.mu-form-card .card-title-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 32px;
+}
+
+.mu-form-card .card-title-row .title-icon {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 18px var(--accent-glow);
+    flex-shrink: 0;
+}
+
+.mu-form-card .card-title-row .title-icon i {
+    font-size: 22px;
+    color: #fff;
+}
+
+.mu-form-card .card-title-row h4 {
+    margin: 0;
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: -0.3px;
+}
+
+
+/* =================================================================
+   FORM GROUPS
+   ================================================================= */
+.mu-form-group {
+    margin-bottom: 20px;
+}
+
+.mu-form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    letter-spacing: 0.3px;
+    font-family: var(--font-family);
+}
+
+.mu-form-group .mu-input {
+    width: 100%;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.07) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 12px !important;
+    padding: 0 16px;
+    font-family: var(--font-family);
+    font-size: 14px;
+    font-weight: 400;
+    color: #ffffff !important;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.mu-form-group .mu-input::placeholder {
+    color: var(--text-muted);
+    font-weight: 300;
+}
+
+.mu-form-group .mu-input:focus {
+    border-color: rgba(102, 126, 234, 0.5) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12) !important;
+}
+
+.mu-form-group .mu-input[readonly] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Date input calendar icon */
+.mu-form-group .mu-input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+
+/* Select styling */
+.mu-form-group .mu-select {
+    width: 100%;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.07) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 12px !important;
+    padding: 0 16px;
+    font-family: var(--font-family);
+    font-size: 14px;
+    font-weight: 400;
+    color: #ffffff !important;
+    transition: all 0.3s ease;
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.45)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 14px center !important;
+    padding-right: 36px !important;
+}
+
+.mu-form-group .mu-select:focus {
+    border-color: rgba(102, 126, 234, 0.5) !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12) !important;
+}
+
+.mu-form-group .mu-select option {
+    background: #1a1a2e;
+    color: #ffffff;
+}
+
+/* Error message */
+.mu-error {
+    color: var(--error-color) !important;
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: 6px;
+    font-family: var(--font-family);
+}
+
+
+/* =================================================================
+   PRODUK LIST — Dynamic rows
+   ================================================================= */
+.mu-produk-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 14px;
+    transition: all 0.25s ease;
+}
+
+.mu-produk-row:hover {
+    background: rgba(102, 126, 234, 0.06);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.mu-produk-row .produk-select {
+    flex: 3;
+}
+
+.mu-produk-row .produk-qty {
+    flex: 1.5;
+}
+
+.mu-produk-row .produk-select .mu-select,
+.mu-produk-row .produk-qty .mu-input {
+    height: 42px;
+    font-size: 13px;
+}
+
+/* Remove produk button */
+.mu-btn-remove {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(255, 107, 107, 0.12);
+    color: var(--error-color);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    font-family: var(--font-family);
+}
+
+.mu-btn-remove:hover {
+    background: rgba(255, 107, 107, 0.25);
+    transform: scale(1.1);
+}
+
+/* Add produk button */
+.mu-btn-add-produk {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    border-radius: 10px;
+    background: rgba(81, 207, 102, 0.12);
+    color: var(--success-color);
+    border: 1px solid rgba(81, 207, 102, 0.2);
+    cursor: pointer;
+    font-family: var(--font-family);
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin-top: 4px;
+}
+
+.mu-btn-add-produk:hover {
+    background: rgba(81, 207, 102, 0.2);
+    border-color: rgba(81, 207, 102, 0.35);
+    transform: translateY(-1px);
+}
+
+
+/* =================================================================
+   FORM DIVIDER
+   ================================================================= */
+.mu-form-divider {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    margin: 28px 0;
+}
+
+
+/* =================================================================
+   SUBMIT & BACK BUTTONS
+   ================================================================= */
+.mu-form-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.mu-btn-submit {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 32px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+    color: #fff;
+    font-family: var(--font-family);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px var(--accent-glow);
+}
+
+.mu-btn-submit::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+    transition: left 0.5s ease;
+}
+
+.mu-btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(102, 126, 234, 0.5);
+}
+
+.mu-btn-submit:hover::before {
+    left: 100%;
+}
+
+.mu-btn-submit:active {
+    transform: translateY(0);
+}
+
+.mu-btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 24px;
+    border-radius: 14px;
+    background: transparent;
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    color: var(--text-secondary);
+    font-family: var(--font-family);
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.mu-btn-back:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+
+/* =================================================================
+   RESPONSIVE
+   ================================================================= */
+@media (max-width: 991px) {
+    .content-wrapper {
+        padding: 20px 16px !important;
+    }
+
+    .mu-form-card .card-body {
+        padding: 24px 20px !important;
+    }
+
+    .mu-produk-row {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .mu-produk-row .produk-select,
+    .mu-produk-row .produk-qty {
+        flex: 1 1 100%;
+    }
+}

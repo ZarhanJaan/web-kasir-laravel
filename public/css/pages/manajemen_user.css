@@ -1,0 +1,531 @@
+/* ===================================================================
+   MANAJEMEN_USER.CSS
+   Styling konten halaman Manajemen User
+   Selaras dengan dashboard.css (glassmorphism style)
+   (Sidebar & Navbar sudah dihandle oleh sidebar.css global)
+   =================================================================== */
+
+
+/* =================================================================
+   CONTENT PADDING
+   ================================================================= */
+.content-wrapper {
+    padding: 28px 32px !important;
+}
+
+/* Remove row gutters so card fills full width */
+.content-wrapper > .row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.content-wrapper > .row > [class*="col-"] {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+
+/* =================================================================
+   ALERT — Success & Error
+   ================================================================= */
+.mu-alert-success {
+    background: rgba(81, 207, 102, 0.08) !important;
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(81, 207, 102, 0.15) !important;
+    border-left: 4px solid var(--success-color) !important;
+    border-radius: 16px !important;
+    color: var(--text-secondary) !important;
+    padding: 16px 24px !important;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.mu-alert-success strong {
+    color: var(--success-color) !important;
+}
+
+.mu-alert-danger {
+    background: rgba(255, 107, 107, 0.08) !important;
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 107, 107, 0.15) !important;
+    border-left: 4px solid var(--error-color) !important;
+    border-radius: 16px !important;
+    color: var(--text-secondary) !important;
+    padding: 16px 24px !important;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.mu-alert-danger strong {
+    color: var(--error-color) !important;
+}
+
+.mu-alert-success .btn-close,
+.mu-alert-danger .btn-close {
+    filter: invert(1) !important;
+}
+
+
+/* =================================================================
+   TABLE CARD — Glassmorphism, Full Width
+   ================================================================= */
+.mu-table-card {
+    background: var(--card-bg) !important;
+    backdrop-filter: blur(20px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
+    border: 1px solid var(--card-border) !important;
+    border-radius: 24px !important;
+    box-shadow: var(--card-shadow) !important;
+    overflow: hidden;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    width: 100%;
+}
+
+/* Remove bootstrap grid margin so card fills full width */
+.mu-table-card .card-body {
+    padding: 28px 32px !important;
+}
+
+/* Make the grid column full width */
+.grid-margin.stretch-card {
+    margin-bottom: 0 !important;
+}
+
+
+/* =================================================================
+   CARD TITLE ROW
+   ================================================================= */
+.mu-table-card .card-title-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 8px;
+}
+
+.mu-table-card .card-title-row .title-icon {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 18px var(--accent-glow);
+    flex-shrink: 0;
+}
+
+.mu-table-card .card-title-row .title-icon i {
+    font-size: 22px;
+    color: #fff;
+}
+
+.mu-table-card .card-title-row h4 {
+    margin: 0;
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: -0.3px;
+}
+
+.mu-table-card .card-description {
+    color: var(--text-muted) !important;
+    font-size: 13.5px;
+    font-weight: 400;
+    margin-bottom: 24px;
+    padding-left: 58px;
+}
+
+
+/* =================================================================
+   TABLE STYLING
+   ================================================================= */
+.mu-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 6px;
+}
+
+.mu-table thead th {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 16px;
+}
+
+.mu-table tbody tr {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    transition: all 0.25s ease;
+}
+
+.mu-table tbody tr:hover {
+    background: rgba(102, 126, 234, 0.08);
+    transform: translateX(4px);
+}
+
+.mu-table tbody td {
+    border: none;
+    padding: 14px 16px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 400;
+    vertical-align: middle;
+}
+
+.mu-table tbody tr td:first-child {
+    border-radius: 12px 0 0 12px;
+}
+
+.mu-table tbody tr td:last-child {
+    border-radius: 0 12px 12px 0;
+}
+
+/* User name column */
+.mu-table .user-name {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* Email column */
+.mu-table .user-email {
+    color: var(--text-secondary);
+    font-weight: 400;
+    font-size: 13px;
+}
+
+
+/* =================================================================
+   ROLE BADGES
+   ================================================================= */
+.mu-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.mu-badge-success {
+    background: rgba(81, 207, 102, 0.12);
+    color: var(--success-color);
+}
+
+.mu-badge-warning {
+    background: rgba(252, 196, 25, 0.12);
+    color: var(--warning-color);
+}
+
+.mu-badge-muted {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-muted);
+}
+
+
+/* =================================================================
+   SELECT DROPDOWN (Role)
+   ================================================================= */
+.mu-select {
+    background: rgba(255, 255, 255, 0.07) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 10px !important;
+    color: var(--text-primary) !important;
+    font-family: var(--font-family) !important;
+    font-size: 13px !important;
+    font-weight: 500;
+    padding: 8px 12px !important;
+    height: auto !important;
+    outline: none;
+    transition: all 0.3s ease;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.45)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 10px center !important;
+    padding-right: 30px !important;
+}
+
+.mu-select:focus {
+    border-color: rgba(102, 126, 234, 0.5) !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12) !important;
+}
+
+.mu-select option {
+    background: #1a1a2e;
+    color: #fff;
+}
+
+
+/* =================================================================
+   ACTION BUTTONS
+   ================================================================= */
+.mu-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 7px 18px;
+    border-radius: 10px;
+    font-family: var(--font-family);
+    font-size: 12.5px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.2px;
+}
+
+.mu-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+    transition: left 0.5s ease;
+}
+
+.mu-btn:hover::before {
+    left: 100%;
+}
+
+/* Primary (Simpan) */
+.mu-btn-primary {
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+    color: #fff;
+    box-shadow: 0 4px 14px var(--accent-glow);
+}
+
+.mu-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.45);
+    color: #fff;
+}
+
+.mu-btn-primary:active {
+    transform: translateY(0);
+}
+
+/* Danger (Hapus) */
+.mu-btn-danger {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(255, 107, 107, 0.25);
+}
+
+.mu-btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+    color: #fff;
+}
+
+.mu-btn-danger:active {
+    transform: translateY(0);
+}
+
+
+/* =================================================================
+   DENIED BADGE
+   ================================================================= */
+.mu-denied {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 12px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+}
+
+.mu-denied i {
+    font-size: 13px;
+}
+
+
+/* =================================================================
+   DATATABLE OVERRIDES — DataTables 2.x class names
+   v2 uses: .dt-container, .dt-search, .dt-length, .dt-info,
+            .dt-paging, .dt-paging-button
+   Also includes v1 fallback names for compatibility
+   ================================================================= */
+
+/* --- Catch-all: force white text on EVERYTHING inside DT --- */
+div.dt-container,
+div.dt-container *,
+.dataTables_wrapper,
+.dataTables_wrapper * {
+    color: rgba(255, 255, 255, 0.7) !important;
+    font-family: var(--font-family) !important;
+}
+
+/* --- Search input --- */
+div.dt-container .dt-search input,
+.dataTables_wrapper .dataTables_filter input {
+    background: rgba(255, 255, 255, 0.07) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 10px !important;
+    color: #ffffff !important;
+    font-size: 13px !important;
+    padding: 8px 14px !important;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+div.dt-container .dt-search input:focus,
+.dataTables_wrapper .dataTables_filter input:focus {
+    border-color: rgba(102, 126, 234, 0.5) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12) !important;
+}
+
+/* --- Labels: Search, entries per page --- */
+div.dt-container .dt-search label,
+div.dt-container .dt-length label,
+div.dt-container .dt-search,
+div.dt-container .dt-length,
+.dataTables_wrapper .dataTables_filter label,
+.dataTables_wrapper .dataTables_length label,
+.dataTables_wrapper label {
+    color: rgba(255, 255, 255, 0.7) !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+}
+
+/* --- Entries per page select --- */
+div.dt-container .dt-length select,
+div.dt-container select,
+.dataTables_wrapper .dataTables_length select,
+.dataTables_wrapper select {
+    background: rgba(255, 255, 255, 0.07) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    font-size: 13px !important;
+    padding: 6px 10px !important;
+    outline: none;
+    cursor: pointer;
+}
+
+div.dt-container select option,
+.dataTables_wrapper select option {
+    background: #1a1a2e;
+    color: #ffffff !important;
+}
+
+/* --- Info text: "Showing 1 to X of Y entries" --- */
+div.dt-container .dt-info,
+.dataTables_wrapper .dataTables_info {
+    color: rgba(255, 255, 255, 0.45) !important;
+    font-size: 12.5px !important;
+    padding-top: 12px !important;
+}
+
+/* --- Pagination buttons --- */
+div.dt-container .dt-paging button,
+div.dt-container .dt-paging .dt-paging-button,
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    border: none !important;
+    border-radius: 8px !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+    background: transparent !important;
+    font-size: 13px !important;
+    transition: all 0.2s ease;
+    margin: 0 2px;
+}
+
+div.dt-container .dt-paging button:hover,
+div.dt-container .dt-paging .dt-paging-button:hover,
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: rgba(102, 126, 234, 0.15) !important;
+    color: #fff !important;
+}
+
+div.dt-container .dt-paging button.current,
+div.dt-container .dt-paging .dt-paging-button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end)) !important;
+    color: #fff !important;
+    box-shadow: 0 4px 12px var(--accent-glow);
+}
+
+div.dt-container .dt-paging button.disabled,
+div.dt-container .dt-paging .dt-paging-button.disabled,
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+    color: rgba(255, 255, 255, 0.15) !important;
+    background: transparent !important;
+}
+
+/* --- Hide default DT borders --- */
+table.dataTable thead th,
+table.dataTable thead td {
+    border-bottom: none !important;
+}
+
+table.dataTable.no-footer,
+table.dataTable {
+    border-bottom: none !important;
+}
+
+/* --- Spacing --- */
+div.dt-container .dt-length,
+div.dt-container .dt-search,
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter {
+    margin-bottom: 16px;
+}
+
+div.dt-container .dt-paging,
+.dataTables_wrapper .dataTables_paginate {
+    padding-top: 12px !important;
+}
+
+
+/* =================================================================
+   RESPONSIVE
+   ================================================================= */
+@media (max-width: 991px) {
+    .content-wrapper {
+        padding: 20px 16px !important;
+    }
+
+    .mu-table-card .card-body {
+        padding: 20px 16px !important;
+    }
+
+    .mu-table-card .card-description {
+        padding-left: 0;
+    }
+
+    .mu-table-card .card-title-row {
+        gap: 10px;
+    }
+
+    .mu-table-card .card-title-row .title-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+    }
+
+    .mu-table-card .card-title-row .title-icon i {
+        font-size: 18px;
+    }
+
+    .mu-table-card .card-title-row h4 {
+        font-size: 17px;
+    }
+}

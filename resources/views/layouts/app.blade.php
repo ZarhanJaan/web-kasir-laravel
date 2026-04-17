@@ -9,7 +9,8 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Toko Sembako</title>
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <title>{{ $store_name }}</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="{{asset('template/')}}/assets/vendors/mdi/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="{{asset('template/')}}/assets/vendors/ti-icons/css/themify-icons.css">
@@ -37,9 +38,13 @@
   <!-- partial:partials/_navbar.html -->
   <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
     <div class="navbar-brand-wrapper d-flex align-items-center justify-content-center">
-      <a class="navbar-brand brand-logo d-flex align-items-center m-0 p-0" href="/home">
-        <h4 class="font-weight-bold m-0 p-0" style="line-height: normal;">Toko Sembako Lina</h4>
-      </a>
+      <div class="navbar-brand brand-logo d-flex align-items-center m-0 p-0 px-3">
+        @if(Auth::check() && in_array(Auth::user()->role->role ?? '', ['owner', 'admin']))
+          <input type="text" id="navbarStoreNameInput" value="{{ $store_name }}" class="font-weight-bold m-0 p-0 text-white" style="line-height: normal; background: transparent; border: none; outline: none; width: 100%; text-align: left; font-size: 1.25rem;" title="Tekan Enter untuk mengubah namat toko">
+        @else
+          <h4 class="font-weight-bold m-0 p-0 text-white" style="line-height: normal; font-size: 1.25rem; text-align: left; width: 100%;">{{ $store_name }}</h4>
+        @endif
+      </div>
       <a class="navbar-brand brand-logo-mini d-flex align-items-center m-0 p-0" href="/home">
         <img src="{{asset('template/')}}/assets/images/logo-mini.svg" alt="logo" />
       </a>
@@ -321,6 +326,34 @@
         });
       }, 100);
     });
+
+    document.addEventListener('DOMContentLoaded', function () {
+      var storeNameInput = document.getElementById('navbarStoreNameInput');
+      if (storeNameInput) {
+        storeNameInput.addEventListener('keypress', function (e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            var newName = this.value;
+            fetch('{{ route('update-store-name') }}', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+              },
+              body: JSON.stringify({ store_name: newName })
+            })
+            .then(r => r.json())
+            .then(data => {
+              if (data.success) {
+                location.reload();
+              }
+            });
+            this.blur();
+          }
+        });
+      }
+    });
+
   </script>
   @yield('scripts')
 </body>
