@@ -39,6 +39,29 @@
         <div class="col-md-6 grid-margin stretch-card">
             <div class="card shadow-sm border-0 rounded-4 glass-card" style="background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px);">
                 <div class="card-body">
+                    <h4 class="card-title text-primary font-weight-bold mb-4">Pengaturan Nama Web</h4>
+                    <p class="card-description text-muted">Nama ini akan ditampilkan pada navbar dan judul web</p>
+
+                    <form action="{{ route('setting.update-store-name') }}" method="POST">
+                        @csrf
+                        <div class="form-group mb-4">
+                            <label for="store_name" class="font-weight-bold text-dark">Nama Web Saat Ini</label>
+                            <input type="text" name="store_name" id="store_name" class="form-control" value="{{ $store_name ?? 'Toko Sembako' }}" required>
+                        </div>
+                        
+                        <hr class="border-light mt-4 mb-4">
+
+                        <button type="submit" class="btn btn-gradient-primary me-2 btn-lg">
+                            <i class="mdi mdi-content-save me-1"></i> Simpan Nama
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 grid-margin stretch-card">
+            <div class="card shadow-sm border-0 rounded-4 glass-card" style="background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px);">
+                <div class="card-body">
                     <h4 class="card-title text-primary font-weight-bold mb-4">Pengaturan Pembayaran (QRIS)</h4>
                     <p class="card-description text-muted">Akan ditampilkan saat proses pembayaran di menu kasir</p>
 
