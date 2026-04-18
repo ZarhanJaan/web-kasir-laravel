@@ -1,0 +1,639 @@
+/* ===================================================================
+   STOK_KELUAR.CSS
+   Styling halaman Stok Keluar:
+     - Daftar Stok Keluar  (t_stok_keluar)
+     - Tambah Stok Keluar  (t_stok_keluar_add)
+     - Edit Stok Keluar    (t_stok_keluar_edit)
+   Selaras: dashboard.css · manajemen_user.css · riwayat_transaksi.css
+   (Sidebar & Navbar dihandle oleh sidebar.css global)
+   =================================================================== */
+
+
+/* =================================================================
+   CONTENT PADDING
+   ================================================================= */
+.content-wrapper {
+    padding: 28px 32px !important;
+}
+
+.content-wrapper > .row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.content-wrapper > .row > [class*="col-"] {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+}
+
+
+/* =================================================================
+   ALERTS
+   ================================================================= */
+.sk-alert-success {
+    background: rgba(81, 207, 102, 0.08) !important;
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(81, 207, 102, 0.15) !important;
+    border-left: 4px solid var(--success-color) !important;
+    border-radius: 16px !important;
+    color: var(--text-secondary) !important;
+    padding: 16px 24px !important;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+.sk-alert-success i { color: var(--success-color) !important; margin-right: 8px; }
+
+.sk-alert-danger {
+    background: rgba(255, 107, 107, 0.08) !important;
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 107, 107, 0.15) !important;
+    border-left: 4px solid var(--error-color) !important;
+    border-radius: 16px !important;
+    color: var(--text-secondary) !important;
+    padding: 16px 24px !important;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+.sk-alert-danger i { color: var(--error-color) !important; margin-right: 8px; }
+
+.sk-alert-warning {
+    background: rgba(252, 196, 25, 0.08) !important;
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(252, 196, 25, 0.15) !important;
+    border-left: 4px solid var(--warning-color) !important;
+    border-radius: 16px !important;
+    color: var(--text-secondary) !important;
+    padding: 16px 24px !important;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+.sk-alert-warning i      { color: var(--warning-color) !important; margin-right: 8px; }
+.sk-alert-warning strong { color: var(--warning-color) !important; }
+
+.sk-alert-success .btn-close,
+.sk-alert-danger  .btn-close,
+.sk-alert-warning .btn-close { filter: invert(1) !important; }
+
+/* Field validation */
+.sk-field-error {
+    color: var(--error-color) !important;
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+
+/* =================================================================
+   GLASSMORPHISM CARD
+   ================================================================= */
+.sk-card {
+    background: var(--card-bg) !important;
+    backdrop-filter: blur(20px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
+    border: 1px solid var(--card-border) !important;
+    border-radius: 24px !important;
+    box-shadow: var(--card-shadow) !important;
+    padding: 32px !important;
+    margin-bottom: 28px;
+    overflow: hidden;
+    transition: box-shadow 0.35s ease;
+}
+
+.sk-card:hover {
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45) !important;
+}
+
+
+/* =================================================================
+   CARD TITLE ROW (List page — with action button)
+   ================================================================= */
+.sk-title-action-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 28px;
+}
+
+.sk-title-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.sk-title-left .sk-title-icon {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 18px rgba(255, 107, 107, 0.3);
+    flex-shrink: 0;
+}
+
+/* Primary icon variant (edit page) */
+.sk-title-icon-primary {
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end)) !important;
+    box-shadow: 0 6px 18px var(--accent-glow) !important;
+}
+
+.sk-title-left .sk-title-icon i {
+    font-size: 22px;
+    color: #fff;
+}
+
+.sk-title-left h4 {
+    margin: 0;
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: -0.3px;
+}
+
+/* CARD TITLE ROW (Form pages — no button) */
+.sk-title-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 6px;
+}
+
+.sk-title-row .sk-title-icon {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 18px rgba(255, 107, 107, 0.3);
+    flex-shrink: 0;
+}
+
+.sk-title-row .sk-title-icon i { font-size: 22px; color: #fff; }
+
+.sk-title-row h4 {
+    margin: 0;
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: -0.3px;
+}
+
+.sk-card-description {
+    color: var(--text-muted) !important;
+    font-size: 13px;
+    margin-bottom: 28px;
+    padding-left: 58px;
+}
+
+.sk-divider {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    margin: 0 0 28px 0;
+}
+
+
+/* =================================================================
+   TABLE (Daftar Stok Keluar)
+   ================================================================= */
+.sk-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 6px;
+}
+
+.sk-table thead th {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 16px;
+}
+
+.sk-table tbody tr {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    transition: all 0.25s ease;
+}
+
+.sk-table tbody tr:hover {
+    background: rgba(255, 107, 107, 0.06);
+    transform: translateX(4px);
+}
+
+.sk-table tbody td {
+    border: none;
+    padding: 14px 16px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.sk-table tbody tr td:first-child { border-radius: 12px 0 0 12px; }
+.sk-table tbody tr td:last-child  { border-radius: 0 12px 12px 0; }
+
+.sk-table .col-no      { color: var(--text-muted); font-size: 13px; }
+.sk-table .col-name    { color: var(--text-primary); font-weight: 600; }
+.sk-table .col-notes   { color: var(--text-muted); font-size: 13px; max-width: 180px; }
+
+
+/* =================================================================
+   BUTTONS
+   ================================================================= */
+.sk-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 22px;
+    border-radius: 12px;
+    font-family: var(--font-family);
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.2px;
+}
+
+.sk-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    transition: left 0.5s ease;
+}
+.sk-btn:hover::before { left: 100%; }
+.sk-btn:active { transform: translateY(0) !important; }
+
+/* Small */
+.sk-btn-sm { padding: 6px 13px; font-size: 12px; border-radius: 9px; }
+
+/* Primary */
+.sk-btn-primary {
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+    color: #fff !important;
+    box-shadow: 0 4px 14px var(--accent-glow);
+}
+.sk-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.45);
+    color: #fff !important;
+}
+
+/* Danger */
+.sk-btn-danger {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    color: #fff !important;
+    box-shadow: 0 4px 14px rgba(255, 107, 107, 0.3);
+}
+.sk-btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.45);
+    color: #fff !important;
+}
+
+/* Secondary */
+.sk-btn-secondary {
+    background: transparent;
+    border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
+    color: var(--text-secondary) !important;
+}
+.sk-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.07);
+    color: #fff !important;
+}
+
+/* Header button "Tambah Manual" */
+.sk-btn-header {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 20px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    color: #fff !important;
+    font-family: var(--font-family);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    box-shadow: 0 4px 14px rgba(255, 107, 107, 0.3);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sk-btn-header:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.45);
+    color: #fff !important;
+}
+
+/* Add Row (dashed) */
+.sk-btn-add-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 20px;
+    border-radius: 12px;
+    background: rgba(255, 107, 107, 0.08);
+    border: 1.5px dashed rgba(255, 107, 107, 0.32);
+    color: var(--error-color) !important;
+    font-family: var(--font-family);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 6px;
+    text-decoration: none;
+}
+.sk-btn-add-row:hover {
+    background: rgba(255, 107, 107, 0.16);
+    border-color: rgba(255, 107, 107, 0.55);
+    transform: translateY(-1px);
+    color: var(--error-color) !important;
+}
+
+/* Remove row */
+.sk-btn-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    background: rgba(255, 107, 107, 0.1);
+    border: 1.5px solid rgba(255, 107, 107, 0.22);
+    color: var(--error-color) !important;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    flex-shrink: 0;
+    padding: 0;
+}
+.sk-btn-remove:hover {
+    background: rgba(255, 107, 107, 0.22);
+    border-color: rgba(255, 107, 107, 0.5);
+    transform: scale(1.1);
+    color: var(--error-color) !important;
+}
+
+/* Form actions */
+.sk-form-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+
+/* =================================================================
+   FORM ELEMENTS (Add / Edit pages)
+   ================================================================= */
+.sk-form-label {
+    color: var(--text-secondary) !important;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 7px;
+    display: block;
+}
+
+.sk-form-group { margin-bottom: 20px; }
+
+.sk-input,
+.sk-select,
+.sk-textarea {
+    background: rgba(255, 255, 255, 0.07) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 12px !important;
+    color: var(--text-primary) !important;
+    font-family: var(--font-family) !important;
+    font-size: 13.5px !important;
+    padding: 10px 16px !important;
+    height: auto !important;
+    width: 100%;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.sk-input::placeholder,
+.sk-textarea::placeholder { color: var(--text-muted) !important; }
+
+.sk-input:focus,
+.sk-select:focus,
+.sk-textarea:focus {
+    border-color: rgba(102, 126, 234, 0.55) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12) !important;
+    color: var(--text-primary) !important;
+}
+
+.sk-input[readonly],
+.sk-input:disabled {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border-color: rgba(255, 255, 255, 0.06) !important;
+    color: var(--text-muted) !important;
+    cursor: not-allowed;
+}
+
+.sk-textarea { resize: vertical; min-height: 110px; }
+
+.sk-input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1) opacity(0.45);
+    cursor: pointer;
+}
+
+.sk-input[type="number"]::-webkit-inner-spin-button,
+.sk-input[type="number"]::-webkit-outer-spin-button { opacity: 0.35; }
+
+.sk-select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.45)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 14px center !important;
+    background-size: 12px !important;
+    padding-right: 38px !important;
+    cursor: pointer;
+}
+.sk-select option { background: #1a1a2e; color: #fff; }
+
+/* Section title */
+.sk-section-title {
+    color: var(--text-primary);
+    font-size: 15px;
+    font-weight: 700;
+    margin: 24px 0 14px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.sk-section-title i { font-size: 18px; color: var(--error-color); }
+
+
+/* =================================================================
+   MULTI-ITEM ROWS (Add page)
+   ================================================================= */
+#sk-keranjang {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.sk-item-row {
+    display: grid;
+    grid-template-columns: 1fr 120px auto;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 14px;
+    padding: 12px 14px;
+    transition: background 0.25s ease, border-color 0.25s ease;
+    animation: skRowIn 0.3s ease forwards;
+}
+
+@keyframes skRowIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.sk-item-row:hover {
+    background: rgba(255, 107, 107, 0.05);
+    border-color: rgba(255, 107, 107, 0.18);
+}
+
+
+/* =================================================================
+   DATATABLE OVERRIDES
+   ================================================================= */
+div.dt-container,
+div.dt-container *,
+.dataTables_wrapper,
+.dataTables_wrapper * {
+    color: rgba(255, 255, 255, 0.7) !important;
+    font-family: var(--font-family) !important;
+}
+
+div.dt-container .dt-search input,
+.dataTables_wrapper .dataTables_filter input {
+    background: rgba(255, 255, 255, 0.07) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 10px !important;
+    color: #ffffff !important;
+    font-size: 13px !important;
+    padding: 8px 14px !important;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+div.dt-container .dt-search input:focus,
+.dataTables_wrapper .dataTables_filter input:focus {
+    border-color: rgba(102, 126, 234, 0.5) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12) !important;
+}
+
+div.dt-container .dt-search label, div.dt-container .dt-length label,
+div.dt-container .dt-search, div.dt-container .dt-length,
+.dataTables_wrapper .dataTables_filter label,
+.dataTables_wrapper .dataTables_length label,
+.dataTables_wrapper label {
+    color: rgba(255, 255, 255, 0.7) !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+}
+
+div.dt-container .dt-length select, div.dt-container select,
+.dataTables_wrapper .dataTables_length select, .dataTables_wrapper select {
+    background: rgba(255, 255, 255, 0.07) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    font-size: 13px !important;
+    padding: 6px 10px !important;
+    margin: 0 8px !important;
+    outline: none; cursor: pointer;
+}
+
+div.dt-container select option, .dataTables_wrapper select option {
+    background: #1a1a2e; color: #ffffff !important;
+}
+
+div.dt-container .dt-info, .dataTables_wrapper .dataTables_info {
+    color: rgba(255, 255, 255, 0.45) !important;
+    font-size: 12.5px !important; padding-top: 12px !important;
+}
+
+div.dt-container .dt-paging button,
+div.dt-container .dt-paging .dt-paging-button,
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    border: none !important; border-radius: 8px !important;
+    color: rgba(255, 255, 255, 0.6) !important; background: transparent !important;
+    font-size: 13px !important; transition: all 0.2s ease; margin: 0 2px;
+}
+
+div.dt-container .dt-paging button:hover,
+div.dt-container .dt-paging .dt-paging-button:hover,
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: rgba(102, 126, 234, 0.15) !important; color: #fff !important;
+}
+
+div.dt-container .dt-paging button.current,
+div.dt-container .dt-paging .dt-paging-button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end)) !important;
+    color: #fff !important; box-shadow: 0 4px 12px var(--accent-glow);
+}
+
+div.dt-container .dt-paging button.disabled,
+div.dt-container .dt-paging .dt-paging-button.disabled,
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+    color: rgba(255, 255, 255, 0.15) !important; background: transparent !important;
+}
+
+table.dataTable thead th, table.dataTable thead td { border-bottom: none !important; }
+table.dataTable.no-footer, table.dataTable { border-bottom: none !important; }
+
+div.dt-container .dt-length, div.dt-container .dt-search,
+.dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter {
+    margin-bottom: 16px;
+}
+div.dt-container .dt-paging, .dataTables_wrapper .dataTables_paginate {
+    padding-top: 12px !important;
+}
+
+
+/* =================================================================
+   RESPONSIVE
+   ================================================================= */
+@media (max-width: 991px) {
+    .content-wrapper { padding: 20px 16px !important; }
+    .sk-card { padding: 22px !important; }
+    .sk-title-action-row { flex-direction: column; align-items: flex-start; }
+    .sk-title-left h4, .sk-title-row h4 { font-size: 17px; }
+    .sk-title-left .sk-title-icon,
+    .sk-title-row  .sk-title-icon { width: 38px; height: 38px; border-radius: 11px; }
+    .sk-title-left .sk-title-icon i,
+    .sk-title-row  .sk-title-icon i { font-size: 18px; }
+    .sk-card-description { padding-left: 0; }
+    .sk-item-row { grid-template-columns: 1fr 90px auto; gap: 8px; padding: 10px 12px; }
+    .sk-form-actions { flex-wrap: wrap; }
+}

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/pages/kasir.css') }}">
 
     <div class="content-wrapper">
         <div class="page-header">
@@ -12,181 +13,217 @@
         </div>
         <br>
 
-
         <div class="row">
+
+            {{-- ===== LEFT: Form Detail Pesanan ===== --}}
             <div class="col-md-8 grid-margin stretch-card">
-                <div class="card shadow p-4 mb-5 bg-body rounded">
+                <div class="pos-form-card">
                     <form id="pos-form" action="/kasir/insert" method="POST">
                         @csrf
-                        <h4 class="card-title text-primary"><i class="mdi mdi-cart-outline"></i> Detail Pesanan</h4>
-                        <hr>
 
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Tgl. Transaksi</label>
-                            <div class="col-sm-9">
-                                <input type="date" name="tanggal" class="form-control" value="{{ date('Y-m-d') }}" required
-                                    readonly>
+                        {{-- Card Title --}}
+                        <div class="pos-card-title-row">
+                            <div class="pos-title-icon">
+                                <i class="mdi mdi-cart-outline"></i>
+                            </div>
+                            <h4>Detail Pesanan</h4>
+                        </div>
+                        <p class="pos-card-description">Isi informasi transaksi dan daftar item belanja pelanggan.</p>
+                        <hr class="pos-divider">
+
+                        {{-- Tanggal Transaksi --}}
+                        <div class="pos-form-group">
+                            <label>Tgl. Transaksi</label>
+                            <div class="pos-form-col">
+                                <input type="date" name="tanggal"
+                                    class="pos-input"
+                                    value="{{ date('Y-m-d') }}"
+                                    required readonly>
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Nama Pelanggan / Kasir</label>
-                            <div class="col-sm-9">
-                                <input type="text" name="nama_pelanggan" id="nama_pelanggan" class="form-control"
+                        {{-- Nama Pelanggan --}}
+                        <div class="pos-form-group">
+                            <label>Nama Pelanggan / Kasir</label>
+                            <div class="pos-form-col">
+                                <input type="text" name="nama_pelanggan" id="nama_pelanggan"
+                                    class="pos-input"
                                     value="Pelanggan Umum" required>
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Metode Pembayaran</label>
-                            <div class="col-sm-9">
-                                <div class="d-flex w-100">
-                                    <select name="metode_pembayaran" id="metode_pembayaran" class="form-control" required>
-                                        <option value="Cash" selected>Cash / Tunai</option>
-                                        <option value="Qris">QRIS / E-Wallet</option>
-                                    </select>
-                                    <button type="button" class="btn btn-sm btn-info ms-2" id="btn-show-qris" style="display:none; white-space:nowrap;" data-bs-toggle="modal" data-bs-target="#qrisModal">
-                                        <i class="mdi mdi-qrcode-scan"></i> Lihat QRIS
-                                    </button>
-                                </div>
+                        {{-- Metode Pembayaran --}}
+                        <div class="pos-form-group">
+                            <label>Metode Pembayaran</label>
+                            <div class="pos-form-col">
+                                <select name="metode_pembayaran" id="metode_pembayaran"
+                                    class="pos-select" required>
+                                    <option value="Cash" selected>Cash / Tunai</option>
+                                    <option value="Qris">QRIS / E-Wallet</option>
+                                </select>
+                                <button type="button" class="pos-btn-qris" id="btn-show-qris"
+                                    style="display:none;"
+                                    data-bs-toggle="modal" data-bs-target="#qrisModal">
+                                    <i class="mdi mdi-qrcode-scan"></i> Lihat QRIS
+                                </button>
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">ID Transaksi (Manual)</label>
-                            <div class="col-sm-9">
-                                <input type="number" name="id_penjualan" id="id_penjualan" class="form-control"
+                        {{-- ID Transaksi --}}
+                        <div class="pos-form-group">
+                            <label>ID Transaksi (Manual)</label>
+                            <div class="pos-form-col">
+                                <input type="number" name="id_penjualan" id="id_penjualan"
+                                    class="pos-input"
                                     placeholder="Contoh: 10001" required>
                             </div>
                         </div>
 
-                        <h5 class="mt-4 mb-3">Daftar Belanja</h5>
-                        <div id="keranjang">
-                            <div class="row mb-2 item-row">
-                                <div class="col-6">
-                                    <select name="id_produk[]" class="form-control produk-select" required>
-                                        <option value="" data-harga="0">-- Pilih Produk --</option>
-                                        @foreach($produk as $p)
-                                            <option value="{{ $p->id_produk }}" data-harga="{{ $p->harga_jual }}"
-                                                data-nama="{{ $p->nama_produk }}" {{ $p->is_available ? '' : 'disabled' }}
-                                                style="{{ $p->is_available ? '' : 'color: red;' }}">
-                                                {{ $p->nama_produk }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-3">
-                                    <input type="number" name="jumlah_barang[]" class="form-control jumlah-input" value="1"
-                                        min="1" placeholder="Qty" required>
-                                </div>
-                                <div class="col-3 text-right">
-                                    <span class="subtotal-label font-weight-bold" style="line-height:2.5;">Rp 0</span>
-                                    <button type="button" class="btn btn-sm btn-danger remove-item float-right ml-2"
-                                        style="display:none;"><i class="mdi mdi-delete"></i></button>
-                                </div>
+                        {{-- Daftar Belanja --}}
+                        <p class="pos-section-title">
+                            <i class="mdi mdi-format-list-bulleted"></i> Daftar Belanja
+                        </p>
+
+                        <div id="pos-keranjang">
+                            <div class="pos-item-row">
+                                <select name="id_produk[]" class="pos-select produk-select" required>
+                                    <option value="" data-harga="0">-- Pilih Produk --</option>
+                                    @foreach($produk as $p)
+                                        <option value="{{ $p->id_produk }}"
+                                            data-harga="{{ $p->harga_jual }}"
+                                            data-nama="{{ $p->nama_produk }}"
+                                            {{ $p->is_available ? '' : 'disabled' }}
+                                            style="{{ $p->is_available ? '' : 'color: #ff6b6b;' }}">
+                                            {{ $p->nama_produk }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <input type="number" name="jumlah_barang[]"
+                                    class="pos-input jumlah-input"
+                                    value="1" min="1" placeholder="Qty" required>
+                                <span class="pos-subtotal-label subtotal-label">Rp 0</span>
+                                <button type="button" class="pos-btn-remove remove-item"
+                                    style="display:none;">
+                                    <i class="mdi mdi-delete"></i>
+                                </button>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-inverse-success btn-sm mt-2" id="add-item"><i
-                                class="mdi mdi-plus"></i> Tambah Item</button>
 
-                        <!-- Total input -->
+                        <button type="button" class="pos-btn-add-item" id="add-item">
+                            <i class="mdi mdi-plus"></i> Tambah Item
+                        </button>
+
+                        {{-- Hidden total input --}}
                         <input type="hidden" name="total" id="total_input" value="0">
                     </form>
                 </div>
             </div>
 
+            {{-- ===== RIGHT: Summary Tagihan ===== --}}
             <div class="col-md-4 grid-margin stretch-card">
-                <div class="card bg-gradient-info text-white shadow p-4 mb-5 rounded" style="max-height: 250px;">
+                <div class="pos-summary-card">
                     <div class="card-body">
-                        <h4 class="font-weight-normal mb-3">Total Tagihan</h4>
-                        <h2 class="mb-5" style="font-size: 2.5rem;" id="grand-total-display">Rp 0</h2>
-                        <button type="button"
-                            class="btn btn-warning btn-lg btn-block text-dark mt-4 shadow font-weight-bold"
-                            id="btn-verifikasi">BAYAR SEKARANG</button>
+                        <p class="pos-summary-label">
+                            <i class="mdi mdi-receipt"></i> Total Tagihan
+                        </p>
+                        <div class="pos-grand-total" id="grand-total-display">Rp 0</div>
+                        <button type="button" class="pos-btn-bayar" id="btn-verifikasi">
+                            <i class="mdi mdi-credit-card-outline"></i> BAYAR SEKARANG
+                        </button>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 
-    <!-- Modal QRIS -->
+    {{-- ===== Modal QRIS ===== --}}
     <div class="modal fade" id="qrisModal" tabindex="-1" aria-labelledby="qrisModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content text-center">
-                <div class="modal-header bg-gradient-info text-white">
-                    <h5 class="modal-title" id="qrisModalLabel"><i class="mdi mdi-qrcode-scan"></i> Scan QRIS</h5>
-                    <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header pos-modal-header-qris">
+                    <h5 class="modal-title" id="qrisModalLabel">
+                        <i class="mdi mdi-qrcode-scan"></i> Scan QRIS
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body p-4 bg-light">
+                <div class="modal-body p-4">
                     @if(isset($qris_image) && file_exists(public_path($qris_image)))
                         @if(isset($qris_name))
-                            <h6 class="text-primary font-weight-bold mb-3">{{ $qris_name }}</h6>
+                            <p class="pos-qris-name">{{ $qris_name }}</p>
                         @endif
-                        <img src="{{ asset($qris_image) }}" alt="QRIS" class="img-fluid rounded shadow-lg border" style="max-height: 400px;">
-                        <p class="mt-3 text-muted">Silahkan scan QR code di atas untuk melakukan pembayaran.</p>
+                        <img src="{{ asset($qris_image) }}" alt="QRIS" class="img-fluid pos-qris-img">
+                        <p class="pos-qris-caption">Silahkan scan QR code di atas untuk melakukan pembayaran.</p>
                     @else
-                        <div class="alert alert-warning">
+                        <div class="mu-alert-danger" style="border-radius:14px; padding:16px; text-align:left;">
                             <i class="mdi mdi-alert"></i> Gambar QRIS belum dikonfigurasi di menu Setting.
                         </div>
                     @endif
                 </div>
                 <div class="modal-footer justify-content-center border-0">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                    <button type="button" class="btn btn-success" id="btn-submit-qris" style="display:none;"><i class="mdi mdi-check-circle"></i> Selesai Pembayaran</button>
+                    <button type="button" class="pos-modal-btn-secondary" data-bs-dismiss="modal">
+                        <i class="mdi mdi-close"></i> Tutup
+                    </button>
+                    <button type="button" class="pos-modal-btn-teal" id="btn-submit-qris" style="display:none;">
+                        <i class="mdi mdi-check-circle"></i> Selesai Pembayaran
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal Verifikasi -->
+    {{-- ===== Modal Verifikasi ===== --}}
     <div class="modal fade" id="verifikasiModal" tabindex="-1" aria-labelledby="verifikasiModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header bg-gradient-success text-white">
-                    <h5 class="modal-title" id="verifikasiModalLabel"><i class="mdi mdi-check-circle"></i> Konfirmasi
-                        Pembayaran</h5>
-                    <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="verifikasiModalLabel">
+                        <i class="mdi mdi-check-circle"></i> Konfirmasi Pembayaran
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <h6 class="mb-3">Informasi Pelanggan: <span id="v-pelanggan"
-                            class="text-primary font-weight-bold"></span></h6>
-                    <p>Metode Pembayaran: <strong id="v-metode"></strong></p>
-                    <hr>
-                    <h6>Detail Pesanan:</h6>
-                    <ul id="v-items" class="list-group mb-3">
-                        <!-- Items appended via JS -->
+                    <p class="pos-v-info-label">Pelanggan / Kasir</p>
+                    <p class="pos-v-info-value" id="v-pelanggan"></p>
+
+                    <p class="pos-v-info-label" style="margin-top:12px;">Metode Pembayaran</p>
+                    <p class="pos-v-info-value" id="v-metode"></p>
+
+                    <hr class="pos-v-divider">
+                    <p class="pos-v-info-label">Detail Pesanan:</p>
+                    <ul id="v-items" class="list-group mb-2" style="list-style:none; padding:0;">
+                        {{-- Items appended via JS --}}
                     </ul>
-                    <h4 class="text-right mt-3 text-danger">Total: <span id="v-total"></span></h4>
+                    <div class="pos-v-total">Total: <span id="v-total"></span></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="mdi mdi-close"></i>
-                        Kembali (Batal)</button>
-                    <button type="button" class="btn btn-success" id="btn-submit-form"><i class="mdi mdi-content-save"></i>
-                        Lanjutkan Pembayaran</button>
+                    <button type="button" class="pos-modal-btn-secondary" data-bs-dismiss="modal">
+                        <i class="mdi mdi-close"></i> Kembali (Batal)
+                    </button>
+                    <button type="button" class="pos-modal-btn-primary" id="btn-submit-form">
+                        <i class="mdi mdi-content-save"></i> Lanjutkan Pembayaran
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal Sukses Pembayaran -->
+    {{-- ===== Modal Sukses Pembayaran ===== --}}
     <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true"
         data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="p-3 d-flex justify-content-end">
+                <div class="modal-header pos-modal-header-success">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body text-center p-5 pt-0">
-                    <div class="mb-4">
-                        <i class="mdi mdi-check-circle-outline text-success" style="font-size: 100px;"></i>
-                    </div>
-                    <h2 class="mb-3 font-weight-bold">Pembayaran Berhasil!</h2>
-                    <p class="text-muted">Transaksi telah berhasil diproses dan dicatat dalam sistem.</p>
+                <div class="modal-body text-center" style="padding: 10px 32px 32px !important;">
+                    <i class="mdi mdi-check-circle-outline pos-success-icon"></i>
+                    <h2 class="pos-success-title">Pembayaran Berhasil!</h2>
+                    <p class="pos-success-desc">Transaksi telah berhasil diproses dan dicatat dalam sistem.</p>
                 </div>
-                <div class="modal-footer border-0 d-flex justify-content-end">
-                    <button type="button" class="btn btn-gradient-success text-white font-weight-bold"
-                        id="btn-cetak-struk-modal">
-                        <i class="mdi mdi-printer me-1"></i> Cetak Struk
+                <div class="modal-footer border-0 justify-content-end">
+                    <button type="button" class="pos-modal-btn-success" id="btn-cetak-struk-modal">
+                        <i class="mdi mdi-printer"></i> Cetak Struk
                     </button>
                 </div>
             </div>
@@ -195,20 +232,16 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const keranjang = document.getElementById('keranjang');
+            const keranjang = document.getElementById('pos-keranjang');
             const grandTotalDisplay = document.getElementById('grand-total-display');
             const totalInput = document.getElementById('total_input');
             const btnAdd = document.getElementById('add-item');
-            
+
             const metodePembayaran = document.getElementById('metode_pembayaran');
             const btnShowQris = document.getElementById('btn-show-qris');
 
             metodePembayaran.addEventListener('change', function() {
-                if (this.value === 'Qris') {
-                    btnShowQris.style.display = 'inline-block';
-                } else {
-                    btnShowQris.style.display = 'none';
-                }
+                btnShowQris.style.display = this.value === 'Qris' ? 'inline-flex' : 'none';
             });
 
             function formatRupiah(number) {
@@ -217,20 +250,16 @@
 
             function hitungTotal() {
                 let total = 0;
-                const rows = document.querySelectorAll('.item-row');
-                rows.forEach(row => {
+                document.querySelectorAll('.pos-item-row').forEach(row => {
                     const select = row.querySelector('.produk-select');
                     const qtyInput = row.querySelector('.jumlah-input');
                     const subtotalLabel = row.querySelector('.subtotal-label');
-
                     const harga = parseFloat(select.options[select.selectedIndex].getAttribute('data-harga')) || 0;
                     const qty = parseInt(qtyInput.value) || 0;
                     const subtotal = harga * qty;
-
                     subtotalLabel.textContent = formatRupiah(subtotal);
                     total += subtotal;
                 });
-
                 grandTotalDisplay.textContent = formatRupiah(total);
                 totalInput.value = total;
             }
@@ -242,21 +271,18 @@
                 }
             });
             keranjang.addEventListener('keyup', function (e) {
-                if (e.target.classList.contains('jumlah-input')) {
-                    hitungTotal();
-                }
+                if (e.target.classList.contains('jumlah-input')) hitungTotal();
             });
 
             // Add Row
             btnAdd.addEventListener('click', function () {
-                const firstRow = document.querySelector('.item-row');
+                const firstRow = document.querySelector('.pos-item-row');
                 const clone = firstRow.cloneNode(true);
                 clone.querySelector('.produk-select').selectedIndex = 0;
                 clone.querySelector('.jumlah-input').value = 1;
                 clone.querySelector('.subtotal-label').textContent = 'Rp 0';
-                clone.querySelector('.remove-item').style.display = 'inline-block';
+                clone.querySelector('.remove-item').style.display = 'inline-flex';
 
-                // Add remove event
                 clone.querySelector('.remove-item').addEventListener('click', function () {
                     clone.remove();
                     hitungTotal();
@@ -269,14 +295,10 @@
 
             function updateRemoveButtons() {
                 const btns = document.querySelectorAll('.remove-item');
-                if (btns.length > 1) {
-                    btns.forEach(btn => btn.style.display = 'inline-block');
-                } else {
-                    btns[0].style.display = 'none';
-                }
+                btns.forEach(btn => btn.style.display = btns.length > 1 ? 'inline-flex' : 'none');
             }
 
-            // Verification Modal Logic
+            // Verification Modal
             const btnVerifikasi = document.getElementById('btn-verifikasi');
             const posForm = document.getElementById('pos-form');
             const verifikasiModal = new bootstrap.Modal(document.getElementById('verifikasiModal'));
@@ -289,9 +311,7 @@
 
                     const vItems = document.getElementById('v-items');
                     vItems.innerHTML = '';
-
-                    const rows = document.querySelectorAll('.item-row');
-                    rows.forEach(row => {
+                    document.querySelectorAll('.pos-item-row').forEach(row => {
                         const select = row.querySelector('.produk-select');
                         const qty = row.querySelector('.jumlah-input').value;
                         if (select.selectedIndex > 0 && qty > 0) {
@@ -303,35 +323,29 @@
                             vItems.appendChild(li);
                         }
                     });
-
                     verifikasiModal.show();
                 }
             });
 
-            // Submit Logic Form
+            // Submit Logic
             document.getElementById('btn-submit-form').addEventListener('click', function () {
                 if (totalInput.value == 0) {
                     alert('Belum ada produk yang dipilih!');
                     return;
                 }
-                
                 if (document.getElementById('metode_pembayaran').value === 'Qris') {
-                    // Hide verifikasi modal
-                    const verifikasiModalEl = document.getElementById('verifikasiModal');
-                    const vModal = bootstrap.Modal.getInstance(verifikasiModalEl);
+                    const vModal = bootstrap.Modal.getInstance(document.getElementById('verifikasiModal'));
                     if (vModal) vModal.hide();
-
-                    // Show QRIS modal with the submit button enabled
-                    document.getElementById('btn-submit-qris').style.display = 'inline-block';
+                    document.getElementById('btn-submit-qris').style.display = 'inline-flex';
                     const qrisModal = new bootstrap.Modal(document.getElementById('qrisModal'));
                     qrisModal.show();
                 } else {
-                    document.getElementById('pos-form').submit();
+                    posForm.submit();
                 }
             });
 
             document.getElementById('btn-submit-qris').addEventListener('click', function () {
-                document.getElementById('pos-form').submit();
+                posForm.submit();
             });
         });
     </script>
@@ -339,19 +353,15 @@
     @if(session('pesan_sukses_trx'))
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                // Show success modal
                 const successModal = new bootstrap.Modal(document.getElementById('successModal'));
                 successModal.show();
 
-                // Handle Print Receipt Button
                 document.getElementById('btn-cetak-struk-modal').addEventListener('click', function () {
                     const trxId = "{{ session('pesan_sukses_trx') }}";
-                    const width = 400;
-                    const height = 600;
+                    const width = 400, height = 600;
                     const left = (screen.width / 2) - (width / 2);
-                    const top = (screen.height / 2) - (height / 2);
-
-                    window.open('/struk/' + trxId, 'Struk Pembayaran', 'width=' + width + ',height=' + height + ',top=' + top + ',left=' + left);
+                    const top  = (screen.height / 2) - (height / 2);
+                    window.open('/struk/' + trxId, 'Struk Pembayaran', `width=${width},height=${height},top=${top},left=${left}`);
                 });
             });
         </script>

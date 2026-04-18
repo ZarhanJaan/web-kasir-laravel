@@ -1,79 +1,91 @@
 @extends('layouts.app')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/pages/stok_riwayat.css') }}">
 
-      <div class="content-wrapper">
+    <div class="content-wrapper">
         <div class="page-header">
-          <h3 class="page-title">
-            <span class="page-title-icon bg-gradient-primary text-white me-2">
-                  <i class="mdi mdi-history menu-icon"></i>
-            </span> Riwayat Stok
-          </h3>
+            <h3 class="page-title">
+                <span class="page-title-icon bg-gradient-primary text-white me-2">
+                    <i class="mdi mdi-history menu-icon"></i>
+                </span> Riwayat Stok
+            </h3>
         </div>
 
         @if (session('pesan_sukses'))
-        <div class="alert alert-success" role="alert">
-          <i class="fa fa-check"></i>
-          {{ session('pesan_sukses') }}
-        </div>     
+            <div class="sr-alert-success alert-dismissible fade show" role="alert">
+                <i class="mdi mdi-check-circle"></i> {{ session('pesan_sukses') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         @endif
 
-        <div class="card shadow p-3 mb-4 bg-body rounded">
-            <div class="card-body">
-                <form action="/stok/riwayat" method="GET" class="row gx-3 gy-2 align-items-center">
-                    <div class="col-sm-4">
-                        <label class="visually-hidden">Tanggal Awal</label>
-                        <input type="date" name="tgl_awal" class="form-control" value="{{ $awal ?? '' }}" required placeholder="Tanggal Awal">
-                    </div>
-                    <div class="col-sm-4">
-                        <label class="visually-hidden">Tanggal Akhir</label>
-                        <input type="date" name="tgl_akhir" class="form-control" value="{{ $akhir ?? '' }}" required placeholder="Tanggal Akhir">
-                    </div>
-                    <div class="col-auto">
-                        <button type="submit" class="btn btn-primary">Filter Tanggal</button>
-                    </div>
-                    <div class="col-auto">
-                        <a href="/stok/riwayat" class="btn btn-secondary">Reset</a>
-                    </div>
-                </form>
-            </div>
+        {{-- Filter Tanggal --}}
+        <div class="sr-card">
+            <form action="/stok/riwayat" method="GET" class="sr-filter-bar">
+                <div class="sr-filter-field">
+                    <label class="sr-filter-label">Tanggal Awal</label>
+                    <input type="date" name="tgl_awal" class="sr-input"
+                        value="{{ $awal ?? '' }}" required>
+                </div>
+                <div class="sr-filter-field">
+                    <label class="sr-filter-label">Tanggal Akhir</label>
+                    <input type="date" name="tgl_akhir" class="sr-input"
+                        value="{{ $akhir ?? '' }}" required>
+                </div>
+                <button type="submit" class="sr-btn-filter">
+                    <i class="mdi mdi-filter"></i> Filter
+                </button>
+                <a href="/stok/riwayat" class="sr-btn-reset">
+                    <i class="mdi mdi-refresh"></i> Reset
+                </a>
+            </form>
         </div>
 
-        <div class="card shadow p-3 mb-5 bg-body rounded">
-            <div class="container">
-                  <div class="table-responsive">
-                  <table class="table table-bordered table-striped" id="mytable">
-                        <thead class="bg-light">
-                              <tr>
-                                    <th>No</th>
-                                    <th>Tanggal</th>
-                                    <th>Nama Produk</th>
-                                    <th>Jenis</th>
-                                    <th>Jumlah</th>
-                                    <th>Keterangan</th>
-                              </tr>
-                        </thead>
-                        <tbody>
-                              @foreach ($riwayat as $index => $data)
-                              <tr>
-                                    <td>{{ $index + 1 }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($data->tanggal)->format('d/m/Y') }}</td>
-                                    <td>{{ $data->nama_produk ?? $data->nama_stok }}</td>
-                                    <td>
-                                        @if($data->jenis == 'masuk')
-                                            <span class="badge bg-success">Stok Masuk</span>
-                                        @else
-                                            <span class="badge bg-danger">Stok Keluar</span>
-                                        @endif
-                                    </td>
-                                    <td>{{ $data->jumlah }}</td>
-                                    <td>{{ $data->keterangan ?? '-' }}</td>
-                              </tr>
-                              @endforeach
-                        </tbody>
-                  </table>
-                  </div>
+        {{-- Tabel Riwayat --}}
+        <div class="sr-card">
+            <div class="sr-title-row">
+                <div class="sr-title-icon">
+                    <i class="mdi mdi-history"></i>
+                </div>
+                <h4>Riwayat Transaksi Stok</h4>
+            </div>
+
+            <div class="table-responsive">
+                <table class="sr-table" id="mytable">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Tanggal</th>
+                            <th>Nama Produk</th>
+                            <th>Jenis</th>
+                            <th>Jumlah</th>
+                            <th>Keterangan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($riwayat as $index => $data)
+                        <tr>
+                            <td class="col-no">{{ $index + 1 }}</td>
+                            <td>{{ \Carbon\Carbon::parse($data->tanggal)->format('d/m/Y') }}</td>
+                            <td class="col-name">{{ $data->nama_produk ?? $data->nama_stok }}</td>
+                            <td>
+                                @if($data->jenis == 'masuk')
+                                    <span class="sr-badge sr-badge-masuk">
+                                        <i class="mdi mdi-arrow-down-circle"></i> Stok Masuk
+                                    </span>
+                                @else
+                                    <span class="sr-badge sr-badge-keluar">
+                                        <i class="mdi mdi-arrow-up-circle"></i> Stok Keluar
+                                    </span>
+                                @endif
+                            </td>
+                            <td class="col-qty">{{ $data->jumlah }}</td>
+                            <td class="col-notes">{{ $data->keterangan ?? '-' }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
-      </div>
+    </div>
 @endsection

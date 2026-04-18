@@ -1,0 +1,376 @@
+/* ===================================================================
+   STOK_RIWAYAT.CSS
+   Styling halaman Riwayat Transaksi Stok (t_stok_riwayat)
+   Selaras: dashboard.css · manajemen_user.css · riwayat_transaksi.css
+   (Sidebar & Navbar dihandle oleh sidebar.css global)
+   =================================================================== */
+
+
+/* =================================================================
+   CONTENT PADDING
+   ================================================================= */
+.content-wrapper {
+    padding: 28px 32px !important;
+}
+
+.content-wrapper > .row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.content-wrapper > .row > [class*="col-"] {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+}
+
+
+/* =================================================================
+   ALERT — Success
+   ================================================================= */
+.sr-alert-success {
+    background: rgba(81, 207, 102, 0.08) !important;
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(81, 207, 102, 0.15) !important;
+    border-left: 4px solid var(--success-color) !important;
+    border-radius: 16px !important;
+    color: var(--text-secondary) !important;
+    padding: 16px 24px !important;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+.sr-alert-success i { color: var(--success-color) !important; margin-right: 8px; }
+.sr-alert-success .btn-close { filter: invert(1) !important; }
+
+
+/* =================================================================
+   GLASSMORPHISM CARD
+   ================================================================= */
+.sr-card {
+    background: var(--card-bg) !important;
+    backdrop-filter: blur(20px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
+    border: 1px solid var(--card-border) !important;
+    border-radius: 24px !important;
+    box-shadow: var(--card-shadow) !important;
+    padding: 24px 28px !important;
+    margin-bottom: 20px;
+    overflow: hidden;
+    transition: box-shadow 0.35s ease;
+}
+
+.sr-card:hover {
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45) !important;
+}
+
+
+/* =================================================================
+   CARD TITLE ROW
+   ================================================================= */
+.sr-title-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.sr-title-row .sr-title-icon {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 18px var(--accent-glow);
+    flex-shrink: 0;
+}
+
+.sr-title-row .sr-title-icon i { font-size: 22px; color: #fff; }
+
+.sr-title-row h4 {
+    margin: 0;
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: -0.3px;
+}
+
+
+/* =================================================================
+   FILTER BAR
+   ================================================================= */
+.sr-filter-bar {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+.sr-filter-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.sr-filter-label {
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.sr-input {
+    background: rgba(255, 255, 255, 0.07) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 12px !important;
+    color: var(--text-primary) !important;
+    font-family: var(--font-family) !important;
+    font-size: 13.5px !important;
+    padding: 10px 16px !important;
+    height: auto !important;
+    outline: none;
+    transition: all 0.3s ease;
+    width: auto;
+}
+
+.sr-input:focus {
+    border-color: rgba(102, 126, 234, 0.55) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12) !important;
+    color: var(--text-primary) !important;
+}
+
+.sr-input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1) opacity(0.45);
+    cursor: pointer;
+}
+
+/* Filter Button */
+.sr-btn-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 22px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+    color: #fff !important;
+    font-family: var(--font-family);
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 14px var(--accent-glow);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    text-decoration: none;
+}
+.sr-btn-filter:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.45);
+    color: #fff !important;
+}
+
+/* Reset Button */
+.sr-btn-reset {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 20px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+    color: var(--text-secondary) !important;
+    font-family: var(--font-family);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+.sr-btn-reset:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff !important;
+}
+
+.sr-btn-filter:active,
+.sr-btn-reset:active { transform: translateY(0) !important; }
+
+
+/* =================================================================
+   TABLE
+   ================================================================= */
+.sr-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 6px;
+}
+
+.sr-table thead th {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 16px;
+}
+
+.sr-table tbody tr {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    transition: all 0.25s ease;
+}
+
+.sr-table tbody tr:hover {
+    background: rgba(102, 126, 234, 0.08);
+    transform: translateX(4px);
+}
+
+.sr-table tbody td {
+    border: none;
+    padding: 14px 16px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.sr-table tbody tr td:first-child { border-radius: 12px 0 0 12px; }
+.sr-table tbody tr td:last-child  { border-radius: 0 12px 12px 0; }
+
+.sr-table .col-no    { color: var(--text-muted); font-size: 13px; }
+.sr-table .col-name  { color: var(--text-primary); font-weight: 600; }
+.sr-table .col-qty   { color: var(--text-primary); font-weight: 700; }
+.sr-table .col-notes { color: var(--text-muted); font-size: 13px; max-width: 200px; }
+
+
+/* =================================================================
+   BADGES — Masuk / Keluar
+   ================================================================= */
+.sr-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 13px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.sr-badge-masuk {
+    background: rgba(81, 207, 102, 0.12);
+    color: var(--success-color);
+}
+
+.sr-badge-keluar {
+    background: rgba(255, 107, 107, 0.12);
+    color: var(--error-color);
+}
+
+
+/* =================================================================
+   DATATABLE OVERRIDES
+   ================================================================= */
+div.dt-container,
+div.dt-container *,
+.dataTables_wrapper,
+.dataTables_wrapper * {
+    color: rgba(255, 255, 255, 0.7) !important;
+    font-family: var(--font-family) !important;
+}
+
+div.dt-container .dt-search input,
+.dataTables_wrapper .dataTables_filter input {
+    background: rgba(255, 255, 255, 0.07) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 10px !important;
+    color: #ffffff !important; font-size: 13px !important;
+    padding: 8px 14px !important; outline: none; transition: all 0.3s ease;
+}
+
+div.dt-container .dt-search input:focus,
+.dataTables_wrapper .dataTables_filter input:focus {
+    border-color: rgba(102, 126, 234, 0.5) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12) !important;
+}
+
+div.dt-container .dt-search label, div.dt-container .dt-length label,
+div.dt-container .dt-search, div.dt-container .dt-length,
+.dataTables_wrapper .dataTables_filter label,
+.dataTables_wrapper .dataTables_length label, .dataTables_wrapper label {
+    color: rgba(255, 255, 255, 0.7) !important;
+    font-size: 13px !important; font-weight: 400 !important;
+}
+
+div.dt-container .dt-length select, div.dt-container select,
+.dataTables_wrapper .dataTables_length select, .dataTables_wrapper select {
+    background: rgba(255, 255, 255, 0.07) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 8px !important; color: #ffffff !important;
+    font-size: 13px !important; padding: 6px 10px !important; margin: 0 8px !important;
+    outline: none; cursor: pointer;
+}
+
+div.dt-container select option, .dataTables_wrapper select option {
+    background: #1a1a2e; color: #ffffff !important;
+}
+
+div.dt-container .dt-info, .dataTables_wrapper .dataTables_info {
+    color: rgba(255, 255, 255, 0.45) !important;
+    font-size: 12.5px !important; padding-top: 12px !important;
+}
+
+div.dt-container .dt-paging button,
+div.dt-container .dt-paging .dt-paging-button,
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    border: none !important; border-radius: 8px !important;
+    color: rgba(255, 255, 255, 0.6) !important; background: transparent !important;
+    font-size: 13px !important; transition: all 0.2s ease; margin: 0 2px;
+}
+
+div.dt-container .dt-paging button:hover,
+div.dt-container .dt-paging .dt-paging-button:hover,
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: rgba(102, 126, 234, 0.15) !important; color: #fff !important;
+}
+
+div.dt-container .dt-paging button.current,
+div.dt-container .dt-paging .dt-paging-button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end)) !important;
+    color: #fff !important; box-shadow: 0 4px 12px var(--accent-glow);
+}
+
+div.dt-container .dt-paging button.disabled,
+div.dt-container .dt-paging .dt-paging-button.disabled,
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+    color: rgba(255, 255, 255, 0.15) !important; background: transparent !important;
+}
+
+table.dataTable thead th, table.dataTable thead td { border-bottom: none !important; }
+table.dataTable.no-footer, table.dataTable { border-bottom: none !important; }
+
+div.dt-container .dt-length, div.dt-container .dt-search,
+.dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter {
+    margin-bottom: 16px;
+}
+div.dt-container .dt-paging, .dataTables_wrapper .dataTables_paginate {
+    padding-top: 12px !important;
+}
+
+
+/* =================================================================
+   RESPONSIVE
+   ================================================================= */
+@media (max-width: 991px) {
+    .content-wrapper { padding: 20px 16px !important; }
+    .sr-card { padding: 18px 20px !important; }
+    .sr-title-row h4 { font-size: 17px; }
+    .sr-title-row .sr-title-icon { width: 38px; height: 38px; border-radius: 11px; }
+    .sr-title-row .sr-title-icon i { font-size: 18px; }
+    .sr-filter-bar { gap: 10px; }
+    .sr-input { width: 100%; }
+}

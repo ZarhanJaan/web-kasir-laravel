@@ -1,0 +1,785 @@
+/* ===================================================================
+   KASIR.CSS
+   Styling konten halaman Kasir / Point of Sales (POS)
+   Selaras dengan dashboard.css, manajemen_user.css & riwayat_transaksi.css
+   (Glassmorphism dark theme)
+   (Sidebar & Navbar sudah dihandle oleh sidebar.css global)
+   =================================================================== */
+
+
+/* =================================================================
+   CONTENT PADDING
+   ================================================================= */
+.content-wrapper {
+    padding: 28px 32px !important;
+}
+
+.content-wrapper > .row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.content-wrapper > .row > [class*="col-"] {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+}
+
+
+/* =================================================================
+   FORM CARD — Detail Pesanan (Left Column)
+   ================================================================= */
+.pos-form-card {
+    background: var(--card-bg) !important;
+    backdrop-filter: blur(20px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
+    border: 1px solid var(--card-border) !important;
+    border-radius: 24px !important;
+    box-shadow: var(--card-shadow) !important;
+    overflow: hidden;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    width: 100%;
+    padding: 32px !important;
+}
+
+.pos-form-card:hover {
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45) !important;
+}
+
+
+/* =================================================================
+   CARD TITLE ROW
+   ================================================================= */
+.pos-card-title-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 6px;
+}
+
+.pos-card-title-row .pos-title-icon {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 18px var(--accent-glow);
+    flex-shrink: 0;
+}
+
+.pos-card-title-row .pos-title-icon i {
+    font-size: 22px;
+    color: #fff;
+}
+
+.pos-card-title-row h4 {
+    margin: 0;
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: -0.3px;
+}
+
+.pos-card-description {
+    color: var(--text-muted) !important;
+    font-size: 13px;
+    font-weight: 400;
+    margin-bottom: 28px;
+    padding-left: 58px;
+}
+
+.pos-divider {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    margin: 0 0 24px 0;
+}
+
+
+/* =================================================================
+   FORM LABELS & GROUPS
+   ================================================================= */
+.pos-form-group {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.pos-form-group label {
+    color: var(--text-secondary) !important;
+    font-size: 13.5px;
+    font-weight: 500;
+    min-width: 180px;
+    flex-shrink: 0;
+    margin: 0;
+}
+
+.pos-form-col {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+/* =================================================================
+   FORM CONTROLS — Glassmorphism inputs
+   ================================================================= */
+.pos-input,
+.pos-select {
+    background: rgba(255, 255, 255, 0.07) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 12px !important;
+    color: var(--text-primary) !important;
+    font-family: var(--font-family) !important;
+    font-size: 13.5px !important;
+    font-weight: 400;
+    padding: 10px 16px !important;
+    height: auto !important;
+    outline: none;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.pos-input::placeholder {
+    color: var(--text-muted) !important;
+}
+
+.pos-input:focus,
+.pos-select:focus {
+    border-color: rgba(102, 126, 234, 0.55) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Read-only input */
+.pos-input[readonly] {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border-color: rgba(255, 255, 255, 0.07) !important;
+    color: var(--text-muted) !important;
+    cursor: not-allowed;
+}
+
+/* Select dropdown arrow */
+.pos-select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.45)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 14px center !important;
+    background-size: 12px !important;
+    padding-right: 36px !important;
+    cursor: pointer;
+}
+
+.pos-select option {
+    background: #1a1a2e;
+    color: #fff;
+}
+
+/* Date input calendar icon */
+.pos-input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1) opacity(0.5);
+    cursor: pointer;
+}
+
+/* Number input arrows */
+.pos-input[type="number"]::-webkit-inner-spin-button,
+.pos-input[type="number"]::-webkit-outer-spin-button {
+    opacity: 0.4;
+}
+
+
+/* =================================================================
+   SECTION TITLE — "Daftar Belanja"
+   ================================================================= */
+.pos-section-title {
+    color: var(--text-primary);
+    font-size: 15px;
+    font-weight: 700;
+    margin: 28px 0 16px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: -0.2px;
+}
+
+.pos-section-title i {
+    font-size: 18px;
+    color: var(--accent-start);
+}
+
+
+/* =================================================================
+   CART / KERANJANG — Item Rows
+   ================================================================= */
+#pos-keranjang {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.pos-item-row {
+    display: grid;
+    grid-template-columns: 1fr 110px auto auto;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 14px;
+    padding: 12px 14px;
+    transition: background 0.25s ease, border-color 0.25s ease;
+    animation: rowFadeIn 0.3s ease forwards;
+}
+
+@keyframes rowFadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.pos-item-row:hover {
+    background: rgba(102, 126, 234, 0.06);
+    border-color: rgba(102, 126, 234, 0.2);
+}
+
+/* Subtotal inside row */
+.pos-subtotal-label {
+    color: var(--success-color);
+    font-size: 13.5px;
+    font-weight: 600;
+    white-space: nowrap;
+    min-width: 90px;
+    text-align: right;
+}
+
+
+/* =================================================================
+   BUTTONS
+   ================================================================= */
+
+/* Add Item button */
+.pos-btn-add-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 20px;
+    border-radius: 12px;
+    background: rgba(102, 126, 234, 0.12);
+    border: 1.5px dashed rgba(102, 126, 234, 0.35);
+    color: var(--accent-start) !important;
+    font-family: var(--font-family);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 6px;
+    letter-spacing: 0.2px;
+}
+
+.pos-btn-add-item:hover {
+    background: rgba(102, 126, 234, 0.2);
+    border-color: rgba(102, 126, 234, 0.55);
+    transform: translateY(-1px);
+}
+
+.pos-btn-add-item i {
+    font-size: 16px;
+}
+
+/* Remove item button */
+.pos-btn-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    background: rgba(255, 107, 107, 0.1);
+    border: 1.5px solid rgba(255, 107, 107, 0.2);
+    color: var(--error-color) !important;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    flex-shrink: 0;
+    padding: 0;
+}
+
+.pos-btn-remove:hover {
+    background: rgba(255, 107, 107, 0.2);
+    border-color: rgba(255, 107, 107, 0.45);
+    transform: scale(1.1);
+    color: var(--error-color) !important;
+}
+
+
+/* =================================================================
+   SUMMARY / TAGIHAN CARD (Right Column)
+   ================================================================= */
+.pos-summary-card {
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end)) !important;
+    border-radius: 24px !important;
+    box-shadow: 0 20px 45px rgba(102, 126, 234, 0.4) !important;
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.pos-summary-card::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.07);
+    pointer-events: none;
+}
+
+.pos-summary-card::after {
+    content: '';
+    position: absolute;
+    bottom: -30px;
+    left: -30px;
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    pointer-events: none;
+}
+
+.pos-summary-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 28px 55px rgba(102, 126, 234, 0.5) !important;
+}
+
+.pos-summary-card .card-body {
+    padding: 32px !important;
+    position: relative;
+    z-index: 1;
+}
+
+.pos-summary-label {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 10px;
+}
+
+.pos-summary-label i {
+    font-size: 15px;
+    margin-right: 5px;
+}
+
+.pos-grand-total {
+    color: #fff;
+    font-size: 2.4rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -1px;
+    margin-bottom: 32px;
+    word-break: break-all;
+}
+
+/* Pay button */
+.pos-btn-bayar {
+    display: block;
+    width: 100%;
+    padding: 14px 20px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(8px);
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    color: #fff !important;
+    font-family: var(--font-family);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.pos-btn-bayar::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+    transition: left 0.5s ease;
+}
+
+.pos-btn-bayar:hover::before { left: 100%; }
+
+.pos-btn-bayar:hover {
+    background: rgba(255, 255, 255, 0.28);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.2);
+}
+
+.pos-btn-bayar:active {
+    transform: translateY(0);
+}
+
+.pos-btn-bayar i {
+    font-size: 18px;
+    vertical-align: middle;
+    margin-right: 6px;
+}
+
+
+/* =================================================================
+   SHOW QRIS BUTTON (inline with select)
+   ================================================================= */
+.pos-btn-qris {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 10px 16px;
+    border-radius: 12px;
+    background: rgba(25, 209, 201, 0.12);
+    border: 1.5px solid rgba(25, 209, 201, 0.3);
+    color: #19d1c9 !important;
+    font-family: var(--font-family);
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.pos-btn-qris:hover {
+    background: rgba(25, 209, 201, 0.22);
+    border-color: rgba(25, 209, 201, 0.55);
+    transform: translateY(-1px);
+    color: #19d1c9 !important;
+}
+
+
+/* =================================================================
+   MODALS — Glassmorphism (QRIS, Verifikasi, Sukses)
+   ================================================================= */
+.modal-content {
+    background: rgba(15, 12, 41, 0.95) !important;
+    backdrop-filter: blur(24px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 22px !important;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.55) !important;
+}
+
+/* Modal header — default accent gradient */
+.modal-header {
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end)) !important;
+    border-bottom: none !important;
+    border-radius: 22px 22px 0 0 !important;
+    padding: 18px 24px !important;
+}
+
+/* QRIS modal header — teal */
+.pos-modal-header-qris {
+    background: linear-gradient(135deg, #19d1c9, #0f9a94) !important;
+    border-bottom: none !important;
+    border-radius: 22px 22px 0 0 !important;
+    padding: 18px 24px !important;
+}
+
+/* Success modal header — none (icon-based) */
+.pos-modal-header-success {
+    background: transparent !important;
+    border-bottom: none !important;
+    padding: 20px 20px 0 !important;
+    justify-content: flex-end;
+}
+
+.modal-header .modal-title,
+.pos-modal-header-qris .modal-title {
+    color: #fff !important;
+    font-family: var(--font-family) !important;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.modal-body {
+    padding: 24px !important;
+    color: var(--text-secondary) !important;
+    font-family: var(--font-family) !important;
+    font-size: 14.5px;
+}
+
+.modal-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.07) !important;
+    padding: 16px 24px !important;
+}
+
+/* btn-close override */
+.modal-header .btn-close,
+.pos-modal-header-qris .btn-close {
+    filter: brightness(0) invert(1) !important;
+    opacity: 0.75;
+}
+
+.pos-modal-header-success .btn-close {
+    opacity: 0.5;
+}
+
+
+/* Verification modal — item list */
+.pos-v-info-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.pos-v-info-value {
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 14.5px;
+}
+
+.pos-v-divider {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    margin: 16px 0;
+}
+
+#v-items .list-group-item {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.07) !important;
+    border-radius: 10px !important;
+    color: var(--text-secondary) !important;
+    font-size: 13.5px;
+    margin-bottom: 6px;
+    padding: 10px 14px !important;
+}
+
+#v-items .list-group-item span {
+    color: var(--success-color);
+    font-weight: 600;
+}
+
+.pos-v-total {
+    color: var(--error-color) !important;
+    font-weight: 700;
+    font-size: 18px;
+    text-align: right;
+    margin-top: 12px;
+}
+
+/* QRIS image container */
+.pos-qris-name {
+    color: var(--accent-start);
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 16px;
+}
+
+.pos-qris-img {
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    max-height: 380px;
+    border: 2px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+.pos-qris-caption {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-top: 14px;
+}
+
+/* Success modal */
+.pos-success-icon {
+    font-size: 90px;
+    background: linear-gradient(135deg, var(--accent-start), var(--success-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: block;
+    margin-bottom: 12px;
+    animation: successPop 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes successPop {
+    from { transform: scale(0.4); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+}
+
+.pos-success-title {
+    color: var(--text-primary) !important;
+    font-weight: 800;
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+
+.pos-success-desc {
+    color: var(--text-muted) !important;
+    font-size: 13.5px;
+}
+
+
+/* =================================================================
+   MODAL FOOTER BUTTONS
+   ================================================================= */
+/* Secondary / cancel */
+.pos-modal-btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 9px 20px;
+    border-radius: 12px;
+    background: transparent;
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    color: var(--text-secondary) !important;
+    font-family: var(--font-family);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.pos-modal-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.07);
+    color: #fff !important;
+}
+
+/* Primary confirm */
+.pos-modal-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 9px 22px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+    border: none;
+    color: #fff !important;
+    font-family: var(--font-family);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 14px var(--accent-glow);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pos-modal-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.45);
+    color: #fff !important;
+}
+
+/* Success / print */
+.pos-modal-btn-success {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 9px 22px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #51cf66, #40c057);
+    border: none;
+    color: #fff !important;
+    font-family: var(--font-family);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(81, 207, 102, 0.3);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pos-modal-btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(81, 207, 102, 0.45);
+    color: #fff !important;
+}
+
+.pos-modal-btn-success:active,
+.pos-modal-btn-primary:active {
+    transform: translateY(0);
+}
+
+/* Teal (QRIS done) */
+.pos-modal-btn-teal {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 9px 22px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #19d1c9, #0f9a94);
+    border: none;
+    color: #fff !important;
+    font-family: var(--font-family);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(25, 209, 201, 0.3);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pos-modal-btn-teal:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(25, 209, 201, 0.45);
+    color: #fff !important;
+}
+
+.modal-backdrop.show {
+    opacity: 0.65 !important;
+}
+
+
+/* =================================================================
+   RESPONSIVE
+   ================================================================= */
+@media (max-width: 991px) {
+    .content-wrapper {
+        padding: 20px 16px !important;
+    }
+
+    .pos-form-card {
+        padding: 22px !important;
+    }
+
+    .pos-form-group {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+
+    .pos-form-group label {
+        min-width: unset;
+        font-size: 12.5px;
+    }
+
+    .pos-item-row {
+        grid-template-columns: 1fr 80px auto auto;
+        gap: 8px;
+        padding: 10px 12px;
+    }
+
+    .pos-grand-total {
+        font-size: 1.9rem;
+    }
+
+    .pos-summary-card .card-body {
+        padding: 24px !important;
+    }
+
+    .pos-card-title-row h4 {
+        font-size: 17px;
+    }
+}
+
+@media (max-width: 576px) {
+    .pos-item-row {
+        grid-template-columns: 1fr 70px auto;
+        flex-wrap: wrap;
+    }
+
+    .pos-subtotal-label {
+        display: none;
+    }
+}

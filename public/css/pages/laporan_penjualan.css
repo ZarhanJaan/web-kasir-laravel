@@ -1,0 +1,313 @@
+/* ===================================================================
+   LAPORAN_PENJUALAN.CSS
+   Styling halaman Laporan Penjualan (t_laporan)
+   Selaras: dashboard.css · manajemen_user.css · riwayat_transaksi.css
+   (Sidebar & Navbar dihandle oleh sidebar.css global)
+   =================================================================== */
+
+
+/* =================================================================
+   CONTENT PADDING
+   ================================================================= */
+.content-wrapper {
+    padding: 28px 32px !important;
+}
+
+.content-wrapper > .row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.content-wrapper > .row > [class*="col-"] {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+}
+
+
+/* =================================================================
+   GLASSMORPHISM CHART CARD
+   ================================================================= */
+.lp-card {
+    background: var(--card-bg) !important;
+    backdrop-filter: blur(20px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
+    border: 1px solid var(--card-border) !important;
+    border-radius: 24px !important;
+    box-shadow: var(--card-shadow) !important;
+    padding: 28px !important;
+    margin-bottom: 24px;
+    overflow: hidden;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+    width: 100%;
+}
+
+.lp-card:hover {
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45) !important;
+}
+
+
+/* =================================================================
+   CARD HEADER ROW
+   ================================================================= */
+.lp-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 22px;
+}
+
+.lp-card-header .lp-title-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.lp-card-header .lp-title-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 14px var(--accent-glow);
+    flex-shrink: 0;
+}
+
+/* Danger icon variant */
+.lp-card-header .lp-title-icon.icon-danger {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    box-shadow: 0 4px 14px rgba(255, 107, 107, 0.3);
+}
+
+/* Terlaris icon */
+.lp-card-header .lp-title-icon.icon-warning {
+    background: linear-gradient(135deg, #fcc419, #f59f00);
+    box-shadow: 0 4px 14px rgba(252, 196, 25, 0.3);
+}
+
+/* Stok icon */
+.lp-card-header .lp-title-icon.icon-teal {
+    background: linear-gradient(135deg, #20c997, #0ca678);
+    box-shadow: 0 4px 14px rgba(32, 201, 151, 0.3);
+}
+
+.lp-card-header .lp-title-icon i {
+    font-size: 19px;
+    color: #fff;
+}
+
+.lp-card-header h4 {
+    margin: 0;
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 17px;
+    letter-spacing: -0.2px;
+}
+
+
+/* =================================================================
+   EXPORT BUTTONS
+   ================================================================= */
+.lp-btn-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.lp-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 16px;
+    border-radius: 10px;
+    font-family: var(--font-family);
+    font-size: 12.5px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.2px;
+}
+
+.lp-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    transition: left 0.5s ease;
+}
+.lp-btn:hover::before { left: 100%; }
+.lp-btn:active { transform: translateY(0) !important; }
+
+/* PDF Button */
+.lp-btn-pdf {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    color: #fff !important;
+    box-shadow: 0 3px 10px rgba(255, 107, 107, 0.3);
+}
+.lp-btn-pdf:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 16px rgba(255, 107, 107, 0.45);
+    color: #fff !important;
+}
+
+/* Excel Button */
+.lp-btn-excel {
+    background: linear-gradient(135deg, #51cf66, #40c057);
+    color: #fff !important;
+    box-shadow: 0 3px 10px rgba(81, 207, 102, 0.3);
+}
+.lp-btn-excel:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 16px rgba(81, 207, 102, 0.45);
+    color: #fff !important;
+}
+
+
+/* =================================================================
+   CHART CONTAINER
+   ================================================================= */
+.lp-chart-wrap {
+    position: relative;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 24px;
+}
+
+.lp-chart-wrap canvas {
+    display: block;
+}
+
+
+/* =================================================================
+   SUMMARY TABLE (Terlaris & Stok)
+   ================================================================= */
+.lp-divider {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    margin: 0 0 18px 0;
+}
+
+.lp-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 5px;
+}
+
+.lp-table thead th {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 8px 14px;
+}
+
+.lp-table tbody tr {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    transition: all 0.25s ease;
+}
+
+.lp-table tbody tr:hover {
+    background: rgba(102, 126, 234, 0.08);
+    transform: translateX(4px);
+}
+
+.lp-table tbody td {
+    border: none;
+    padding: 11px 14px;
+    color: var(--text-secondary);
+    font-size: 13.5px;
+    vertical-align: middle;
+}
+
+.lp-table tbody tr td:first-child { border-radius: 10px 0 0 10px; }
+.lp-table tbody tr td:last-child  { border-radius: 0 10px 10px 0; }
+
+.lp-table .col-name  { color: var(--text-primary); font-weight: 600; }
+.lp-table .col-qty   { color: var(--text-primary); font-weight: 700; }
+.lp-table .col-right { text-align: right; }
+
+
+/* =================================================================
+   STATUS BADGES (Masuk / Keluar)
+   ================================================================= */
+.lp-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 11px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.lp-badge-masuk {
+    background: rgba(81, 207, 102, 0.13);
+    color: var(--success-color);
+}
+
+.lp-badge-keluar {
+    background: rgba(255, 107, 107, 0.13);
+    color: var(--error-color);
+}
+
+
+/* =================================================================
+   CHART.JS GLOBAL DARK OVERRIDE
+   Register chart colors as CSS custom properties for Chart.js usage
+   ================================================================= */
+.lp-chart-legend {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 12px;
+    padding: 0 4px;
+}
+
+.lp-chart-legend .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-secondary);
+    font-size: 12.5px;
+    font-weight: 500;
+}
+
+.lp-chart-legend .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+
+/* =================================================================
+   RESPONSIVE
+   ================================================================= */
+@media (max-width: 991px) {
+    .content-wrapper { padding: 20px 16px !important; }
+    .lp-card { padding: 20px !important; }
+    .lp-card-header { flex-direction: column; align-items: flex-start; }
+    .lp-card-header h4 { font-size: 15px; }
+    .lp-card-header .lp-title-icon { width: 36px; height: 36px; border-radius: 10px; }
+    .lp-card-header .lp-title-icon i { font-size: 17px; }
+    .lp-btn-group { flex-wrap: wrap; }
+    .lp-btn { font-size: 12px; padding: 6px 13px; }
+}

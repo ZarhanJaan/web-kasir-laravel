@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/pages/setting.css') }}">
+
 <div class="content-wrapper">
     <div class="page-header">
         <h3 class="page-title">
@@ -11,96 +13,123 @@
         <nav aria-label="breadcrumb">
             <ul class="breadcrumb">
                 <li class="breadcrumb-item active" aria-current="page">
-                    <span>Pengaturan <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i></span>
+                    <span>Pengaturan <i class="mdi mdi-alert-circle-outline icon-sm align-middle"></i></span>
                 </li>
             </ul>
         </nav>
     </div>
 
     @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
-            <i class="mdi mdi-check-circle me-2"></i> {{ session('success') }}
+        <div class="st-alert-success alert-dismissible fade show" role="alert">
+            <i class="mdi mdi-check-circle"></i>
+            <span>{{ session('success') }}</span>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
 
     @if($errors->any())
-        <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
-            <ul class="mb-0">
+        <div class="st-alert-danger alert-dismissible fade show" role="alert">
+            <ul>
                 @foreach($errors->all() as $error)
-                    <li><i class="mdi mdi-alert-circle me-2"></i> {{ $error }}</li>
+                    <li><i class="mdi mdi-alert-circle"></i> {{ $error }}</li>
                 @endforeach
             </ul>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
 
-    <div class="row" data-aos="fade-up" data-aos-duration="1000">
+    <div class="row">
+
+        {{-- Card 1: Pengaturan Nama Web --}}
         <div class="col-md-6 grid-margin stretch-card">
-            <div class="card shadow-sm border-0 rounded-4 glass-card" style="background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px);">
-                <div class="card-body">
-                    <h4 class="card-title text-primary font-weight-bold mb-4">Pengaturan Nama Web</h4>
-                    <p class="card-description text-muted">Nama ini akan ditampilkan pada navbar dan judul web</p>
-
-                    <form action="{{ route('setting.update-store-name') }}" method="POST">
-                        @csrf
-                        <div class="form-group mb-4">
-                            <label for="store_name" class="font-weight-bold text-dark">Nama Web Saat Ini</label>
-                            <input type="text" name="store_name" id="store_name" class="form-control" value="{{ $store_name ?? 'Toko Sembako' }}" required>
-                        </div>
-                        
-                        <hr class="border-light mt-4 mb-4">
-
-                        <button type="submit" class="btn btn-gradient-primary me-2 btn-lg">
-                            <i class="mdi mdi-content-save me-1"></i> Simpan Nama
-                        </button>
-                    </form>
+            <div class="st-card">
+                <div class="st-title-row">
+                    <div class="st-title-icon">
+                        <i class="mdi mdi-store"></i>
+                    </div>
+                    <h4>Pengaturan Nama Web</h4>
                 </div>
+                <p class="st-card-description">Nama ini akan ditampilkan pada navbar dan judul web.</p>
+                <hr class="st-divider">
+
+                <form action="{{ route('setting.update-store-name') }}" method="POST">
+                    @csrf
+                    <div class="st-form-group">
+                        <label for="store_name" class="st-form-label">
+                            <i class="mdi mdi-pencil-outline me-1"></i> Nama Web Saat Ini
+                        </label>
+                        <input type="text" name="store_name" id="store_name"
+                            class="st-input"
+                            value="{{ $store_name ?? 'Toko Sembako' }}" required>
+                    </div>
+
+                    <hr class="st-divider">
+
+                    <button type="submit" class="st-btn-save">
+                        <i class="mdi mdi-content-save"></i> Simpan Nama
+                    </button>
+                </form>
             </div>
         </div>
 
+        {{-- Card 2: Pengaturan QRIS --}}
         <div class="col-md-6 grid-margin stretch-card">
-            <div class="card shadow-sm border-0 rounded-4 glass-card" style="background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px);">
-                <div class="card-body">
-                    <h4 class="card-title text-primary font-weight-bold mb-4">Pengaturan Pembayaran (QRIS)</h4>
-                    <p class="card-description text-muted">Akan ditampilkan saat proses pembayaran di menu kasir</p>
+            <div class="st-card">
+                <div class="st-title-row">
+                    <div class="st-title-icon icon-qris">
+                        <i class="mdi mdi-qrcode"></i>
+                    </div>
+                    <h4>Pengaturan Pembayaran (QRIS)</h4>
+                </div>
+                <p class="st-card-description">Akan ditampilkan saat proses pembayaran di menu kasir.</p>
+                <hr class="st-divider">
 
-                    <form action="{{ route('setting.update-qris') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <div class="form-group mb-4">
-                            <label class="font-weight-bold text-dark">Gambar QRIS Saat Ini</label>
-                            <div class="border rounded p-3 text-center bg-light" style="min-height: 200px; display:flex; align-items:center; justify-content:center;">
-                                @if(isset($qris_image) && file_exists(public_path($qris_image)))
-                                    <div>
-                                        @if(isset($qris_name))
-                                            <p class="text-primary font-weight-bold mb-2">{{ $qris_name }}</p>
-                                        @endif
-                                        <img src="{{ asset($qris_image) }}" alt="QRIS" class="img-fluid rounded shadow-sm" style="max-height: 300px;">
-                                    </div>
-                                @else
-                                    <div class="text-muted">
-                                        <i class="mdi mdi-qrcode-scan d-block mb-2" style="font-size: 3rem;"></i>
-                                        Belum ada gambar QRIS.
-                                    </div>
+                <form action="{{ route('setting.update-qris') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+
+                    {{-- Preview QRIS --}}
+                    <div class="st-form-group">
+                        <label class="st-form-label">
+                            <i class="mdi mdi-image-outline me-1"></i> Gambar QRIS Saat Ini
+                        </label>
+                        <div class="st-qris-preview">
+                            @if(isset($qris_image) && file_exists(public_path($qris_image)))
+                                @if(isset($qris_name))
+                                    <p class="st-qris-name">{{ $qris_name }}</p>
                                 @endif
-                            </div>
+                                <img src="{{ asset($qris_image) }}" alt="QRIS" class="st-qris-img">
+                            @else
+                                <div class="st-qris-empty">
+                                    <i class="mdi mdi-qrcode-scan"></i>
+                                    <p>Belum ada gambar QRIS.</p>
+                                </div>
+                            @endif
                         </div>
+                    </div>
 
-                        <div class="form-group mb-4">
-                            <label for="qris_image" class="font-weight-bold text-dark">Upload / Ubah QRIS Baru</label>
-                            <input type="file" name="qris_image" id="qris_image" class="form-control" accept=".jpg,.jpeg,.png,.webp" required>
-                            <small class="text-muted d-block mt-2">Maks. ukuran 2MB. Hanya format JPG, JPEG, PNG, WEBP.</small>
-                        </div>
-                        
-                        <hr class="border-light mt-4 mb-4">
+                    {{-- Upload QRIS --}}
+                    <div class="st-form-group">
+                        <label for="qris_image" class="st-form-label">
+                            <i class="mdi mdi-upload me-1"></i> Upload / Ubah QRIS Baru
+                        </label>
+                        <input type="file" name="qris_image" id="qris_image"
+                            class="st-input"
+                            accept=".jpg,.jpeg,.png,.webp" required>
+                        <small class="st-input-hint">
+                            <i class="mdi mdi-information-outline me-1"></i>
+                            Maks. ukuran 2MB. Hanya format JPG, JPEG, PNG, WEBP.
+                        </small>
+                    </div>
 
-                        <button type="submit" class="btn btn-gradient-primary me-2 btn-lg">
-                            <i class="mdi mdi-content-save me-1"></i> Simpan QRIS
-                        </button>
-                    </form>
-                </div>
+                    <hr class="st-divider">
+
+                    <button type="submit" class="st-btn-save">
+                        <i class="mdi mdi-content-save"></i> Simpan QRIS
+                    </button>
+                </form>
             </div>
         </div>
+
     </div>
 </div>
 @endsection

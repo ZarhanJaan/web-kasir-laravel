@@ -417,6 +417,7 @@ div.dt-container select,
     color: #ffffff !important;
     font-size: 13px !important;
     padding: 6px 10px !important;
+    margin: 0 8px !important;
     outline: none;
     cursor: pointer;
 }
