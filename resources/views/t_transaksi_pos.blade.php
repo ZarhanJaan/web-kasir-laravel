@@ -40,10 +40,15 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Metode Pembayaran</label>
                             <div class="col-sm-9">
-                                <select name="metode_pembayaran" id="metode_pembayaran" class="form-control" required>
-                                    <option value="Cash">Cash / Tunai</option>
-                                    <option value="Qris">QRIS / E-Wallet</option>
-                                </select>
+                                <div class="d-flex w-100">
+                                    <select name="metode_pembayaran" id="metode_pembayaran" class="form-control" required>
+                                        <option value="Cash" selected>Cash / Tunai</option>
+                                        <option value="Qris">QRIS / E-Wallet</option>
+                                    </select>
+                                    <button type="button" class="btn btn-sm btn-info ms-2" id="btn-show-qris" style="display:none; white-space:nowrap;" data-bs-toggle="modal" data-bs-target="#qrisModal">
+                                        <i class="mdi mdi-qrcode-scan"></i> Lihat QRIS
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
@@ -99,6 +104,35 @@
                             class="btn btn-warning btn-lg btn-block text-dark mt-4 shadow font-weight-bold"
                             id="btn-verifikasi">BAYAR SEKARANG</button>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal QRIS -->
+    <div class="modal fade" id="qrisModal" tabindex="-1" aria-labelledby="qrisModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content text-center">
+                <div class="modal-header bg-gradient-info text-white">
+                    <h5 class="modal-title" id="qrisModalLabel"><i class="mdi mdi-qrcode-scan"></i> Scan QRIS</h5>
+                    <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 bg-light">
+                    @if(isset($qris_image) && file_exists(public_path($qris_image)))
+                        @if(isset($qris_name))
+                            <h6 class="text-primary font-weight-bold mb-3">{{ $qris_name }}</h6>
+                        @endif
+                        <img src="{{ asset($qris_image) }}" alt="QRIS" class="img-fluid rounded shadow-lg border" style="max-height: 400px;">
+                        <p class="mt-3 text-muted">Silahkan scan QR code di atas untuk melakukan pembayaran.</p>
+                    @else
+                        <div class="alert alert-warning">
+                            <i class="mdi mdi-alert"></i> Gambar QRIS belum dikonfigurasi di menu Setting.
+                        </div>
+                    @endif
+                </div>
+                <div class="modal-footer justify-content-center border-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-success" id="btn-submit-qris" style="display:none;"><i class="mdi mdi-check-circle"></i> Selesai Pembayaran</button>
                 </div>
             </div>
         </div>
@@ -165,6 +199,17 @@
             const grandTotalDisplay = document.getElementById('grand-total-display');
             const totalInput = document.getElementById('total_input');
             const btnAdd = document.getElementById('add-item');
+            
+            const metodePembayaran = document.getElementById('metode_pembayaran');
+            const btnShowQris = document.getElementById('btn-show-qris');
+
+            metodePembayaran.addEventListener('change', function() {
+                if (this.value === 'Qris') {
+                    btnShowQris.style.display = 'inline-block';
+                } else {
+                    btnShowQris.style.display = 'none';
+                }
+            });
 
             function formatRupiah(number) {
                 return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
@@ -267,9 +312,26 @@
             document.getElementById('btn-submit-form').addEventListener('click', function () {
                 if (totalInput.value == 0) {
                     alert('Belum ada produk yang dipilih!');
+                    return;
+                }
+                
+                if (document.getElementById('metode_pembayaran').value === 'Qris') {
+                    // Hide verifikasi modal
+                    const verifikasiModalEl = document.getElementById('verifikasiModal');
+                    const vModal = bootstrap.Modal.getInstance(verifikasiModalEl);
+                    if (vModal) vModal.hide();
+
+                    // Show QRIS modal with the submit button enabled
+                    document.getElementById('btn-submit-qris').style.display = 'inline-block';
+                    const qrisModal = new bootstrap.Modal(document.getElementById('qrisModal'));
+                    qrisModal.show();
                 } else {
                     document.getElementById('pos-form').submit();
                 }
+            });
+
+            document.getElementById('btn-submit-qris').addEventListener('click', function () {
+                document.getElementById('pos-form').submit();
             });
         });
     </script>

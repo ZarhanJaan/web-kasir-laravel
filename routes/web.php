@@ -90,6 +90,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/manajemen-user', [App\Http\Controllers\UserController::class, 'index'])->name('manajemen-user');
         Route::post('/manajemen-user/update', [App\Http\Controllers\UserController::class, 'updateRole'])->name('manajemen-user.update');
         Route::get('/manajemen-user/delete/{id}', [App\Http\Controllers\UserController::class, 'delete'])->name('manajemen-user.delete');
+        
+        Route::get('/setting', [App\Http\Controllers\SettingController::class, 'index'])->name('setting');
+        Route::post('/setting/update-qris', [App\Http\Controllers\SettingController::class, 'updateQris'])->name('setting.update-qris');
     });
 
     // Routes accessible by Kasir as well

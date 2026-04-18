@@ -171,6 +171,12 @@
               <i class="mdi mdi-account-multiple menu-icon"></i>
             </a>
           </li>
+          <li class="nav-item {{ Request::is('setting') ? 'active-ref active' : '' }}">
+            <a class="nav-link" href="/setting">
+              <span class="menu-title">Setting</span>
+              <i class="mdi mdi-cog menu-icon"></i>
+            </a>
+          </li>
         @endif
       </ul>
     </nav>
