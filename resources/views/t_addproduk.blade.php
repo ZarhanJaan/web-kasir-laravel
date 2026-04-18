@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/pages/resep.css') }}">
 
     <div class="content-wrapper">
         <div class="page-header">
@@ -10,74 +11,81 @@
                 </span> Tambah Resep Menu
             </h3>
         </div>
-        <br><br>
-        {{-- add produk --}}
+
         <form action="/resep/insert" method="POST">
             @csrf
             <div class="row">
                 <!-- Column 1: Basic Info -->
-                <div class="col-md-5">
-                    <div class="card shadow-sm mb-4">
+                <div class="col-md-5 mb-4" data-aos="fade-up" data-aos-duration="600">
+                    <div class="resep-info-card">
                         <div class="card-body">
-                            <h4 class="card-title text-primary"><i class="mdi mdi-information-outline"></i> Informasi Menu
-                            </h4>
-                            <hr>
-                            <div class="form-group mb-3">
-                                <label class="font-weight-bold">ID Menu (Manual)</label>
-                                <input name="id_produk" class="form-control" value="{{ old('id_produk') }}"
+                            <div class="resep-card-title-row">
+                                <div class="title-icon">
+                                    <i class="mdi mdi-information-outline"></i>
+                                </div>
+                                <h4>Informasi Menu</h4>
+                            </div>
+
+                            <div class="resep-form-group">
+                                <label>ID Menu (Manual)</label>
+                                <input name="id_produk" class="resep-input" value="{{ old('id_produk') }}"
                                     placeholder="Contoh: 2001" required>
-                                <div class="text-danger small">@error('id_produk') {{ $message }} @enderror</div>
+                                <div class="resep-error">@error('id_produk') {{ $message }} @enderror</div>
                             </div>
 
-                            <div class="form-group mb-3">
-                                <label class="font-weight-bold">Nama Menu</label>
-                                <input name="nama_produk" class="form-control" value="{{ old('nama_produk') }}"
+                            <div class="resep-form-group">
+                                <label>Nama Menu</label>
+                                <input name="nama_produk" class="resep-input" value="{{ old('nama_produk') }}"
                                     placeholder="Contoh: Indomie Goreng Spesial" required>
-                                <div class="text-danger small">@error('nama_produk') {{ $message }} @enderror</div>
+                                <div class="resep-error">@error('nama_produk') {{ $message }} @enderror</div>
                             </div>
 
-                            <div class="form-group mb-3">
-                                <label class="font-weight-bold">Harga Jual</label>
-                                <div class="input-group">
-                                    <span class="input-group-text">Rp</span>
-                                    <input name="harga_jual" class="form-control" value="{{ old('harga_jual') }}"
+                            <div class="resep-form-group">
+                                <label>Harga Jual</label>
+                                <div class="resep-input-group">
+                                    <span class="resep-input-prefix">Rp</span>
+                                    <input name="harga_jual" class="resep-input" value="{{ old('harga_jual') }}"
                                         placeholder="Contoh: 15000" required>
                                 </div>
-                                <div class="text-danger small">@error('harga_jual') {{ $message }} @enderror</div>
+                                <div class="resep-error">@error('harga_jual') {{ $message }} @enderror</div>
                             </div>
 
-                            <div class="form-group mb-3">
-                                <label class="font-weight-bold">Kategori Menu</label>
-                                <select name="kategori" class="form-control" required>
+                            <div class="resep-form-group">
+                                <label>Kategori Menu</label>
+                                <select name="kategori" class="resep-select" required>
                                     <option value="">-- Pilih Kategori --</option>
                                     <option value="Makanan" {{ old('kategori') == 'Makanan' ? 'selected' : '' }}>Makanan
                                     </option>
                                     <option value="Minuman" {{ old('kategori') == 'Minuman' ? 'selected' : '' }}>Minuman
                                     </option>
                                 </select>
-                                <div class="text-danger small">@error('kategori') {{ $message }} @enderror</div>
+                                <div class="resep-error">@error('kategori') {{ $message }} @enderror</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Column 2: Ingredients (Resep) -->
-                <div class="col-md-7">
-                    <div class="card shadow-sm mb-4">
+                <div class="col-md-7 mb-4" data-aos="fade-up" data-aos-duration="600" data-aos-delay="150">
+                    <div class="resep-bahan-card">
                         <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h4 class="card-title text-success mb-0"><i class="mdi mdi-flask-outline"></i> Resep (Bahan
-                                    Baku)</h4>
-                                <button type="button" class="btn btn-sm btn-inverse-success" id="btn-add-bahan"><i
-                                        class="mdi mdi-plus"></i> Tambah Bahan</button>
+                            <div class="resep-bahan-header">
+                                <div class="resep-card-title-row" style="margin-bottom: 0;">
+                                    <div class="title-icon" style="background: linear-gradient(135deg, var(--success-color), #4facfe);">
+                                        <i class="mdi mdi-flask-outline"></i>
+                                    </div>
+                                    <h4>Resep (Bahan Baku)</h4>
+                                </div>
+                                <button type="button" class="resep-btn-add-bahan" id="btn-add-bahan">
+                                    <i class="mdi mdi-plus"></i> Tambah Bahan
+                                </button>
                             </div>
-                            <hr>
-                            <p class="text-muted small mb-4">Tentukan bahan baku yang digunakan untuk membuat menu ini.
+                            <p class="resep-bahan-desc">Tentukan bahan baku yang digunakan untuk membuat menu ini.
                                 Setiap penggunaan akan mengurangi stok bahan otomatis saat terjual.</p>
 
                             <div class="table-responsive">
-                                <table class="table table-bordered table-hover" id="table-resep">
-                                    <thead class="bg-light">
+                                <table class="resep-add-table" id="table-resep">
+                                    <thead>
                                         <tr>
                                             <th>Bahan Baku</th>
                                             <th style="width: 30%">Jumlah</th>
@@ -87,8 +95,7 @@
                                     <tbody id="resep-body">
                                         <tr class="resep-row">
                                             <td>
-                                                <select name="id_stok[]" class="form-control form-control-sm select-bahan"
-                                                    required>
+                                                <select name="id_stok[]" class="resep-select select-bahan" required>
                                                     <option value="">-- Pilih Bahan --</option>
                                                     @foreach($stok_items as $item)
                                                         <option value="{{ $item->id_stok }}">{{ $item->nama_stok }} (ID:
@@ -97,32 +104,37 @@
                                                 </select>
                                             </td>
                                             <td>
-                                                <input type="number" name="jumlah_resep[]"
-                                                    class="form-control form-control-sm" step="0.01" min="0.01" required>
+                                                <input type="number" name="jumlah_resep[]" class="resep-input"
+                                                    step="0.01" min="0.01" required>
                                             </td>
                                             <td class="text-center">
-                                                <button type="button" class="btn btn-sm btn-inverse-danger btn-remove-row"
+                                                <button type="button" class="resep-btn-remove-row btn-remove-row"
                                                     style="display:none;"><i class="mdi mdi-delete"></i></button>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="text-danger small mt-2">
-                                @if($errors->has('id_stok.*') || $errors->has('jumlah_resep.*') || $errors->has('id_resep.*'))
-                                    Ada kesalahan pada data resep. Pastikan semua kolom terisi dan unik.
-                                @endif
-                            </div>
+                            @if($errors->has('id_stok.*') || $errors->has('jumlah_resep.*') || $errors->has('id_resep.*'))
+                                <div class="resep-error-box">
+                                    <i class="mdi mdi-alert-circle"></i> Ada kesalahan pada data resep. Pastikan semua kolom terisi dan unik.
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="row mt-3">
-                <div class="col-12 text-center">
-                    <hr>
-                    <a href="/menu" class="btn btn-secondary me-2">Batal</a>
-                    <button type="submit" class="btn bg-gradient-info text-white px-5">Simpan Menu & Resep</button>
+            <div class="row">
+                <div class="col-12">
+                    <div class="resep-actions-bar">
+                        <a href="/menu" class="resep-btn-cancel">
+                            <i class="mdi mdi-close"></i> Batal
+                        </a>
+                        <button type="submit" class="resep-btn-save">
+                            <i class="mdi mdi-content-save"></i> Simpan Menu & Resep
+                        </button>
+                    </div>
                 </div>
             </div>
         </form>
@@ -169,10 +181,5 @@
             });
         </script>
     @endsection
-
-
-    </div>
-
-
 
 @endsection

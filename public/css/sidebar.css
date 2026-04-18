@@ -27,11 +27,19 @@
 }
 
 /* ===== BODY & BACKGROUND ===== */
+html {
+    background-color: var(--bg-primary) !important;
+    min-height: 100%;
+}
+
 body {
     background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-tertiary) 100%) !important;
+    background-attachment: fixed !important;
     font-family: var(--font-family) !important;
     -webkit-font-smoothing: antialiased;
     min-height: 100vh;
+    margin: 0;
+    padding: 0;
 }
 
 /* Custom scrollbar */
@@ -352,14 +360,17 @@ nav.sidebar .nav .nav-item.active .nav-link i {
 /* =================================================================
    MAIN PANEL & CONTENT — adjusted for fixed sidebar
    ================================================================= */
-.main-panel {
-    background: transparent !important;
-    margin-left: 235px !important;
-    width: calc(100% - 235px) !important;
-}
-
+.container-scroller,
+.container-fluid,
+.page-body-wrapper,
+.main-panel,
 .content-wrapper {
     background: transparent !important;
+}
+
+.main-panel {
+    margin-left: 235px !important;
+    width: calc(100% - 235px) !important;
 }
 
 /* Page header */
