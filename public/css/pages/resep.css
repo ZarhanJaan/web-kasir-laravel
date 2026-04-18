@@ -1,0 +1,1065 @@
+/* ===================================================================
+   RESEP.CSS
+   Styling konten halaman Resep Menu (Daftar & Edit)
+   Selaras dengan dashboard.css, manajemen_user.css, & menu.css
+   (Sidebar & Navbar sudah dihandle oleh sidebar.css global)
+   =================================================================== */
+
+
+/* =================================================================
+   CONTENT PADDING
+   ================================================================= */
+.content-wrapper {
+    padding: 28px 32px !important;
+    min-height: calc(100vh - 70px);
+}
+
+
+/* =================================================================
+   GLOBAL — Card Title Row (used in all card types)
+   ================================================================= */
+.resep-card-title-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.resep-card-title-row .title-icon {
+    width: 42px;
+    height: 42px;
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 18px var(--accent-glow);
+    flex-shrink: 0;
+}
+
+.resep-card-title-row .title-icon i {
+    font-size: 20px;
+    color: #fff !important;
+}
+
+.resep-card-title-row h4 {
+    margin: 0 !important;
+    color: var(--text-primary) !important;
+    font-weight: 700 !important;
+    font-size: 18px !important;
+    letter-spacing: -0.2px;
+}
+
+
+/* =================================================================
+   ALERT — Success & Error
+   ================================================================= */
+.resep-alert-success {
+    background: rgba(81, 207, 102, 0.08) !important;
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(81, 207, 102, 0.15) !important;
+    border-left: 4px solid var(--success-color) !important;
+    border-radius: 16px !important;
+    color: var(--text-secondary) !important;
+    padding: 16px 24px !important;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+.resep-alert-success i {
+    color: var(--success-color) !important;
+    margin-right: 6px;
+}
+
+.resep-alert-danger {
+    background: rgba(255, 107, 107, 0.08) !important;
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 107, 107, 0.15) !important;
+    border-left: 4px solid var(--error-color) !important;
+    border-radius: 16px !important;
+    color: var(--text-secondary) !important;
+    padding: 16px 24px !important;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+.resep-alert-danger i {
+    color: var(--error-color) !important;
+    margin-right: 6px;
+}
+
+
+/* =================================================================
+   HEADER BUTTONS — Add Menu & Kembali
+   ================================================================= */
+.resep-btn-header {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 20px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    color: #fff !important;
+    font-family: var(--font-family);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    box-shadow: 0 4px 14px rgba(79, 172, 254, 0.3);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    letter-spacing: 0.2px;
+}
+
+.resep-btn-header:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(79, 172, 254, 0.45);
+    color: #fff !important;
+}
+
+.resep-btn-header:active {
+    transform: translateY(0);
+}
+
+.resep-btn-header i {
+    font-size: 16px;
+}
+
+/* Back button — ghost style */
+.resep-btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 20px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: var(--text-secondary) !important;
+    font-family: var(--font-family);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    letter-spacing: 0.2px;
+}
+
+.resep-btn-back:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff !important;
+    border-color: rgba(255, 255, 255, 0.22);
+}
+
+
+/* =================================================================
+   RESEP CARD — Glassmorphism (Daftar Resep)
+   ================================================================= */
+.resep-card {
+    background: var(--card-bg) !important;
+    backdrop-filter: blur(20px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
+    border: 1px solid var(--card-border) !important;
+    border-radius: 20px !important;
+    box-shadow: var(--card-shadow) !important;
+    overflow: hidden;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    height: 100%;
+}
+
+.resep-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3) !important;
+}
+
+.resep-card .card-body {
+    padding: 26px !important;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* =================================================================
+   CARD HEADER — Title + Action Buttons
+   ================================================================= */
+.resep-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.resep-card-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 17px;
+    margin: 0;
+    letter-spacing: -0.2px;
+}
+
+.resep-card-title i {
+    color: var(--success-color);
+    font-size: 20px;
+}
+
+.resep-card-meta {
+    color: var(--text-muted);
+    font-size: 12px;
+    margin-top: 8px;
+    margin-bottom: 0;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+}
+
+
+/* =================================================================
+   SEPARATOR
+   ================================================================= */
+.resep-divider {
+    border: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+    margin: 16px 0;
+}
+
+
+/* =================================================================
+   INGREDIENTS LIST
+   ================================================================= */
+.resep-section-title {
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 14px;
+}
+
+.resep-ingredient-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+}
+
+.resep-ingredient-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.resep-ingredient-item:hover {
+    background: rgba(102, 126, 234, 0.08);
+    border-color: rgba(102, 126, 234, 0.18);
+    transform: translateX(3px);
+}
+
+.resep-ingredient-badge {
+    background: rgba(79, 172, 254, 0.15);
+    color: #4facfe;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.3px;
+}
+
+/* Empty State */
+.resep-empty-state {
+    background: rgba(255, 107, 107, 0.05);
+    border-left: 3px solid var(--error-color);
+    padding: 14px 16px;
+    border-radius: 10px;
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-style: italic;
+}
+
+
+/* =================================================================
+   ACTION BUTTONS — Edit & Delete (Card)
+   ================================================================= */
+.resep-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-family: var(--font-family);
+    font-size: 12px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.2px;
+}
+
+.resep-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+    transition: left 0.5s ease;
+}
+
+.resep-btn:hover::before {
+    left: 100%;
+}
+
+/* Edit */
+.resep-btn-edit {
+    background: linear-gradient(135deg, #fcc419, #f59f00);
+    color: #1a1a2e;
+    box-shadow: 0 3px 10px rgba(252, 196, 25, 0.25);
+}
+
+.resep-btn-edit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 16px rgba(252, 196, 25, 0.4);
+    color: #1a1a2e;
+}
+
+/* Delete */
+.resep-btn-delete {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    color: #fff;
+    box-shadow: 0 3px 10px rgba(255, 107, 107, 0.25);
+}
+
+.resep-btn-delete:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 16px rgba(255, 107, 107, 0.4);
+    color: #fff;
+}
+
+.resep-btn:active {
+    transform: translateY(0);
+}
+
+
+/* =================================================================
+   EDIT PAGE — TABLE CARD (Komponen Bahan)
+   ================================================================= */
+.resep-table-card {
+    background: var(--card-bg) !important;
+    backdrop-filter: blur(20px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
+    border: 1px solid var(--card-border) !important;
+    border-radius: 20px !important;
+    box-shadow: var(--card-shadow) !important;
+    overflow: hidden;
+    height: 100%;
+}
+
+.resep-table-card .card-body {
+    padding: 28px 28px !important;
+}
+
+/* Card title inside table card */
+.resep-table-card .resep-card-title-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.resep-table-card .resep-card-title-row .title-icon {
+    width: 42px;
+    height: 42px;
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 18px var(--accent-glow);
+    flex-shrink: 0;
+}
+
+.resep-table-card .resep-card-title-row .title-icon i {
+    font-size: 20px;
+    color: #fff;
+}
+
+.resep-table-card .resep-card-title-row h4 {
+    margin: 0;
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: -0.2px;
+}
+
+
+/* =================================================================
+   EDIT PAGE — BAHAN TABLE
+   ================================================================= */
+.resep-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 6px;
+}
+
+.resep-table thead th {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 16px;
+}
+
+.resep-table tbody tr {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    transition: all 0.25s ease;
+}
+
+.resep-table tbody tr:hover {
+    background: rgba(102, 126, 234, 0.08);
+    transform: translateX(4px);
+}
+
+.resep-table tbody td {
+    border: none;
+    padding: 14px 16px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 400;
+    vertical-align: middle;
+}
+
+.resep-table tbody tr td:first-child {
+    border-radius: 12px 0 0 12px;
+}
+
+.resep-table tbody tr td:last-child {
+    border-radius: 0 12px 12px 0;
+}
+
+/* Bahan name */
+.resep-table .bahan-name {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* Delete link inside table */
+.resep-table .resep-btn-del-inline {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--error-color);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 8px;
+    background: rgba(255, 107, 107, 0.08);
+    transition: all 0.25s ease;
+}
+
+.resep-table .resep-btn-del-inline:hover {
+    background: rgba(255, 107, 107, 0.18);
+    color: #ff4444;
+}
+
+.resep-table .resep-btn-del-inline i {
+    font-size: 18px;
+}
+
+/* Empty table row */
+.resep-table .resep-table-empty td {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 28px 16px;
+    font-style: italic;
+}
+
+
+/* =================================================================
+   EDIT PAGE — FORM CARD (Tambah Bahan)
+   ================================================================= */
+.resep-form-card {
+    background: var(--card-bg) !important;
+    backdrop-filter: blur(20px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
+    border: 1px solid var(--card-border) !important;
+    border-radius: 20px !important;
+    box-shadow: var(--card-shadow) !important;
+    overflow: hidden;
+    position: relative;
+    height: 100%;
+}
+
+/* Top accent glow line */
+.resep-form-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--success-color), #4facfe, transparent);
+    border-radius: 0 0 4px 4px;
+}
+
+.resep-form-card .card-body {
+    padding: 28px 28px !important;
+}
+
+/* Form card title */
+.resep-form-card .resep-card-title-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+}
+
+.resep-form-card .resep-card-title-row .title-icon {
+    width: 42px;
+    height: 42px;
+    background: linear-gradient(135deg, var(--success-color), #4facfe);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 18px rgba(81, 207, 102, 0.25);
+    flex-shrink: 0;
+}
+
+.resep-form-card .resep-card-title-row .title-icon i {
+    font-size: 20px;
+    color: #fff;
+}
+
+.resep-form-card .resep-card-title-row h4 {
+    margin: 0;
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: -0.2px;
+}
+
+
+/* =================================================================
+   FORM GROUPS — Input fields
+   ================================================================= */
+.resep-form-group {
+    margin-bottom: 20px;
+}
+
+.resep-form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary) !important;
+    margin-bottom: 8px;
+    letter-spacing: 0.3px;
+    font-family: var(--font-family);
+}
+
+/* Override Bootstrap .card-title that forces dark text */
+.resep-info-card .card-title,
+.resep-bahan-card .card-title,
+.resep-table-card .card-title,
+.resep-form-card .card-title,
+.resep-info-card h4,
+.resep-bahan-card h4,
+.resep-table-card h4,
+.resep-form-card h4 {
+    color: var(--text-primary) !important;
+    margin: 0 !important;
+}
+
+.resep-input {
+    width: 100%;
+    height: 46px;
+    background: rgba(255, 255, 255, 0.07) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 12px !important;
+    padding: 0 16px;
+    font-family: var(--font-family);
+    font-size: 14px;
+    font-weight: 400;
+    color: #ffffff !important;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.resep-input::placeholder {
+    color: var(--text-muted);
+    font-weight: 300;
+}
+
+.resep-input:focus {
+    border-color: rgba(102, 126, 234, 0.5) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12) !important;
+}
+
+/* Select */
+.resep-select {
+    width: 100%;
+    height: 46px;
+    background: rgba(255, 255, 255, 0.07) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 12px !important;
+    padding: 0 16px;
+    font-family: var(--font-family);
+    font-size: 14px;
+    font-weight: 400;
+    color: #ffffff !important;
+    transition: all 0.3s ease;
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.45)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 14px center !important;
+    padding-right: 36px !important;
+}
+
+.resep-select:focus {
+    border-color: rgba(102, 126, 234, 0.5) !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12) !important;
+}
+
+.resep-select option {
+    background: #1a1a2e;
+    color: #ffffff;
+}
+
+
+/* =================================================================
+   SUBMIT BUTTON
+   ================================================================= */
+.resep-btn-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 13px 24px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--success-color), #4facfe);
+    color: #fff;
+    font-family: var(--font-family);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(81, 207, 102, 0.3);
+    margin-top: 8px;
+}
+
+.resep-btn-submit::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+    transition: left 0.5s ease;
+}
+
+.resep-btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(81, 207, 102, 0.45);
+}
+
+.resep-btn-submit:hover::before {
+    left: 100%;
+}
+
+.resep-btn-submit:active {
+    transform: translateY(0);
+}
+
+
+/* =================================================================
+   ADD PAGE — INFO CARD (Informasi Menu)
+   ================================================================= */
+.resep-info-card {
+    background: var(--card-bg) !important;
+    backdrop-filter: blur(20px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
+    border: 1px solid var(--card-border) !important;
+    border-radius: 20px !important;
+    box-shadow: var(--card-shadow) !important;
+    overflow: hidden;
+    position: relative;
+}
+
+.resep-info-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--accent-start), var(--accent-end), transparent);
+    border-radius: 0 0 4px 4px;
+}
+
+.resep-info-card .card-body {
+    padding: 28px !important;
+}
+
+.resep-info-card .resep-card-title-row .title-icon {
+    width: 42px;
+    height: 42px;
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 18px var(--accent-glow);
+    flex-shrink: 0;
+}
+
+
+/* =================================================================
+   ADD PAGE — RESEP BAHAN CARD (Resep / Bahan Baku)
+   ================================================================= */
+.resep-bahan-card {
+    background: var(--card-bg) !important;
+    backdrop-filter: blur(20px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
+    border: 1px solid var(--card-border) !important;
+    border-radius: 20px !important;
+    box-shadow: var(--card-shadow) !important;
+    overflow: hidden;
+    position: relative;
+}
+
+.resep-bahan-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--success-color), #4facfe, transparent);
+    border-radius: 0 0 4px 4px;
+}
+
+.resep-bahan-card .card-body {
+    padding: 28px !important;
+}
+
+/* Card header with title + add button */
+.resep-bahan-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.resep-bahan-desc {
+    color: var(--text-muted) !important;
+    font-size: 13px;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+/* Tambah Bahan button */
+.resep-btn-add-bahan {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 16px;
+    border-radius: 10px;
+    background: rgba(81, 207, 102, 0.12);
+    color: var(--success-color);
+    border: 1px solid rgba(81, 207, 102, 0.2);
+    font-family: var(--font-family);
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.resep-btn-add-bahan:hover {
+    background: rgba(81, 207, 102, 0.2);
+    border-color: rgba(81, 207, 102, 0.35);
+    transform: translateY(-1px);
+}
+
+.resep-btn-add-bahan i {
+    font-size: 16px;
+}
+
+
+/* =================================================================
+   ADD PAGE — DYNAMIC RESEP TABLE
+   ================================================================= */
+.resep-add-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+}
+
+.resep-add-table thead th {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 8px 12px;
+}
+
+.resep-add-table tbody tr {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    transition: all 0.25s ease;
+}
+
+.resep-add-table tbody tr:hover {
+    background: rgba(102, 126, 234, 0.06);
+}
+
+.resep-add-table tbody td {
+    border: none;
+    padding: 8px 8px;
+    vertical-align: middle;
+}
+
+.resep-add-table tbody tr td:first-child {
+    border-radius: 12px 0 0 12px;
+}
+
+.resep-add-table tbody tr td:last-child {
+    border-radius: 0 12px 12px 0;
+}
+
+/* Select & input inside the add table — smaller variant */
+.resep-add-table .resep-select,
+.resep-add-table .resep-input {
+    height: 42px;
+    font-size: 13px;
+    border-radius: 10px !important;
+}
+
+/* Remove row button */
+.resep-btn-remove-row {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background: rgba(255, 107, 107, 0.1);
+    color: var(--error-color);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: all 0.3s ease;
+}
+
+.resep-btn-remove-row:hover {
+    background: rgba(255, 107, 107, 0.25);
+    transform: scale(1.1);
+}
+
+
+/* =================================================================
+   ADD PAGE — INPUT GROUP (Rp prefix)
+   ================================================================= */
+.resep-input-group {
+    display: flex;
+    align-items: stretch;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1.5px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.07);
+    transition: all 0.3s ease;
+}
+
+.resep-input-group:focus-within {
+    border-color: rgba(102, 126, 234, 0.5);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12);
+}
+
+.resep-input-group .resep-input-prefix {
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.04);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    user-select: none;
+}
+
+.resep-input-group .resep-input {
+    border: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.resep-input-group .resep-input:focus {
+    box-shadow: none !important;
+}
+
+
+/* =================================================================
+   ADD PAGE — VALIDATION ERROR
+   ================================================================= */
+.resep-error {
+    color: var(--error-color);
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: 6px;
+}
+
+.resep-error-box {
+    background: rgba(255, 107, 107, 0.06);
+    border: 1px solid rgba(255, 107, 107, 0.12);
+    border-left: 3px solid var(--error-color);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-top: 12px;
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+
+
+/* =================================================================
+   ADD PAGE — FORM ACTIONS BAR (Batal + Simpan)
+   ================================================================= */
+.resep-actions-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding-top: 24px;
+    margin-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.resep-btn-cancel {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 28px;
+    border-radius: 14px;
+    background: transparent;
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    color: var(--text-secondary);
+    font-family: var(--font-family);
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.resep-btn-cancel:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.resep-btn-save {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 36px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+    color: #fff;
+    font-family: var(--font-family);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px var(--accent-glow);
+}
+
+.resep-btn-save::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+    transition: left 0.5s ease;
+}
+
+.resep-btn-save:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(102, 126, 234, 0.5);
+}
+
+.resep-btn-save:hover::before {
+    left: 100%;
+}
+
+.resep-btn-save:active {
+    transform: translateY(0);
+}
+
+
+/* =================================================================
+   RESPONSIVE
+   ================================================================= */
+@media (max-width: 991px) {
+    .content-wrapper {
+        padding: 20px 16px !important;
+    }
+
+    .resep-card .card-body {
+        padding: 20px !important;
+    }
+
+    .resep-table-card .card-body,
+    .resep-form-card .card-body {
+        padding: 20px 16px !important;
+    }
+
+    .resep-card-title {
+        font-size: 15px;
+    }
+
+    .resep-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+}
