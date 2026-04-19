@@ -1,0 +1,107 @@
+/* ===================================================================
+   CETAK_TGL_PDF.CSS
+   Styling halaman Cetak PDF Per Tanggal (datapenjualan_tgl_pdf)
+   Selaras: laporan_penjualan.css · dashboard.css
+   =================================================================== */
+
+
+/* =================================================================
+   FORM GRID (2 kolom)
+   ================================================================= */
+.ctgl-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+@media (max-width: 767px) {
+    .ctgl-form-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
+
+
+/* =================================================================
+   FIELD GROUP
+   ================================================================= */
+.ctgl-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ctgl-label {
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.9px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ctgl-label i {
+    font-size: 14px;
+    color: var(--accent-start);
+}
+
+
+/* =================================================================
+   DATE INPUT
+   ================================================================= */
+.ctgl-input {
+    width: 100%;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    color: var(--text-primary);
+    font-family: var(--font-family);
+    font-size: 14px;
+    font-weight: 500;
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+
+.ctgl-input:focus {
+    border-color: var(--accent-start);
+    background: rgba(102, 126, 234, 0.08);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+}
+
+/* Windows Chrome date picker icon colour */
+.ctgl-input::-webkit-calendar-picker-indicator {
+    filter: invert(0.7);
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+.ctgl-input::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+}
+
+
+/* =================================================================
+   ACTION ROW
+   ================================================================= */
+.ctgl-action {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.ctgl-btn-cetak {
+    padding: 12px 32px !important;
+    font-size: 14px !important;
+    border-radius: 14px !important;
+    gap: 8px !important;
+}
+
+.ctgl-btn-cetak i {
+    font-size: 16px;
+}
