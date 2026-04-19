@@ -5,9 +5,9 @@
 
 <div class="content-wrapper">
     <div class="page-header">
-        <h3 class="page-title">
+        <h3 class="page-title d-flex align-items-center">
             <span class="page-title-icon bg-gradient-primary text-white me-2">
-                <i class="mdi mdi-settings menu-icon"></i>
+                <i class="mdi mdi-cog"></i>
             </span> Aplikasi Setting
         </h3>
         <nav aria-label="breadcrumb">
