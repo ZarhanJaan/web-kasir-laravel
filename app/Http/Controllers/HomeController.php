@@ -32,6 +32,12 @@ class HomeController extends Controller
         $totalPenjualan = DB::table('t_penjualan')->sum('total');
         $totalData = DB::table('t_penjualan')->count();
 
+        // Penjabaran Kategori Menu
+        $kategoriMenu = DB::table('t_produk')
+            ->select('kategori', DB::raw('count(*) as total'))
+            ->groupBy('kategori')
+            ->get();
+
         // 3. Menu Terlaris (mengambil dari tabel riwayat_stok / produk)
         $menu_terlaris = DB::table('t_riwayat_stok')
             ->join('t_produk', 't_riwayat_stok.id_produk', '=', 't_produk.id_produk')
@@ -48,6 +54,6 @@ class HomeController extends Controller
             ->get();
 
         // Kirim data ke view
-        return view('home', compact('totalProduk', 'totalPenjualan', 'totalStok', 'totalData', 'stok_menipis', 'menu_terlaris'));
+        return view('home', compact('totalProduk', 'totalPenjualan', 'totalStok', 'totalData', 'stok_menipis', 'menu_terlaris', 'kategoriMenu'));
     }
 }

@@ -249,6 +249,71 @@ class StokController extends Controller
         }
     }
 
+    public function keluar_edit($id)
+    {
+        $riwayat = DB::table('t_riwayat_stok')
+            ->leftJoin('t_produk', 't_riwayat_stok.id_produk', '=', 't_produk.id_produk')
+            ->leftJoin('t_stok_item', 't_riwayat_stok.id_stok', '=', 't_stok_item.id_stok')
+            ->where('t_riwayat_stok.id_riwayat', $id)
+            ->select('t_riwayat_stok.*', DB::raw("COALESCE(t_produk.nama_produk, t_stok_item.nama_stok) as nama_produk"))
+            ->first();
+
+        if (!$riwayat) {
+            return redirect()->route('stok.keluar')->with('pesan_error', 'Data tidak ditemukan.');
+        }
+
+        return view('t_stok_keluar_edit', compact('riwayat'));
+    }
+
+    public function keluar_update(Request $request, $id)
+    {
+        $request->validate([
+            'jumlah' => 'required|numeric|min:1',
+            'tanggal' => 'required|date',
+            'nama_pelanggan' => 'required',
+            'keterangan' => 'nullable'
+        ]);
+
+        try {
+            DB::transaction(function () use ($request, $id) {
+                $riwayat_lama = DB::table('t_riwayat_stok')->where('id_riwayat', $id)->first();
+                if (!$riwayat_lama) {
+                    throw new \Exception('Data riwayat tidak ditemukan.');
+                }
+
+                // Hitung selisih
+                $selisih = $request->jumlah - $riwayat_lama->jumlah;
+
+                if ($riwayat_lama->id_stok) {
+                    $item = DB::table('t_stok_item')->where('id_stok', $riwayat_lama->id_stok)->first();
+                    
+                    if ($selisih > 0) {
+                        // Jika jumlah keluar NAMBAH, berarti stok di gudang BERKURANG
+                        if (!$item || $item->stok < $selisih) {
+                            throw new \Exception('Stok ' . ($item->nama_stok ?? 'Bahan') . ' tidak mencukupi untuk dikeluarkan lebih banyak.');
+                        }
+                        DB::table('t_stok_item')->where('id_stok', $riwayat_lama->id_stok)->decrement('stok', $selisih);
+                    } else if ($selisih < 0) {
+                        // Jika jumlah keluar BERKURANG, berarti stok di gudang KEMBALI
+                        DB::table('t_stok_item')->where('id_stok', $riwayat_lama->id_stok)->increment('stok', abs($selisih));
+                    }
+                }
+
+                DB::table('t_riwayat_stok')->where('id_riwayat', $id)->update([
+                    'jumlah' => $request->jumlah,
+                    'tanggal' => $request->tanggal,
+                    'nama_pelanggan' => $request->nama_pelanggan,
+                    'keterangan' => $request->keterangan,
+                    'updated_at' => now()
+                ]);
+            });
+
+            return redirect()->route('stok.keluar')->with('pesan_sukses', 'Data berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('pesan_error', $e->getMessage());
+        }
+    }
+
     public function keluar_delete($id)
     {
         // Refund logic (Optional, but good for data integrity)
