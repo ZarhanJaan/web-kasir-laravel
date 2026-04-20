@@ -47,9 +47,43 @@
         </div>
       @endif
 
+      <style>
+        .stat-cards-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px; /* Jarak konsisten yang kecil antar box */
+            margin-bottom: 24px;
+        }
+        .stat-card-item {
+            flex: 1 1 calc(25% - 16px);
+            min-width: 220px;
+            max-width: 320px;
+            display: flex;
+        }
+        .stat-card-item .dash-stat-card {
+            width: 100%;
+        }
+        @media (max-width: 991px) {
+            .stat-card-item {
+                flex: 1 1 calc(33.333% - 16px);
+            }
+        }
+        @media (max-width: 768px) {
+            .stat-card-item {
+                flex: 1 1 calc(50% - 16px);
+                max-width: 100%;
+            }
+        }
+        @media (max-width: 480px) {
+            .stat-card-item {
+                flex: 1 1 100%;
+            }
+        }
+      </style>
+
       {{-- Stat Cards --}}
-      <div class="row">
-        <div class="col-md-6 col-lg-4 grid-margin stretch-card">
+      <div class="stat-cards-wrapper">
+        <div class="stat-card-item">
           <div class="dash-stat-card" data-aos="fade-up" data-aos-duration="800">
             <div class="bg-circle"></div>
             <div class="card-body">
@@ -62,6 +96,23 @@
             </div>
           </div>
         </div>
+
+        {{-- Kategori Menu Breakdown --}}
+        @foreach($kategoriMenu as $index => $kat)
+        <div class="stat-card-item">
+          <div class="dash-stat-card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="{{ 100 * ($index + 1) }}">
+            <div class="bg-circle" style="background: linear-gradient(135deg, #11998e, #38ef7d);"></div>
+            <div class="card-body">
+              <div class="stat-icon" style="background: linear-gradient(135deg, #11998e, #38ef7d); box-shadow: 0 8px 24px rgba(17, 153, 142, 0.3);">
+                <i class="mdi mdi-shape"></i>
+              </div>
+              <div class="stat-label">Kategori: {{ $kat->kategori ?: 'Tanpa Kategori' }}</div>
+              <div class="stat-value">{{ $kat->total }}</div>
+              <div class="stat-sub">Total menu kategori ini</div>
+            </div>
+          </div>
+        </div>
+        @endforeach
       </div>
 
       {{-- Menu Terlaris Table --}}
