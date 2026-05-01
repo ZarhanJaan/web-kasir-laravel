@@ -63,10 +63,18 @@
                             value="{{ $store_name ?? 'Toko Sembako' }}" required>
                     </div>
 
+                    <div class="st-form-group mt-3">
+                        <label for="store_address" class="st-form-label">
+                            <i class="mdi mdi-map-marker-outline me-1"></i> Alamat Web/Toko
+                        </label>
+                        <textarea name="store_address" id="store_address"
+                            class="st-input" rows="3" required>{{ $store_address ?? 'Jl. Contoh Alamat No.123' }}</textarea>
+                    </div>
+
                     <hr class="st-divider">
 
                     <button type="submit" class="st-btn-save">
-                        <i class="mdi mdi-content-save"></i> Simpan Nama
+                        <i class="mdi mdi-content-save"></i> Simpan Informasi
                     </button>
                 </form>
             </div>

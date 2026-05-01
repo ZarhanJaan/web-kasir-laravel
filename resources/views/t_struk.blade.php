@@ -17,8 +17,8 @@
 </head>
 <body onload="window.print()">
     <div class="text-center mb-2">
-        <h2>Restoran</h2>
-        <p>Jl. Contoh Alamat No.123<br>Telp: 08123456789</p>
+        <h2>{{ $store_name }}</h2>
+        <p>{!! nl2br(e($store_address)) !!}</p>
     </div>
     <hr>
     <p>TRX ID: TRX-{{ $trx->id_penjualan }}<br>

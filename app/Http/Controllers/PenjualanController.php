@@ -132,7 +132,17 @@ class PenjualanController extends Controller
 
         $ids = explode(',', $trx->id_produk);
         $produk = DB::table('t_produk')->whereIn('id_produk', $ids)->get();
-        return view('t_struk', compact('trx', 'produk'));
+
+        $settingsPath = storage_path('app/settings.json');
+        $settings = [];
+        if (\Illuminate\Support\Facades\File::exists($settingsPath)) {
+            $settings = json_decode(\Illuminate\Support\Facades\File::get($settingsPath), true);
+        }
+
+        $store_name = $settings['store_name'] ?? 'Toko Sembako';
+        $store_address = $settings['store_address'] ?? 'Jl. Contoh Alamat No.123';
+
+        return view('t_struk', compact('trx', 'produk', 'store_name', 'store_address'));
     }
 
     public function add()
