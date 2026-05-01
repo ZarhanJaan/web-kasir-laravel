@@ -62,13 +62,26 @@
                                             <td>{{ $data->id_penjualan }}</td>
                                             <td>{{ $data->tanggal }}</td>
                                             <td class="col-name">{{ $data->nama_pelanggan }}</td>
-                                            <td>{{ $data->jumlah_barang }}</td>
+                                            <td>
+                                                @php
+                                                    $jumlahs = explode(',', $data->jumlah_barang);
+                                                    echo array_sum($jumlahs);
+                                                @endphp
+                                            </td>
                                             <td class="col-price">Rp.{{ $data->total }}</td>
                                             <td class="col-products">
                                                 @php
                                                     $produkIds = explode(',', $data->id_produk);
-                                                    $namaProduk = \App\Models\ProdukModel::whereIn('id_produk', $produkIds)->pluck('nama_produk')->toArray();
-                                                    echo implode(', ', $namaProduk);
+                                                    $jumlahs = explode(',', $data->jumlah_barang);
+                                                    $displayProduk = [];
+                                                    foreach ($produkIds as $index => $id) {
+                                                        $produk = \App\Models\ProdukModel::find($id);
+                                                        $qty = $jumlahs[$index] ?? 1;
+                                                        if ($produk) {
+                                                            $displayProduk[] = $produk->nama_produk . " (x" . $qty . ")";
+                                                        }
+                                                    }
+                                                    echo implode(', ', $displayProduk);
                                                 @endphp
                                             </td>
                                             @if(Auth::user()->hasAnyRole(['owner', 'admin']))

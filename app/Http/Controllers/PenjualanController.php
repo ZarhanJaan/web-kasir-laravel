@@ -111,7 +111,7 @@ class PenjualanController extends Controller
                     'id_penjualan' => $request->id_penjualan,
                     'tanggal' => $request->tanggal,
                     'nama_pelanggan' => $request->nama_pelanggan,
-                    'jumlah_barang' => array_sum($request->jumlah_barang),
+                    'jumlah_barang' => implode(',', $request->jumlah_barang),
                     'id_produk' => implode(',', $request->id_produk),
                     'total' => $request->total,
                     'metode_pembayaran' => $request->metode_pembayaran
@@ -190,7 +190,7 @@ class PenjualanController extends Controller
                     'id_penjualan' => $request->id_penjualan,
                     'tanggal' => $request->tanggal,
                     'nama_pelanggan' => $request->nama_pelanggan,
-                    'jumlah_barang' => array_sum($request->jumlah_barang),
+                    'jumlah_barang' => implode(',', $request->jumlah_barang),
                     'id_produk' => implode(',', $request->id_produk),
                     'total' => $request->total,
                 ];
@@ -234,7 +234,7 @@ class PenjualanController extends Controller
             'id_penjualan' => Request()->id_penjualan,
             'tanggal' => Request()->tanggal,
             'nama_pelanggan' => Request()->nama_pelanggan,
-            'jumlah_barang' => is_array(Request()->jumlah_barang) ? array_sum(Request()->jumlah_barang) : Request()->jumlah_barang,
+            'jumlah_barang' => is_array(Request()->jumlah_barang) ? implode(',', Request()->jumlah_barang) : Request()->jumlah_barang,
             'id_produk' => is_array(Request()->id_produk) ? implode(',', Request()->id_produk) : Request()->id_produk,
             'total' => Request()->total,
         ];
