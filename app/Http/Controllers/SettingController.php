@@ -23,12 +23,13 @@ class SettingController extends Controller
         }
 
         $store_name = $settings['store_name'] ?? 'Toko Sembako';
+        $store_address = $settings['store_address'] ?? 'Jl. Contoh Alamat No.123';
         
         $qris = Qris::first();
         $qris_image = $qris ? $qris->image_path : null;
         $qris_name = $qris ? $qris->name : null;
 
-        return view('setting', compact('store_name', 'qris_image', 'qris_name'));
+        return view('setting', compact('store_name', 'store_address', 'qris_image', 'qris_name'));
     }
 
     public function updateQris(Request $request)
@@ -65,6 +66,7 @@ class SettingController extends Controller
     {
         $request->validate([
             'store_name' => 'required|string|max:255',
+            'store_address' => 'required|string|max:500',
         ]);
 
         $settings = [];
@@ -73,8 +75,9 @@ class SettingController extends Controller
         }
 
         $settings['store_name'] = $request->input('store_name');
+        $settings['store_address'] = $request->input('store_address');
         File::put($this->settingsPath, json_encode($settings));
 
-        return redirect()->back()->with('success', 'Nama toko berhasil diperbarui!');
+        return redirect()->back()->with('success', 'Informasi toko berhasil diperbarui!');
     }
 }
