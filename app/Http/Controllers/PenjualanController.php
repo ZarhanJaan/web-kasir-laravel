@@ -111,7 +111,7 @@ class PenjualanController extends Controller
                     'id_penjualan' => $request->id_penjualan,
                     'tanggal' => $request->tanggal,
                     'nama_pelanggan' => $request->nama_pelanggan,
-                    'jumlah_barang' => array_sum($request->jumlah_barang),
+                    'jumlah_barang' => implode(',', $request->jumlah_barang),
                     'id_produk' => implode(',', $request->id_produk),
                     'total' => $request->total,
                     'metode_pembayaran' => $request->metode_pembayaran
@@ -190,7 +190,7 @@ class PenjualanController extends Controller
                     'id_penjualan' => $request->id_penjualan,
                     'tanggal' => $request->tanggal,
                     'nama_pelanggan' => $request->nama_pelanggan,
-                    'jumlah_barang' => array_sum($request->jumlah_barang),
+                    'jumlah_barang' => implode(',', $request->jumlah_barang),
                     'id_produk' => implode(',', $request->id_produk),
                     'total' => $request->total,
                 ];
@@ -234,7 +234,7 @@ class PenjualanController extends Controller
             'id_penjualan' => Request()->id_penjualan,
             'tanggal' => Request()->tanggal,
             'nama_pelanggan' => Request()->nama_pelanggan,
-            'jumlah_barang' => is_array(Request()->jumlah_barang) ? array_sum(Request()->jumlah_barang) : Request()->jumlah_barang,
+            'jumlah_barang' => is_array(Request()->jumlah_barang) ? implode(',', Request()->jumlah_barang) : Request()->jumlah_barang,
             'id_produk' => is_array(Request()->id_produk) ? implode(',', Request()->id_produk) : Request()->id_produk,
             'total' => Request()->total,
         ];
@@ -306,13 +306,15 @@ class PenjualanController extends Controller
             ->limit(5)
             ->get();
 
-        // 4. Laporan Stok Masuk & Keluar Harian (contoh 14 hari terakhir)
-        $tgl_mulai = now()->subDays(14)->format('Y-m-d');
+        // 4. Laporan Stok Masuk & Keluar Bulanan
         $stok_in_out = DB::table('t_riwayat_stok')
-            ->select(DB::raw('DATE(tanggal) as tgl'), 'jenis', DB::raw('SUM(jumlah) as qty'))
-            ->where('tanggal', '>=', $tgl_mulai)
-            ->groupBy('tgl', 'jenis')
-            ->orderBy('tgl', 'asc')
+            ->select(
+                DB::raw("DATE_FORMAT(tanggal, '%Y-%m') as bulan"), 
+                'jenis', 
+                DB::raw('SUM(jumlah) as qty')
+            )
+            ->groupBy('bulan', 'jenis')
+            ->orderBy('bulan', 'asc')
             ->get();
 
         return view('t_laporan', compact(

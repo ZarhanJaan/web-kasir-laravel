@@ -26,18 +26,20 @@
     Pelanggan: {{ $trx->nama_pelanggan }}</p>
     <hr>
     <table>
-        @foreach($produk as $p)
+        @php
+            $jumlahs = explode(',', $trx->jumlah_barang);
+        @endphp
+        @foreach($produk as $index => $p)
         <tr>
             <td colspan="3">{{ $p->nama_produk }}</td>
         </tr>
         <tr>
-            <!-- Kita tidak menyimpan rincian per-item qty secara rapi di struktur DB lama, 
-            namun karena struktur tabel eksisting mengharuskan ID digabung, kita cukup 
-            tampilkan produk terkait. Jika ingin persis qty per produk, biasanya butuh pivot table t_detail_penjualan. 
-            Disini dirender versi simpel. -->
+            @php
+                $qty = $jumlahs[$index] ?? 1;
+            @endphp
             <td>Rp{{ number_format($p->harga_jual,0,',','.') }}</td>
-            <td class="text-right">x1</td>
-            <td class="text-right">Rp{{ number_format($p->harga_jual,0,',','.') }}</td>
+            <td class="text-right">x{{ $qty }}</td>
+            <td class="text-right">Rp{{ number_format($p->harga_jual * $qty,0,',','.') }}</td>
         </tr>
         @endforeach
     </table>

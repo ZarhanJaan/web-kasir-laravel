@@ -43,13 +43,26 @@
 <td>{{$row->id_penjualan}}</td>
 <td>{{$row->tanggal}}</td>
 <td>{{$row->nama_pelanggan}}</td>
-<td>{{$row->jumlah_barang}}</td>
+<td>
+    @php
+        $jumlahs = explode(',', $row->jumlah_barang);
+        echo array_sum($jumlahs);
+    @endphp
+</td>
 <td>Rp.{{$row->total}}</td>
 <td>
       @php
       $produkIds = explode(',', $row->id_produk);
-      $namaProduk = \App\Models\ProdukModel::whereIn('id_produk', $produkIds)->pluck('nama_produk')->toArray();
-      echo implode(', ', $namaProduk);
+      $jumlahs = explode(',', $row->jumlah_barang);
+      $displayProduk = [];
+      foreach ($produkIds as $index => $id) {
+          $produk = \App\Models\ProdukModel::find($id);
+          $qty = $jumlahs[$index] ?? 1;
+          if ($produk) {
+              $displayProduk[] = $produk->nama_produk . " (x" . $qty . ")";
+          }
+      }
+      echo implode(', ', $displayProduk);
       @endphp
 </td>
 @endforeach

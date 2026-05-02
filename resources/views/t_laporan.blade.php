@@ -116,7 +116,7 @@
                         <div class="lp-title-icon icon-teal">
                             <i class="mdi mdi-swap-vertical"></i>
                         </div>
-                        <h4>Laporan Stok Masuk &amp; Keluar (Harian)</h4>
+                        <h4>Laporan Stok Masuk &amp; Keluar (Bulanan)</h4>
                     </div>
                     <div class="lp-btn-group">
                         <a href="{{ route('export-stok-pdf') }}" class="lp-btn lp-btn-pdf">
@@ -125,8 +125,10 @@
                     </div>
                 </div>
 
-                <div class="lp-chart-wrap" style="height:280px;">
-                    <canvas id="chartStok"></canvas>
+                <div class="lp-chart-wrap" style="height:280px; overflow-x: auto; overflow-y: hidden;">
+                    <div id="containerChartStok" style="height: 100%; min-width: 100%;">
+                        <canvas id="chartStok"></canvas>
+                    </div>
                 </div>
 
                 <hr class="lp-divider">
@@ -135,15 +137,21 @@
                     <table class="lp-table">
                         <thead>
                             <tr>
-                                <th>Tanggal</th>
+                                <th>Bulan</th>
                                 <th>Jenis</th>
                                 <th class="col-right">Qty</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($stok_in_out->sortByDesc('tgl')->take(10) as $item)
+                            @foreach($stok_in_out->sortByDesc('bulan')->take(10) as $item)
                             <tr>
-                                <td>{{ date('d/m/y', strtotime($item->tgl)) }}</td>
+                                <td>
+                                    @php
+                                        $parts = explode('-', $item->bulan);
+                                        $monthName = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Ags","Sep","Okt","Nov","Des"];
+                                        echo $monthName[(int)$parts[1] - 1] . ' ' . $parts[0];
+                                    @endphp
+                                </td>
                                 <td>
                                     @if($item->jenis == 'masuk')
                                         <span class="lp-badge lp-badge-masuk">
@@ -297,16 +305,28 @@
         // --- 4. Chart Stok Masuk/Keluar (Bar Grouped) ---
         let labelStok = [], dataMasuk = {}, dataKeluar = {};
         dataStok.forEach(d => {
-            if (!labelStok.includes(d.tgl)) labelStok.push(d.tgl);
-            if (d.jenis === 'masuk') dataMasuk[d.tgl] = d.qty;
-            else dataKeluar[d.tgl] = d.qty;
+            if (!labelStok.includes(d.bulan)) labelStok.push(d.bulan);
+            if (d.jenis === 'masuk') dataMasuk[d.bulan] = d.qty;
+            else dataKeluar[d.bulan] = d.qty;
         });
         labelStok.sort();
+
+        // Dynamic width for scrollable chart
+        const containerStok = document.getElementById('containerChartStok');
+        if (labelStok.length > 3) {
+            containerStok.style.width = (labelStok.length * 150) + 'px';
+        }
+
+        const formatBulan = (val) => {
+            const p = val.split('-');
+            const m = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Ags","Sep","Okt","Nov","Des"];
+            return m[parseInt(p[1]) - 1] + ' ' + p[0];
+        };
 
         new Chart(document.getElementById('chartStok').getContext('2d'), {
             type: 'bar',
             data: {
-                labels: labelStok,
+                labels: labelStok.map(formatBulan),
                 datasets: [
                     {
                         label: 'Stok Masuk',
@@ -314,7 +334,7 @@
                         borderColor:     'rgba(32,201,151,1)',
                         borderWidth: 1.5,
                         borderRadius: 6,
-                        data: labelStok.map(tgl => dataMasuk[tgl] || 0)
+                        data: labelStok.map(b => dataMasuk[b] || 0)
                     },
                     {
                         label: 'Stok Keluar',
@@ -322,7 +342,7 @@
                         borderColor:     'rgba(255,107,107,1)',
                         borderWidth: 1.5,
                         borderRadius: 6,
-                        data: labelStok.map(tgl => dataKeluar[tgl] || 0)
+                        data: labelStok.map(b => dataKeluar[b] || 0)
                     }
                 ]
             },
