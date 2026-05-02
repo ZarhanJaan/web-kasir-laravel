@@ -306,13 +306,15 @@ class PenjualanController extends Controller
             ->limit(5)
             ->get();
 
-        // 4. Laporan Stok Masuk & Keluar Harian (contoh 14 hari terakhir)
-        $tgl_mulai = now()->subDays(14)->format('Y-m-d');
+        // 4. Laporan Stok Masuk & Keluar Bulanan
         $stok_in_out = DB::table('t_riwayat_stok')
-            ->select(DB::raw('DATE(tanggal) as tgl'), 'jenis', DB::raw('SUM(jumlah) as qty'))
-            ->where('tanggal', '>=', $tgl_mulai)
-            ->groupBy('tgl', 'jenis')
-            ->orderBy('tgl', 'asc')
+            ->select(
+                DB::raw("DATE_FORMAT(tanggal, '%Y-%m') as bulan"), 
+                'jenis', 
+                DB::raw('SUM(jumlah) as qty')
+            )
+            ->groupBy('bulan', 'jenis')
+            ->orderBy('bulan', 'asc')
             ->get();
 
         return view('t_laporan', compact(
