@@ -3,15 +3,68 @@
 namespace App\Exports;
 
 use App\Models\PenjualanModel;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Concerns\FromArray;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
-class PenjualanExport implements FromCollection
+class PenjualanExport implements FromArray, ShouldAutoSize
 {
     /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function collection()
+     * Data baris Excel — tanpa header baris judul.
+     * Jika satu transaksi punya lebih dari 1 produk,
+     * setiap produk ditulis di baris baru.
+     * Kolom: A=id_penjualan, B=tanggal, C=nama_pelanggan,
+     *        D=jumlah_barang, E=id_produk, F=nama_menu,
+     *        G=total, H=metode_pembayaran, I=created_at, J=updated_at
+     */
+    public function array(): array
     {
-        return PenjualanModel::all();
+        $penjualan = PenjualanModel::all();
+        $rows = [];
+
+        foreach ($penjualan as $p) {
+            $idProdukList = array_map('trim', explode(',', $p->id_produk));
+            $jumlahList   = array_map('trim', explode(',', $p->jumlah_barang));
+
+            foreach ($idProdukList as $i => $idProduk) {
+                $jumlah = $jumlahList[$i] ?? '';
+
+                // Ambil nama produk dari tabel t_produk
+                $produk     = DB::table('t_produk')->where('id_produk', $idProduk)->first();
+                $namaProduk = $produk ? $produk->nama_produk : '-';
+
+                if ($i === 0) {
+                    // Baris pertama: isi semua kolom termasuk created_at & updated_at
+                    $rows[] = [
+                        $p->id_penjualan,
+                        $p->tanggal,
+                        $p->nama_pelanggan,
+                        $jumlah,
+                        $idProduk,
+                        $namaProduk,
+                        $p->total,
+                        $p->metode_pembayaran,
+                        $p->created_at,
+                        $p->updated_at,
+                    ];
+                } else {
+                    // Baris produk tambahan: hanya kolom produk, sisanya kosong
+                    $rows[] = [
+                        '',
+                        '',
+                        '',
+                        $jumlah,
+                        $idProduk,
+                        $namaProduk,
+                        '',
+                        '',
+                        '',
+                        '',
+                    ];
+                }
+            }
+        }
+
+        return $rows;
     }
 }
