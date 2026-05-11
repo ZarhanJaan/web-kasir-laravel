@@ -27,6 +27,7 @@ class PenjualanExport implements FromArray, ShouldAutoSize
             $jumlahList   = array_map('trim', explode(',', $p->jumlah_barang));
 
             foreach ($idProdukList as $i => $idProduk) {
+                // Get quantity for this specific item if available
                 $jumlah = $jumlahList[$i] ?? '';
 
                 // Ambil nama produk dari tabel t_produk
@@ -48,14 +49,14 @@ class PenjualanExport implements FromArray, ShouldAutoSize
                         $p->updated_at,
                     ];
                 } else {
-                    // Baris produk tambahan: hanya kolom produk, sisanya kosong
+                    // Baris produk tambahan: isi kolom D, E, F agar sejajar
                     $rows[] = [
                         '',
                         '',
                         '',
-                        $jumlah,
-                        $idProduk,
-                        $namaProduk,
+                        $jumlah, // Kolom D (Jumlah)
+                        $idProduk, // Kolom E (ID Produk)
+                        $namaProduk, // Kolom F (Nama Menu)
                         '',
                         '',
                         '',
