@@ -111,16 +111,27 @@
         {{-- 4. Laporan Stok Masuk & Keluar --}}
         <div class="col-md-6 grid-margin stretch-card">
             <div class="lp-card">
-                <div class="lp-card-header">
-                    <div class="lp-title-left">
+                <div class="lp-card-header" style="align-items: flex-start;">
+                    <div class="lp-title-left" style="align-items: flex-start; margin-right: 10px;">
                         <div class="lp-title-icon icon-teal">
                             <i class="mdi mdi-swap-vertical"></i>
                         </div>
-                        <h4>Laporan Stok Masuk &amp; Keluar (Bulanan)</h4>
+                        <h4 style="font-size: 15px; line-height: 1.4; margin-top: 4px;">
+                            Laporan Stok Masuk <br>
+                            &amp; Keluar (Bulanan)
+                        </h4>
                     </div>
-                    <div class="lp-btn-group">
+                    <div class="lp-btn-group" style="flex-wrap: wrap; justify-content: flex-end; margin-top: 4px;">
+                        {{-- 
                         <a href="{{ route('export-stok-pdf') }}" class="lp-btn lp-btn-pdf">
                             <i class="mdi mdi-file-pdf"></i> Cetak PDF
+                        </a>
+                        --}}
+                        <a href="{{ route('export-stok-masuk-pdf') }}" class="lp-btn lp-btn-pdf" style="margin-right: 5px;">
+                            <i class="mdi mdi-file-pdf"></i> PDF Stok Masuk
+                        </a>
+                        <a href="{{ route('export-stok-keluar-pdf') }}" class="lp-btn lp-btn-pdf">
+                            <i class="mdi mdi-file-pdf"></i> PDF Stok Keluar
                         </a>
                     </div>
                 </div>

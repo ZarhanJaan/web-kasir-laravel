@@ -352,7 +352,44 @@ class PenjualanController extends Controller
             ->orderBy('t_riwayat_stok.id_riwayat', 'desc')
             ->get();
 
-        $pdf = \PDF::loadview('t_laporan_stok_pdf', compact('data', 'tgl_mulai'));
+        $title = 'Laporan Mutasi Stok (Masuk & Keluar)';
+        $pdf = \PDF::loadview('t_laporan_stok_pdf', compact('data', 'tgl_mulai', 'title'));
         return $pdf->download('laporan-mutasi-stok.pdf');
+    }
+
+    public function exportStokMasukPdf()
+    {
+        $tgl_mulai = now()->subDays(30)->format('Y-m-d');
+        $data = DB::table('t_riwayat_stok')
+            ->leftJoin('t_produk', 't_riwayat_stok.id_produk', '=', 't_produk.id_produk')
+            ->leftJoin('t_stok_item', 't_riwayat_stok.id_stok', '=', 't_stok_item.id_stok')
+            ->select('t_riwayat_stok.*', 't_produk.nama_produk', 't_stok_item.nama_stok')
+            ->where('t_riwayat_stok.tanggal', '>=', $tgl_mulai)
+            ->where('t_riwayat_stok.jenis', 'masuk')
+            ->orderBy('t_riwayat_stok.tanggal', 'desc')
+            ->orderBy('t_riwayat_stok.id_riwayat', 'desc')
+            ->get();
+
+        $title = 'Laporan Stok Masuk';
+        $pdf = \PDF::loadview('t_laporan_stok_pdf', compact('data', 'tgl_mulai', 'title'));
+        return $pdf->download('laporan-stok-masuk.pdf');
+    }
+
+    public function exportStokKeluarPdf()
+    {
+        $tgl_mulai = now()->subDays(30)->format('Y-m-d');
+        $data = DB::table('t_riwayat_stok')
+            ->leftJoin('t_produk', 't_riwayat_stok.id_produk', '=', 't_produk.id_produk')
+            ->leftJoin('t_stok_item', 't_riwayat_stok.id_stok', '=', 't_stok_item.id_stok')
+            ->select('t_riwayat_stok.*', 't_produk.nama_produk', 't_stok_item.nama_stok')
+            ->where('t_riwayat_stok.tanggal', '>=', $tgl_mulai)
+            ->where('t_riwayat_stok.jenis', 'keluar')
+            ->orderBy('t_riwayat_stok.tanggal', 'desc')
+            ->orderBy('t_riwayat_stok.id_riwayat', 'desc')
+            ->get();
+
+        $title = 'Laporan Stok Keluar';
+        $pdf = \PDF::loadview('t_laporan_stok_pdf', compact('data', 'tgl_mulai', 'title'));
+        return $pdf->download('laporan-stok-keluar.pdf');
     }
 }
