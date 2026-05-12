@@ -43,7 +43,7 @@
 <body>
 
 <div class="header">
-    <h1>Laporan Mutasi Stok (Masuk & Keluar)</h1>
+    <h1>{{ $title ?? 'Laporan Mutasi Stok (Masuk & Keluar)' }}</h1>
     <p>Periode: {{ date('d-m-Y', strtotime($tgl_mulai)) }} s/d {{ date('d-m-Y') }}</p>
 </div>
 
