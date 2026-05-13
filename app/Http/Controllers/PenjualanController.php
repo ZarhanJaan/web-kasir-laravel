@@ -100,6 +100,7 @@ class PenjualanController extends Controller
                             'tanggal' => date('Y-m-d'),
                             'keterangan' => 'Terpakai (Menu: ' . $menu->nama_produk . ')',
                             'nama_pelanggan' => $request->nama_pelanggan,
+                            'satuan' => 'pcs',
                             'created_at' => now(),
                             'updated_at' => now()
                         ]);
@@ -317,11 +318,30 @@ class PenjualanController extends Controller
             ->orderBy('bulan', 'asc')
             ->get();
 
+        // 5. Daftar Bulan Tersedia untuk Filter Mingguan
+        $available_months = DB::table('t_riwayat_stok')
+            ->select(DB::raw("DATE_FORMAT(tanggal, '%Y-%m') as bulan"))
+            ->distinct()
+            ->orderBy('bulan', 'desc')
+            ->get();
+
+        // 6. Riwayat Stok Terbaru untuk List
+        $riwayat_stok_recent = DB::table('t_riwayat_stok')
+            ->leftJoin('t_produk', 't_riwayat_stok.id_produk', '=', 't_produk.id_produk')
+            ->leftJoin('t_stok_item', 't_riwayat_stok.id_stok', '=', 't_stok_item.id_stok')
+            ->select('t_riwayat_stok.*', 't_produk.nama_produk', 't_stok_item.nama_stok')
+            ->orderBy('t_riwayat_stok.tanggal', 'desc')
+            ->orderBy('t_riwayat_stok.id_riwayat', 'desc')
+            ->limit(20)
+            ->get();
+
         return view('t_laporan', compact(
             'penjualan_hari_ini', 
             'penjualan_bulanan', 
             'menu_terlaris', 
-            'stok_in_out'
+            'stok_in_out',
+            'available_months',
+            'riwayat_stok_recent'
         ));
     }
 
@@ -346,10 +366,19 @@ class PenjualanController extends Controller
         $data = DB::table('t_riwayat_stok')
             ->leftJoin('t_produk', 't_riwayat_stok.id_produk', '=', 't_produk.id_produk')
             ->leftJoin('t_stok_item', 't_riwayat_stok.id_stok', '=', 't_stok_item.id_stok')
-            ->select('t_riwayat_stok.*', 't_produk.nama_produk', 't_stok_item.nama_stok')
+            ->select(
+                't_riwayat_stok.tanggal',
+                't_riwayat_stok.jenis',
+                't_riwayat_stok.satuan',
+                DB::raw('SUM(t_riwayat_stok.jumlah) as jumlah'),
+                DB::raw('MAX(t_produk.nama_produk) as nama_produk'),
+                DB::raw('MAX(t_stok_item.nama_stok) as nama_stok'),
+                DB::raw("NULL as nama_pelanggan"),
+                DB::raw("GROUP_CONCAT(DISTINCT COALESCE(t_riwayat_stok.nama_pelanggan, t_riwayat_stok.keterangan) SEPARATOR ', ') as keterangan")
+            )
             ->where('t_riwayat_stok.tanggal', '>=', $tgl_mulai)
+            ->groupBy('t_riwayat_stok.tanggal', 't_riwayat_stok.id_produk', 't_riwayat_stok.id_stok', 't_riwayat_stok.jenis', 't_riwayat_stok.satuan')
             ->orderBy('t_riwayat_stok.tanggal', 'desc')
-            ->orderBy('t_riwayat_stok.id_riwayat', 'desc')
             ->get();
 
         $title = 'Laporan Mutasi Stok (Masuk & Keluar)';
@@ -363,11 +392,20 @@ class PenjualanController extends Controller
         $data = DB::table('t_riwayat_stok')
             ->leftJoin('t_produk', 't_riwayat_stok.id_produk', '=', 't_produk.id_produk')
             ->leftJoin('t_stok_item', 't_riwayat_stok.id_stok', '=', 't_stok_item.id_stok')
-            ->select('t_riwayat_stok.*', 't_produk.nama_produk', 't_stok_item.nama_stok')
+            ->select(
+                't_riwayat_stok.tanggal',
+                't_riwayat_stok.jenis',
+                't_riwayat_stok.satuan',
+                DB::raw('SUM(t_riwayat_stok.jumlah) as jumlah'),
+                DB::raw('MAX(t_produk.nama_produk) as nama_produk'),
+                DB::raw('MAX(t_stok_item.nama_stok) as nama_stok'),
+                DB::raw("NULL as nama_pelanggan"),
+                DB::raw("GROUP_CONCAT(DISTINCT COALESCE(t_riwayat_stok.nama_pelanggan, t_riwayat_stok.keterangan) SEPARATOR ', ') as keterangan")
+            )
             ->where('t_riwayat_stok.tanggal', '>=', $tgl_mulai)
             ->where('t_riwayat_stok.jenis', 'masuk')
+            ->groupBy('t_riwayat_stok.tanggal', 't_riwayat_stok.id_produk', 't_riwayat_stok.id_stok', 't_riwayat_stok.jenis', 't_riwayat_stok.satuan')
             ->orderBy('t_riwayat_stok.tanggal', 'desc')
-            ->orderBy('t_riwayat_stok.id_riwayat', 'desc')
             ->get();
 
         $title = 'Laporan Stok Masuk';
@@ -381,15 +419,42 @@ class PenjualanController extends Controller
         $data = DB::table('t_riwayat_stok')
             ->leftJoin('t_produk', 't_riwayat_stok.id_produk', '=', 't_produk.id_produk')
             ->leftJoin('t_stok_item', 't_riwayat_stok.id_stok', '=', 't_stok_item.id_stok')
-            ->select('t_riwayat_stok.*', 't_produk.nama_produk', 't_stok_item.nama_stok')
+            ->select(
+                't_riwayat_stok.tanggal',
+                't_riwayat_stok.jenis',
+                't_riwayat_stok.satuan',
+                DB::raw('SUM(t_riwayat_stok.jumlah) as jumlah'),
+                DB::raw('MAX(t_produk.nama_produk) as nama_produk'),
+                DB::raw('MAX(t_stok_item.nama_stok) as nama_stok'),
+                DB::raw("NULL as nama_pelanggan"),
+                DB::raw("GROUP_CONCAT(DISTINCT COALESCE(t_riwayat_stok.nama_pelanggan, t_riwayat_stok.keterangan) SEPARATOR ', ') as keterangan")
+            )
             ->where('t_riwayat_stok.tanggal', '>=', $tgl_mulai)
             ->where('t_riwayat_stok.jenis', 'keluar')
+            ->groupBy('t_riwayat_stok.tanggal', 't_riwayat_stok.id_produk', 't_riwayat_stok.id_stok', 't_riwayat_stok.jenis', 't_riwayat_stok.satuan')
             ->orderBy('t_riwayat_stok.tanggal', 'desc')
-            ->orderBy('t_riwayat_stok.id_riwayat', 'desc')
             ->get();
 
         $title = 'Laporan Stok Keluar';
         $pdf = \PDF::loadview('t_laporan_stok_pdf', compact('data', 'tgl_mulai', 'title'));
         return $pdf->download('laporan-stok-keluar.pdf');
+    }
+
+    public function getWeeklyStok(Request $request)
+    {
+        $bulan = $request->bulan; // Format: YYYY-MM
+        
+        $data = DB::table('t_riwayat_stok')
+            ->select(
+                DB::raw("FLOOR((DAY(tanggal)-1)/7)+1 as minggu"), 
+                'jenis', 
+                DB::raw('SUM(jumlah) as qty')
+            )
+            ->where(DB::raw("DATE_FORMAT(tanggal, '%Y-%m')"), $bulan)
+            ->groupBy('minggu', 'jenis')
+            ->orderBy('minggu', 'asc')
+            ->get();
+            
+        return response()->json($data);
     }
 }

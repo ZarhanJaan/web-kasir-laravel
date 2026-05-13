@@ -70,12 +70,27 @@
                         <input type="hidden" name="jenis" value="masuk">
 
                         <div class="sm-form-group">
-                            <label class="sm-form-label">Jumlah (Pcs/Unit)</label>
+                            <label class="sm-form-label">Jumlah</label>
                             <input type="number" name="jumlah" class="sm-input"
                                 value="{{ old('jumlah') }}" min="1" required>
                             @error('jumlah')
                                 <p class="sm-field-error"><i class="mdi mdi-alert-circle-outline"></i> {{ $message }}</p>
                             @enderror
+                        </div>
+
+                        <div class="sm-form-group">
+                            <label class="sm-form-label">Satuan</label>
+                            <select name="satuan" id="satuan_stok" class="form-select sm-select" required>
+                                <option value="pcs" {{ old('satuan') == 'pcs' ? 'selected' : '' }}>pcs</option>
+                                <option value="box" {{ old('satuan') == 'box' ? 'selected' : '' }}>box</option>
+                            </select>
+                        </div>
+
+                        <div class="sm-form-group" id="isi_pcs_container" style="display: none;">
+                            <label class="sm-form-label">Isi Pcs per Box</label>
+                            <input type="number" name="isi_pcs_per_box" class="sm-input" 
+                                placeholder="Contoh: 10" min="1">
+                            <small class="text-muted" style="font-size: 10px;">* Stok di gudang akan otomatis dikalikan</small>
                         </div>
 
                         <div class="sm-form-group">
@@ -118,4 +133,26 @@
             </form>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectSatuan = document.getElementById('satuan_stok');
+            const container = document.getElementById('isi_pcs_container');
+            const inputIsi = container.querySelector('input');
+
+            function toggleIsiPcs() {
+                if (selectSatuan.value === 'box') {
+                    container.style.display = 'block';
+                    inputIsi.setAttribute('required', 'required');
+                } else {
+                    container.style.display = 'none';
+                    inputIsi.removeAttribute('required');
+                    inputIsi.value = '';
+                }
+            }
+
+            selectSatuan.addEventListener('change', toggleIsiPcs);
+            toggleIsiPcs(); // Run on load
+        });
+    </script>
 @endsection

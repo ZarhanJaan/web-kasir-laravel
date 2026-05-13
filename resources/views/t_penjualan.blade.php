@@ -50,7 +50,7 @@
                                         <th>Nama Pelanggan</th>
                                         <th>Jumlah Barang</th>
                                         <th>Total Harga</th>
-                                        <th>Produk</th>
+                                        <th>Nama Menu</th>
                                         @if(Auth::user()->hasAnyRole(['owner', 'admin']))
                                             <th>Action</th>
                                         @endif
@@ -158,13 +158,13 @@
 
             // Create the filter HTML elements
             var customFilter = `
-                    <div class="dt-custom-filter me-3" style="display:inline-flex; align-items:center;">
-                        <label class="mb-0 me-2">Filter Tanggal:</label>
-                        <input type="date" id="min-date" class="form-control form-control-sm" style="width: auto;" placeholder="Awal">
-                        <span class="mx-2">-</span>
-                        <input type="date" id="max-date" class="form-control form-control-sm" style="width: auto;" placeholder="Akhir">
-                    </div>
-                `;
+                            <div class="dt-custom-filter me-3" style="display:inline-flex; align-items:center;">
+                                <label class="mb-0 me-2">Filter Tanggal:</label>
+                                <input type="date" id="min-date" class="form-control form-control-sm" style="width: auto;" placeholder="Awal">
+                                <span class="mx-2">-</span>
+                                <input type="date" id="max-date" class="form-control form-control-sm" style="width: auto;" placeholder="Akhir">
+                            </div>
+                        `;
 
             // DataTables 2.0 uses .dt-search, older versions use .dataTables_filter
             var checkExist = setInterval(function () {

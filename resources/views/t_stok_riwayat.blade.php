@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<link rel="stylesheet" href="{{ asset('css/pages/stok_riwayat.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pages/stok_riwayat.css') }}">
 
     <div class="content-wrapper">
         <div class="page-header">
@@ -24,13 +24,11 @@
             <form action="/stok/riwayat" method="GET" class="sr-filter-bar">
                 <div class="sr-filter-field">
                     <label class="sr-filter-label">Tanggal Awal</label>
-                    <input type="date" name="tgl_awal" class="sr-input"
-                        value="{{ $awal ?? '' }}" required>
+                    <input type="date" name="tgl_awal" class="sr-input" value="{{ $awal ?? '' }}" required>
                 </div>
                 <div class="sr-filter-field">
                     <label class="sr-filter-label">Tanggal Akhir</label>
-                    <input type="date" name="tgl_akhir" class="sr-input"
-                        value="{{ $akhir ?? '' }}" required>
+                    <input type="date" name="tgl_akhir" class="sr-input" value="{{ $akhir ?? '' }}" required>
                 </div>
                 <button type="submit" class="sr-btn-filter">
                     <i class="mdi mdi-filter"></i> Filter
@@ -56,32 +54,34 @@
                         <tr>
                             <th>No</th>
                             <th>Tanggal</th>
-                            <th>Nama Produk</th>
+                            <th>Nama Menu</th>
                             <th>Jenis</th>
                             <th>Jumlah</th>
+                            <th>Satuan</th>
                             <th>Keterangan</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($riwayat as $index => $data)
-                        <tr>
-                            <td class="col-no">{{ $index + 1 }}</td>
-                            <td>{{ \Carbon\Carbon::parse($data->tanggal)->format('d/m/Y') }}</td>
-                            <td class="col-name">{{ $data->nama_produk ?? $data->nama_stok }}</td>
-                            <td>
-                                @if($data->jenis == 'masuk')
-                                    <span class="sr-badge sr-badge-masuk">
-                                        <i class="mdi mdi-arrow-down-circle"></i> Stok Masuk
-                                    </span>
-                                @else
-                                    <span class="sr-badge sr-badge-keluar">
-                                        <i class="mdi mdi-arrow-up-circle"></i> Stok Keluar
-                                    </span>
-                                @endif
-                            </td>
-                            <td class="col-qty">{{ $data->jumlah }}</td>
-                            <td class="col-notes">{{ $data->keterangan ?? '-' }}</td>
-                        </tr>
+                            <tr>
+                                <td class="col-no">{{ $index + 1 }}</td>
+                                <td>{{ \Carbon\Carbon::parse($data->tanggal)->format('d/m/Y') }}</td>
+                                <td class="col-name">{{ $data->nama_produk ?? $data->nama_stok }}</td>
+                                <td>
+                                    @if($data->jenis == 'masuk')
+                                        <span class="sr-badge sr-badge-masuk">
+                                            <i class="mdi mdi-arrow-down-circle"></i> Stok Masuk
+                                        </span>
+                                    @else
+                                        <span class="sr-badge sr-badge-keluar">
+                                            <i class="mdi mdi-arrow-up-circle"></i> Stok Keluar
+                                        </span>
+                                    @endif
+                                </td>
+                                <td class="col-qty">{{ $data->jumlah }}</td>
+                                <td>{{ $data->satuan ?? '-' }}</td>
+                                <td class="col-notes">{{ $data->keterangan ?? '-' }}</td>
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>

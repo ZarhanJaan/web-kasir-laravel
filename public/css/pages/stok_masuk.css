@@ -288,3 +288,34 @@
     .sm-title-row .sm-title-icon i { font-size: 18px; }
     .sm-card-description { padding-left: 0; }
 }
+
+/* =================================================================
+   CUSTOM SATUAN DROPDOWN
+   ================================================================= */
+.sm-select {
+    background-color: #302b63 !important;
+    color: #ffffff !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 12px !important;
+    padding: 10px 16px !important;
+    font-size: 13.5px !important;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 1rem center !important;
+    background-size: 16px 12px !important;
+}
+
+.sm-select:focus {
+    border-color: rgba(102, 126, 234, 0.55) !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12) !important;
+}
+
+.sm-select option {
+    background-color: #0f0c29 !important;
+    color: #ffffff !important;
+    padding: 10px !important;
+}

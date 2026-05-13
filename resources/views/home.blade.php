@@ -84,7 +84,7 @@
       {{-- Stat Cards --}}
       <div class="stat-cards-wrapper">
         <div class="stat-card-item">
-          <div class="dash-stat-card" data-aos="fade-up" data-aos-duration="800">
+          <div class="dash-stat-card">
             <div class="bg-circle"></div>
             <div class="card-body">
               <div class="stat-icon">
@@ -100,7 +100,7 @@
         {{-- Kategori Menu Breakdown --}}
         @foreach($kategoriMenu as $index => $kat)
         <div class="stat-card-item">
-          <div class="dash-stat-card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="{{ 100 * ($index + 1) }}">
+          <div class="dash-stat-card">
             <div class="bg-circle" style="background: linear-gradient(135deg, #11998e, #38ef7d);"></div>
             <div class="card-body">
               <div class="stat-icon" style="background: linear-gradient(135deg, #11998e, #38ef7d); box-shadow: 0 8px 24px rgba(17, 153, 142, 0.3);">
@@ -118,7 +118,7 @@
       {{-- Menu Terlaris Table --}}
       <div class="row">
         <div class="col-12 grid-margin">
-          <div class="dash-table-card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+          <div class="dash-table-card">
             <div class="card-body">
               <div class="card-title-row">
                 <div class="title-icon">
