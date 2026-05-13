@@ -65,6 +65,21 @@ class PenjualanExport implements FromArray, ShouldAutoSize
                 }
             }
         }
+        
+        // Add total row at the end
+        $totalKeseluruhan = $penjualan->sum('total');
+        $rows[] = [
+            'Total Keseluruhan',
+            '',
+            '',
+            '',
+            '',
+            '',
+            $totalKeseluruhan,
+            '',
+            '',
+            '',
+        ];
 
         return $rows;
     }

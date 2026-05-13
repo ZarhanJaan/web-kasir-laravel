@@ -79,6 +79,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/export-stok-pdf', [PenjualanController::class, 'exportStokPdf'])->name('export-stok-pdf');
         Route::get('/export-stok-masuk-pdf', [PenjualanController::class, 'exportStokMasukPdf'])->name('export-stok-masuk-pdf');
         Route::get('/export-stok-keluar-pdf', [PenjualanController::class, 'exportStokKeluarPdf'])->name('export-stok-keluar-pdf');
+        Route::get('/get-weekly-stok', [PenjualanController::class, 'getWeeklyStok'])->name('get-weekly-stok');
 
         Route::get('/manajemen-user', [App\Http\Controllers\UserController::class, 'index'])->name('manajemen-user');
         Route::post('/manajemen-user/update', [App\Http\Controllers\UserController::class, 'updateRole'])->name('manajemen-user.update');

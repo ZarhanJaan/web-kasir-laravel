@@ -271,7 +271,9 @@
             !href.includes('/exportexcel') &&
             !href.includes('/cetak_tgl_pdf') &&
             !href.includes('/export-terlaris-pdf') &&
-            !href.includes('/export-stok-pdf')
+            !href.includes('/export-stok-pdf') &&
+            !href.includes('/export-stok-masuk-pdf') &&
+            !href.includes('/export-stok-keluar-pdf')
           ) {
             overlay.classList.add('show');
           }
@@ -290,7 +292,11 @@
   </script>
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
-    AOS.init();
+    AOS.init({
+      offset: 0,
+      once: true,
+      duration: 600
+    });
   </script>
   <script>
     // Sidebar Active State Correction Script

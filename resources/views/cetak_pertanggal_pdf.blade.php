@@ -66,6 +66,10 @@
       @endphp
 </td>
 @endforeach
+  <tr>
+      <th colspan="4" style="text-align: right;">Total Keseluruhan:</th>
+      <th colspan="2">Rp.{{ number_format($cetakpertanggal->sum('total'), 0, ',', '.') }}</th>
+  </tr>
 </table>
 
 </body>

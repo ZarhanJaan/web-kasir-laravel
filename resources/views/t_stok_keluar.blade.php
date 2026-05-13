@@ -45,8 +45,8 @@
                             <th>No</th>
                             <th>Tanggal</th>
                             <th>Nama Pelanggan</th>
-                            <th>Nama Produk</th>
-                            <th>Keterangan / Sumber</th>
+                            <th>Nama Menu</th>
+                            <th>Stok Terpakai</th>
                             <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -56,8 +56,18 @@
                             <td class="col-no">{{ $index + 1 }}</td>
                             <td>{{ \Carbon\Carbon::parse($data->tanggal)->format('d-m-Y') }}</td>
                             <td>{{ $data->nama_pelanggan ?? '-' }}</td>
-                            <td class="col-name">{{ $data->nama_produk ?? $data->nama_stok }}</td>
-                            <td class="col-notes">{{ $data->keterangan ?? '-' }}</td>
+                            <td class="col-name" style="font-size: 13px;">
+                                @if($data->nama_produk)
+                                    <span class="text-white font-weight-bold">{{ $data->nama_produk }}</span>
+                                @else
+                                    <span class="text-muted">Manual</span>
+                                @endif
+                            </td>
+                            <td class="col-notes">
+                                <strong class="text-white">{{ $data->nama_stok }}</strong> 
+                                <span class="text-warning font-weight-bold">x{{ $data->jumlah }}</span>
+                                <small class="text-muted d-block" style="font-size: 10px;">{{ $data->keterangan ?? '-' }}</small>
+                            </td>
                             <td class="text-center">
                                 <a href="/stok/keluar/edit/{{ $data->id_riwayat }}"
                                     class="sk-btn sk-btn-primary sk-btn-sm" title="Edit Data">

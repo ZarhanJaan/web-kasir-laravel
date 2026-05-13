@@ -134,15 +134,22 @@ class StokController extends Controller
                     'jenis' => $request->jenis,
                     'jumlah' => $request->jumlah,
                     'harga_beli' => $request->harga_beli,
+                    'satuan' => ($request->jenis == 'keluar') ? 'pcs' : $request->satuan,
                     'tanggal' => $request->tanggal,
                     'keterangan' => $request->keterangan ?: 'Stok Masuk',
                     'created_at' => now(),
                     'updated_at' => now()
                 ]);
 
-                // Update Stok di t_stok_item
+                // Hitung Qty Real (Pcs) untuk update stok gudang
+                $qty_untuk_gudang = $request->jumlah;
+                if ($request->jenis == 'masuk' && $request->satuan == 'box' && $request->isi_pcs_per_box) {
+                    $qty_untuk_gudang = $request->jumlah * $request->isi_pcs_per_box;
+                }
+
+                // Update Stok di t_stok_item (Selalu dalam satuan Pcs)
                 if ($request->jenis == 'masuk') {
-                    DB::table('t_stok_item')->where('id_stok', $id_stok_fix)->increment('stok', $request->jumlah);
+                    DB::table('t_stok_item')->where('id_stok', $id_stok_fix)->increment('stok', $qty_untuk_gudang);
                 } else {
                     $currentItem = DB::table('t_stok_item')->where('id_stok', $id_stok_fix)->first();
                     if ($currentItem->stok < $request->jumlah) {
@@ -233,6 +240,7 @@ class StokController extends Controller
                         'jumlah' => $jumlah,
                         'tanggal' => $request->tanggal,
                         'nama_pelanggan' => $request->nama_pelanggan,
+                        'satuan' => 'pcs',
                         'keterangan' => $request->keterangan ?? 'Stok Keluar Manual',
                         'created_at' => now(),
                         'updated_at' => now()

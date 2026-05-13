@@ -55,6 +55,7 @@
         <th>Nama Barang/Menu</th>
         <th>Jenis</th>
         <th>Jumlah</th>
+        <th>Satuan</th>
         <th>Nama Pelanggan / Keterangan</th>
     </tr>
   </thead>
@@ -71,6 +72,7 @@
             </span>
         </td>
         <td style="text-align: right;">{{ $row->jumlah }}</td>
+        <td style="text-align: center;">{{ $row->satuan ?? '-' }}</td>
         <td>{{ $row->nama_pelanggan ?: $row->keterangan }}</td>
     </tr>
     @endforeach
