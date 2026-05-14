@@ -82,7 +82,7 @@
                         <a href="{{ route('exportpdf') }}" class="lp-btn lp-btn-pdf">
                             <i class="mdi mdi-file-pdf"></i> Cetak PDF Semua
                         </a>
-                        <a href="{{ route('exportexcel') }}" class="lp-btn lp-btn-excel">
+                        <a href="{{ route('cetakexcel') }}" class="lp-btn lp-btn-excel">
                             <i class="mdi mdi-file-excel"></i> Cetak Excel
                         </a>
                     </div>
@@ -220,7 +220,7 @@
                                     @endif
                                 </td>
                                 <td class="col-qty col-right" style="font-size: 12px;">
-                                    {{ $item->jumlah }} <small class="text-muted">{{ $item->satuan }}</small>
+                                    {{ $item->jumlah }} <small class="text-muted">{{ $item->satuan ?? '' }}</small>
                                 </td>
                             </tr>
                             @endforeach
@@ -228,7 +228,6 @@
                     </table>
                 </div>
             </div>
-        </div>
     </div>
 </div>
 @endsection

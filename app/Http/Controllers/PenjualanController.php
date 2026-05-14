@@ -252,9 +252,24 @@ class PenjualanController extends Controller
 
     }
 
+    public function cetakexcel_page()
+    {
+        return view('cetakexcel_page');
+    }
+
     public function exportexcel()
     {
         return Excel::download(new PenjualanExport, 'data_penjualan.xlsx');
+    }
+
+    public function exportexcel_tanggal(Request $request)
+    {
+        $request->validate([
+            'tgl_awal' => 'required|date',
+            'tgl_akhir' => 'required|date|after_or_equal:tgl_awal',
+        ]);
+
+        return Excel::download(new PenjualanExport($request->tgl_awal, $request->tgl_akhir), 'data_penjualan_' . $request->tgl_awal . '_sampai_' . $request->tgl_akhir . '.xlsx');
     }
 
     public function exportpdf()
