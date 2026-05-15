@@ -64,7 +64,7 @@ class SetupApp extends Command
 
         $username = $this->ask('Enter Gmail username (e.g. admin)');
 
-        if (!str_ends_with($username, '@gmail.com')) {
+        if (substr($username, -10) !== '@gmail.com') {
             $email = $username . '@gmail.com';
         } else {
             $email = $username;
