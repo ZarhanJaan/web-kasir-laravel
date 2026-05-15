@@ -282,6 +282,12 @@
       document.querySelectorAll('form').forEach(function (form) {
         form.addEventListener('submit', function (e) {
           if (e.defaultPrevented) return;
+          
+          var action = form.getAttribute('action');
+          if (action && (action.includes('export') || action.includes('cetak'))) {
+              return;
+          }
+          
           overlay.classList.add('show');
         });
       });

@@ -47,7 +47,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/riwayat-transaksi/update/{id_penjualan}', [PenjualanController::class, 'update']);
         Route::get('/riwayat-transaksi/delete/{id_penjualan}', [PenjualanController::class, 'delete']);
 
+        Route::get('/cetakexcel', [PenjualanController::class, 'cetakexcel_page'])->name('cetakexcel');
         Route::get('/exportexcel', [PenjualanController::class, 'exportexcel'])->name('exportexcel');
+        Route::get('/exportexcel-tanggal', [PenjualanController::class, 'exportexcel_tanggal'])->name('exportexcel-tanggal');
         Route::get('/exportpdf', [PenjualanController::class, 'exportpdf'])->name('exportpdf');
 
         Route::get('/stok', [StokController::class, 'dashboard'])->name('stok.dashboard');

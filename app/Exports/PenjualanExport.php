@@ -9,6 +9,15 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
 class PenjualanExport implements FromArray, ShouldAutoSize
 {
+    protected $tgl_awal;
+    protected $tgl_akhir;
+
+    public function __construct($tgl_awal = null, $tgl_akhir = null)
+    {
+        $this->tgl_awal = $tgl_awal;
+        $this->tgl_akhir = $tgl_akhir;
+    }
+
     /**
      * Data baris Excel — tanpa header baris judul.
      * Jika satu transaksi punya lebih dari 1 produk,
@@ -19,7 +28,11 @@ class PenjualanExport implements FromArray, ShouldAutoSize
      */
     public function array(): array
     {
-        $penjualan = PenjualanModel::all();
+        if ($this->tgl_awal && $this->tgl_akhir) {
+            $penjualan = PenjualanModel::whereBetween('tanggal', [$this->tgl_awal, $this->tgl_akhir])->get();
+        } else {
+            $penjualan = PenjualanModel::all();
+        }
         $rows = [];
 
         foreach ($penjualan as $p) {
