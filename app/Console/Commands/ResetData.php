@@ -4,8 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use App\Models\User;
+use Illuminate\Support\Facades\File;
 
 class ResetData extends Command
 {
@@ -21,7 +20,7 @@ class ResetData extends Command
      *
      * @var string
      */
-    protected $description = 'Reset all business data in the database (Penjualan, Stok, Resep, Produk) and recreate default admin account.';
+    protected $description = 'Reset all business data, users, and QRIS in the database, and clean QRIS image folder.';
 
     /**
      * Create a new command instance.
@@ -40,7 +39,7 @@ class ResetData extends Command
      */
     public function handle()
     {
-        if ($this->confirm('WARNING: This will delete ALL transaction data, products, and users. Are you sure?')) {
+        if ($this->confirm('WARNING: This will delete ALL transaction data, products, users, and QRIS. Are you sure?')) {
             $this->info('Resetting database data...');
 
             // Disable foreign key checks to allow truncation if needed
@@ -53,6 +52,8 @@ class ResetData extends Command
                 't_riwayat_stok',
                 't_stok_item',
                 't_menu_resep',
+                'users',
+                'qris',
             ];
 
             foreach ($tables as $table) {
@@ -67,9 +68,18 @@ class ResetData extends Command
             // Re-enable foreign key checks
             DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
+            // Clean QRIS image folder
+            $qrisPath = public_path('images/qris');
+            if (File::isDirectory($qrisPath)) {
+                File::cleanDirectory($qrisPath);
+                $this->line("Folder cleaned: <info>public/images/qris</info>");
+            } else {
+                $this->line("Folder not found, skipping: <comment>public/images/qris</comment>");
+            }
+
             $this->info('------------------------------------------');
             $this->info('Database reset completed successfully!');
-            $this->info('User accounts were preserved.');
+            $this->info('All data, users, and QRIS have been cleared.');
             $this->info('------------------------------------------');
 
             return 0;
