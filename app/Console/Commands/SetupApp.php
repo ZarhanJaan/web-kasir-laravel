@@ -23,7 +23,7 @@ class SetupApp extends Command
      *
      * @var string
      */
-    protected $description = 'Create database, rebuild tables from SQL schema, and create initial owner user';
+    protected $description = 'Create database, rebuild schema (stok, kategori, users), and create initial owner user';
 
     /**
      * Create a new command instance.
@@ -42,7 +42,7 @@ class SetupApp extends Command
      */
     public function handle()
     {
-        if (!$this->confirm('This will ensure the database exists, WIPE all existing data, and setup a new Owner account. Proceed?', false)) {
+        if (!$this->confirm('This will ensure the database exists, WIPE all existing data, rebuild stok/kategori tables, and setup a new Owner account. Proceed?', false)) {
             $this->info('Setup cancelled.');
             return 0;
         }
@@ -94,7 +94,7 @@ class SetupApp extends Command
     }
 
     /**
-     * Create the database if it doesn't exist and rebuild tables based on web_kasir.sql.
+     * Create the database if it doesn't exist and rebuild tables for the current app schema.
      */
     protected function createDatabase()
     {
@@ -129,9 +129,9 @@ class SetupApp extends Command
 
         $pdo->exec('USE ' . $this->quoteIdentifier($database));
 
-        $this->info('Rebuilding tables from SQL schema...');
+        $this->info('Rebuilding application tables...');
         $this->rebuildSchema($pdo);
-        $this->info('Database schema is ready.');
+        $this->info('Database schema is ready (roles, kategori, stok, users, qris).');
     }
 
     /**
@@ -161,9 +161,7 @@ class SetupApp extends Command
             'personal_access_tokens',
             'qris',
             'roles',
-            't_menu_resep',
-            't_penjualan',
-            't_produk',
+            't_kategori',
             't_riwayat_stok',
             't_stok_item',
             'users',
@@ -233,40 +231,20 @@ class SetupApp extends Command
 
             "INSERT INTO `roles` (`id`, `role`, `created_at`, `updated_at`) VALUES
                 (1, 'owner', NOW(), NOW()),
-                (2, 'admin', NOW(), NOW())",
+                (2, 'admin', NOW(), NOW()),
+                (3, 'kasir', NOW(), NOW())",
 
-            "CREATE TABLE `t_menu_resep` (
-                `id_resep` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
-                `id_menu` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-                `id_stok` bigint UNSIGNED NOT NULL,
-                `jumlah` int NOT NULL DEFAULT '1',
+            "CREATE TABLE `t_kategori` (
+                `id_kategori` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+                `nama_kategori` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
                 `created_at` timestamp NULL DEFAULT NULL,
                 `updated_at` timestamp NULL DEFAULT NULL,
-                PRIMARY KEY (`id_resep`)
-            ) ENGINE=InnoDB AUTO_INCREMENT=200302 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+                PRIMARY KEY (`id_kategori`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
 
-            "CREATE TABLE `t_penjualan` (
-                `id_penjualan` int UNSIGNED NOT NULL AUTO_INCREMENT,
-                `tanggal` date NOT NULL,
-                `nama_pelanggan` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
-                `jumlah_barang` int NOT NULL,
-                `id_produk` text COLLATE utf8mb4_general_ci,
-                `total` decimal(60,0) NOT NULL,
-                `metode_pembayaran` varchar(255) COLLATE utf8mb4_general_ci DEFAULT 'Cash',
-                `created_at` timestamp NULL DEFAULT NULL,
-                `updated_at` timestamp NULL DEFAULT NULL,
-                PRIMARY KEY (`id_penjualan`)
-            ) ENGINE=InnoDB AUTO_INCREMENT=10004 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci",
-
-            "CREATE TABLE `t_produk` (
-                `id_produk` int NOT NULL,
-                `nama_produk` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
-                `stok` int DEFAULT NULL,
-                `harga_beli` decimal(10,2) DEFAULT NULL,
-                `harga_jual` decimal(10,2) DEFAULT NULL,
-                `kategori` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-                PRIMARY KEY (`id_produk`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci",
+            "INSERT INTO `t_kategori` (`nama_kategori`, `created_at`, `updated_at`) VALUES
+                ('Coffee', NOW(), NOW()),
+                ('Non Coffee', NOW(), NOW())",
 
             "CREATE TABLE `t_riwayat_stok` (
                 `id_riwayat` int UNSIGNED NOT NULL AUTO_INCREMENT,
