@@ -1,0 +1,445 @@
+/* ===================================================================
+   KATEGORI.CSS
+   Styling halaman Manajemen Kategori (t_kategori)
+   Selaras: stok_edit.css · stok_masuk.css · setting.css
+   (Sidebar & Navbar dihandle oleh sidebar.css global)
+   =================================================================== */
+
+
+/* =================================================================
+   CONTENT PADDING
+   ================================================================= */
+.content-wrapper {
+    padding: 28px 32px !important;
+}
+
+.content-wrapper > .row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.content-wrapper > .row > [class*="col-"] {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+}
+
+
+/* =================================================================
+   ALERTS — Success & Danger
+   ================================================================= */
+.kt-alert-success {
+    background: rgba(81, 207, 102, 0.08) !important;
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(81, 207, 102, 0.15) !important;
+    border-left: 4px solid var(--success-color) !important;
+    border-radius: 16px !important;
+    color: var(--text-secondary) !important;
+    padding: 16px 24px !important;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.kt-alert-success i { color: var(--success-color) !important; font-size: 18px; }
+.kt-alert-success .btn-close { filter: invert(1) !important; margin-left: auto; }
+
+.kt-alert-danger {
+    background: rgba(255, 107, 107, 0.08) !important;
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 107, 107, 0.15) !important;
+    border-left: 4px solid var(--error-color) !important;
+    border-radius: 16px !important;
+    color: var(--text-secondary) !important;
+    padding: 16px 24px !important;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.kt-alert-danger i { color: var(--error-color) !important; font-size: 18px; }
+.kt-alert-danger .btn-close { filter: invert(1) !important; margin-left: auto; }
+
+
+/* =================================================================
+   FORM CARD — Glassmorphism
+   ================================================================= */
+.kt-card {
+    background: var(--card-bg) !important;
+    backdrop-filter: blur(20px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
+    border: 1px solid var(--card-border) !important;
+    border-radius: 24px !important;
+    box-shadow: var(--card-shadow) !important;
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+    margin-bottom: 28px;
+    width: 100%;
+}
+
+.kt-card:hover {
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45) !important;
+}
+
+/* Accent top-glow line — blue (form) */
+.kt-card.kt-card-form::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 55%; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent-start), transparent);
+    border-radius: 0 0 4px 4px;
+    opacity: 0.75;
+}
+
+/* Accent top-glow line — teal (table) */
+.kt-card.kt-card-table::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 55%; height: 2px;
+    background: linear-gradient(90deg, transparent, #11998e, transparent);
+    border-radius: 0 0 4px 4px;
+    opacity: 0.75;
+}
+
+.kt-card .card-body {
+    padding: 30px 32px !important;
+    position: relative;
+    z-index: 1;
+}
+
+
+/* =================================================================
+   CARD HEADER
+   ================================================================= */
+.kt-card-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 26px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.kt-card-head .kt-head-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.kt-card.kt-card-form .kt-head-icon {
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+    box-shadow: 0 6px 20px var(--accent-glow);
+}
+
+.kt-card.kt-card-table .kt-head-icon {
+    background: linear-gradient(135deg, #11998e, #38ef7d);
+    box-shadow: 0 6px 20px rgba(17, 153, 142, 0.35);
+}
+
+.kt-card:hover .kt-head-icon {
+    transform: rotate(-5deg) scale(1.07);
+}
+
+.kt-card-head .kt-head-icon i {
+    font-size: 22px;
+    color: #fff;
+}
+
+.kt-card-head h4 {
+    margin: 0 0 2px 0;
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 19px;
+    letter-spacing: -0.3px;
+}
+
+.kt-card-head small {
+    color: var(--text-muted);
+    font-size: 12.5px;
+}
+
+
+/* =================================================================
+   FORM ELEMENTS
+   ================================================================= */
+.kt-form-label {
+    color: var(--text-secondary) !important;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.kt-form-label i {
+    font-size: 14px;
+    color: var(--accent-start);
+    opacity: 0.8;
+}
+
+.kt-form-group {
+    margin-bottom: 20px;
+}
+
+.kt-input {
+    background: rgba(255, 255, 255, 0.07) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 12px !important;
+    color: var(--text-primary) !important;
+    font-family: var(--font-family) !important;
+    font-size: 13.5px !important;
+    padding: 11px 16px !important;
+    height: auto !important;
+    width: 100%;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.kt-input::placeholder {
+    color: var(--text-muted) !important;
+}
+
+.kt-input:focus {
+    border-color: rgba(102, 126, 234, 0.55) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12) !important;
+    color: var(--text-primary) !important;
+}
+
+.kt-field-error {
+    color: var(--error-color) !important;
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+
+/* =================================================================
+   SUBMIT BUTTON
+   ================================================================= */
+.kt-btn-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+    color: #fff !important;
+    font-family: var(--font-family);
+    font-size: 13.5px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 14px var(--accent-glow);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.2px;
+    width: 100%;
+}
+
+.kt-btn-submit::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+    transition: left 0.5s ease;
+}
+.kt-btn-submit:hover::before { left: 100%; }
+
+.kt-btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px var(--accent-glow);
+    color: #fff !important;
+}
+
+.kt-btn-submit:active { transform: translateY(0); }
+
+
+/* =================================================================
+   TABLE
+   ================================================================= */
+.kt-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 6px;
+}
+
+.kt-table thead th {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 16px;
+}
+
+.kt-table tbody tr {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    transition: all 0.25s ease;
+}
+
+.kt-table tbody tr:hover {
+    background: rgba(17, 153, 142, 0.07);
+    transform: translateX(4px);
+}
+
+.kt-table tbody td {
+    border: none;
+    padding: 14px 16px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.kt-table tbody tr td:first-child { border-radius: 12px 0 0 12px; }
+.kt-table tbody tr td:last-child  { border-radius: 0 12px 12px 0; }
+
+.kt-table .col-id {
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 500;
+    width: 70px;
+}
+
+.kt-table .col-name {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+
+/* =================================================================
+   TABLE EMPTY STATE
+   ================================================================= */
+.kt-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
+}
+
+.kt-empty i {
+    font-size: 44px;
+    display: block;
+    margin-bottom: 10px;
+    opacity: 0.3;
+}
+
+.kt-empty p {
+    font-size: 13.5px;
+    margin: 0;
+}
+
+
+/* =================================================================
+   DELETE BUTTON
+   ================================================================= */
+.kt-btn-delete {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: rgba(255, 107, 107, 0.1);
+    border: 1.5px solid rgba(255, 107, 107, 0.2);
+    color: var(--error-color) !important;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.kt-btn-delete:hover {
+    background: rgba(255, 107, 107, 0.2);
+    border-color: rgba(255, 107, 107, 0.45);
+    transform: scale(1.08);
+    color: var(--error-color) !important;
+    box-shadow: 0 4px 14px rgba(255, 107, 107, 0.25);
+}
+
+.kt-btn-delete i { font-size: 16px; }
+
+
+/* =================================================================
+   COUNT BADGE
+   ================================================================= */
+.kt-count-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: rgba(17, 153, 142, 0.12);
+    border: 1px solid rgba(17, 153, 142, 0.25);
+    color: #11998e;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    margin-left: auto;
+}
+
+
+/* =================================================================
+   DATATABLE OVERRIDES
+   ================================================================= */
+div.dt-container *, .dataTables_wrapper * {
+    color: rgba(255, 255, 255, 0.7) !important;
+    font-family: var(--font-family) !important;
+}
+
+div.dt-container .dt-search input,
+.dataTables_wrapper .dataTables_filter input {
+    background: rgba(255, 255, 255, 0.07) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 10px !important;
+    color: #ffffff !important;
+    font-size: 13px !important;
+    padding: 8px 14px !important;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+div.dt-container .dt-search input:focus,
+.dataTables_wrapper .dataTables_filter input:focus {
+    border-color: rgba(102, 126, 234, 0.5) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12) !important;
+}
+
+table.dataTable thead th,
+table.dataTable.no-footer { border-bottom: none !important; }
+
+
+/* =================================================================
+   RESPONSIVE
+   ================================================================= */
+@media (max-width: 991px) {
+    .content-wrapper { padding: 20px 16px !important; }
+    .kt-card .card-body { padding: 22px !important; }
+    .kt-card-head h4 { font-size: 17px; }
+    .kt-card-head .kt-head-icon { width: 40px; height: 40px; border-radius: 12px; }
+    .kt-card-head .kt-head-icon i { font-size: 19px; }
+}
+
+@media (max-width: 768px) {
+    .kt-table tbody tr:hover { transform: none; }
+}

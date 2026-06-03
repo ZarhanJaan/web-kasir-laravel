@@ -45,7 +45,7 @@
                             <th>No</th>
                             <th>Tanggal</th>
                             <th>Nama Pelanggan</th>
-                            <th>Nama Menu</th>
+                            <th>Nama Produk</th>
                             <th>Stok Terpakai</th>
                             <th class="text-center">Aksi</th>
                         </tr>
@@ -57,14 +57,9 @@
                             <td>{{ \Carbon\Carbon::parse($data->tanggal)->format('d-m-Y') }}</td>
                             <td>{{ $data->nama_pelanggan ?? '-' }}</td>
                             <td class="col-name" style="font-size: 13px;">
-                                @if($data->nama_produk)
-                                    <span class="text-white font-weight-bold">{{ $data->nama_produk }}</span>
-                                @else
-                                    <span class="text-muted">Manual</span>
-                                @endif
+                                <span class="text-white font-weight-bold">{{ $data->nama_stok }}</span>
                             </td>
                             <td class="col-notes">
-                                <strong class="text-white">{{ $data->nama_stok }}</strong> 
                                 <span class="text-warning font-weight-bold">x{{ $data->jumlah }}</span>
                                 <small class="text-muted d-block" style="font-size: 10px;">{{ $data->keterangan ?? '-' }}</small>
                             </td>

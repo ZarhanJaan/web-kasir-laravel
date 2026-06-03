@@ -25,7 +25,7 @@
             <div class="sk-title-icon">
                 <i class="mdi mdi-cart-arrow-right"></i>
             </div>
-            <h4>Keranjang Keluar Manual</h4>
+            <h4>Stok Keluar</h4>
         </div>
         <p class="sk-card-description">Input data barang yang keluar secara manual dari gudang.</p>
         <hr class="sk-divider">

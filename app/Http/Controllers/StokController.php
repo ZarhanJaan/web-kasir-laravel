@@ -11,13 +11,10 @@ use Illuminate\Support\Facades\DB;
 class StokController extends Controller
 {
     protected $StokModel;
-    protected $ProdukModel;
-
     public function __construct()
     {
         $this->middleware('auth');
         $this->StokModel = new StokModel();
-        $this->ProdukModel = new ProdukModel();
     }
 
     public function dashboard()
@@ -27,15 +24,7 @@ class StokController extends Controller
             ->where('stok', '<', 10)
             ->get();
 
-        // Informasi produk terlaris (Tetap dari t_penjualan)
-        $top_terlaris = DB::table('t_riwayat_stok')
-            ->join('t_produk', 't_riwayat_stok.id_produk', '=', 't_produk.id_produk')
-            ->select('t_produk.nama_produk', DB::raw('SUM(t_riwayat_stok.jumlah) as total_terjual'))
-            ->where('t_riwayat_stok.jenis', 'keluar')
-            ->groupBy('t_produk.nama_produk')
-            ->orderBy('total_terjual', 'desc')
-            ->limit(5)
-            ->get();
+        $top_terlaris = collect([]);
 
         // Daftar Lengkap Stok Dimiliki (Request User #2)
         $stok_lengkap = DB::table('t_stok_item')->get();
@@ -43,10 +32,42 @@ class StokController extends Controller
         return view('t_stok_dashboard', compact('stok_menipis', 'top_terlaris', 'stok_lengkap'));
     }
 
+    public function edit_stok($id)
+    {
+        $stok = DB::table('t_stok_item')->where('id_stok', $id)->first();
+        if (!$stok) {
+            return redirect()->route('stok.dashboard')->with('pesan_error', 'Stok tidak ditemukan.');
+        }
+        $kategori = DB::table('t_kategori')->orderBy('nama_kategori')->get();
+        return view('t_stok_edit', compact('stok', 'kategori'));
+    }
+
+    public function update_stok(Request $request, $id)
+    {
+        $request->validate([
+            'nama_stok' => 'required',
+            'stok' => 'required|numeric',
+            'satuan' => 'nullable'
+        ]);
+
+        try {
+            DB::table('t_stok_item')->where('id_stok', $id)->update([
+                'nama_stok' => $request->nama_stok,
+                'stok' => $request->stok,
+                'satuan' => $request->satuan,
+                'updated_at' => now()
+            ]);
+            return redirect()->route('stok.dashboard')->with('pesan_sukses', 'Informasi stok berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('pesan_error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
     public function add()
     {
         $produk = DB::table('t_stok_item')->get(); // Sekarang Stok Masuk memilih dari t_stok_item
-        return view('t_stok_tambah', compact('produk'));
+        $kategori = DB::table('t_kategori')->orderBy('nama_kategori')->get();
+        return view('t_stok_tambah', compact('produk', 'kategori'));
     }
 
     public function bahan()
@@ -171,9 +192,8 @@ class StokController extends Controller
         $akhir = $request->get('tgl_akhir');
 
         $query = DB::table('t_riwayat_stok')
-            ->leftJoin('t_produk', 't_riwayat_stok.id_produk', '=', 't_produk.id_produk')
             ->leftJoin('t_stok_item', 't_riwayat_stok.id_stok', '=', 't_stok_item.id_stok')
-            ->select('t_riwayat_stok.*', 't_produk.nama_produk', 't_stok_item.nama_stok')
+            ->select('t_riwayat_stok.*', 't_stok_item.nama_stok')
             ->orderBy('t_riwayat_stok.created_at', 'desc');
 
         if ($awal && $akhir) {
@@ -188,10 +208,9 @@ class StokController extends Controller
     public function keluar()
     {
         $riwayat_keluar = DB::table('t_riwayat_stok')
-            ->leftJoin('t_produk', 't_riwayat_stok.id_produk', '=', 't_produk.id_produk')
             ->leftJoin('t_stok_item', 't_riwayat_stok.id_stok', '=', 't_stok_item.id_stok')
             ->where('t_riwayat_stok.jenis', 'keluar')
-            ->select('t_riwayat_stok.*', 't_produk.nama_produk', 't_stok_item.nama_stok')
+            ->select('t_riwayat_stok.*', 't_stok_item.nama_stok')
             ->orderBy('t_riwayat_stok.tanggal', 'desc')
             ->orderBy('t_riwayat_stok.id_riwayat', 'desc')
             ->get();
@@ -260,10 +279,9 @@ class StokController extends Controller
     public function keluar_edit($id)
     {
         $riwayat = DB::table('t_riwayat_stok')
-            ->leftJoin('t_produk', 't_riwayat_stok.id_produk', '=', 't_produk.id_produk')
             ->leftJoin('t_stok_item', 't_riwayat_stok.id_stok', '=', 't_stok_item.id_stok')
             ->where('t_riwayat_stok.id_riwayat', $id)
-            ->select('t_riwayat_stok.*', DB::raw("COALESCE(t_produk.nama_produk, t_stok_item.nama_stok) as nama_produk"))
+            ->select('t_riwayat_stok.*', 't_stok_item.nama_stok as nama_produk')
             ->first();
 
         if (!$riwayat) {
@@ -331,5 +349,88 @@ class StokController extends Controller
         }
         DB::table('t_riwayat_stok')->where('id_riwayat', $id)->delete();
         return redirect()->back()->with('pesan_sukses', 'Riwayat berhasil dihapus (Stok telah dikembalikan).');
+    }
+
+    public function laporan_grafik(Request $request)
+    {
+        $tgl_awal = $request->get('tgl_awal', date('Y-m-01')); // default awal bulan
+        $tgl_akhir = $request->get('tgl_akhir', date('Y-m-d')); // default hari ini
+
+        // Data agregat per hari untuk grafik chart.js
+        $riwayat_masuk = DB::table('t_riwayat_stok')
+            ->where('jenis', 'masuk')
+            ->whereBetween('tanggal', [$tgl_awal, $tgl_akhir])
+            ->selectRaw('tanggal, sum(jumlah) as total_masuk')
+            ->groupBy('tanggal')
+            ->get()->keyBy('tanggal');
+
+        $riwayat_keluar = DB::table('t_riwayat_stok')
+            ->where('jenis', 'keluar')
+            ->whereBetween('tanggal', [$tgl_awal, $tgl_akhir])
+            ->selectRaw('tanggal, sum(jumlah) as total_keluar')
+            ->groupBy('tanggal')
+            ->get()->keyBy('tanggal');
+
+        $period = new \DatePeriod(
+            new \DateTime($tgl_awal),
+            new \DateInterval('P1D'),
+            (new \DateTime($tgl_akhir))->modify('+1 day')
+        );
+
+        $labels = [];
+        $data_masuk = [];
+        $data_keluar = [];
+
+        foreach ($period as $date) {
+            $tgl = $date->format('Y-m-d');
+            $labels[] = $date->format('d M');
+            $data_masuk[] = isset($riwayat_masuk[$tgl]) ? $riwayat_masuk[$tgl]->total_masuk : 0;
+            $data_keluar[] = isset($riwayat_keluar[$tgl]) ? $riwayat_keluar[$tgl]->total_keluar : 0;
+        }
+
+        // Data rekap per barang untuk tabel detail (dan PDF)
+        $rekap_barang = DB::table('t_riwayat_stok')
+            ->leftJoin('t_stok_item', 't_riwayat_stok.id_stok', '=', 't_stok_item.id_stok')
+            ->whereBetween('tanggal', [$tgl_awal, $tgl_akhir])
+            ->selectRaw('t_riwayat_stok.id_stok, t_stok_item.nama_stok, 
+                SUM(CASE WHEN jenis="masuk" THEN jumlah ELSE 0 END) as total_masuk,
+                SUM(CASE WHEN jenis="keluar" THEN jumlah ELSE 0 END) as total_keluar')
+            ->groupBy('t_riwayat_stok.id_stok', 't_stok_item.nama_stok')
+            ->orderBy('t_stok_item.nama_stok')
+            ->get();
+
+        return view('t_stok_laporan_grafik', compact('tgl_awal', 'tgl_akhir', 'labels', 'data_masuk', 'data_keluar', 'rekap_barang'));
+    }
+
+    public function laporan_grafik_pdf_masuk(Request $request)
+    {
+        return $this->laporan_grafik_pdf_by_jenis($request, 'masuk');
+    }
+
+    public function laporan_grafik_pdf_keluar(Request $request)
+    {
+        return $this->laporan_grafik_pdf_by_jenis($request, 'keluar');
+    }
+
+    private function laporan_grafik_pdf_by_jenis(Request $request, string $jenis)
+    {
+        $tgl_awal = $request->get('tgl_awal', date('Y-m-01'));
+        $tgl_akhir = $request->get('tgl_akhir', date('Y-m-d'));
+
+        $rekap_barang = DB::table('t_riwayat_stok')
+            ->leftJoin('t_stok_item', 't_riwayat_stok.id_stok', '=', 't_stok_item.id_stok')
+            ->whereBetween('tanggal', [$tgl_awal, $tgl_akhir])
+            ->where('jenis', $jenis)
+            ->selectRaw('t_riwayat_stok.id_stok, t_stok_item.nama_stok, SUM(jumlah) as total')
+            ->groupBy('t_riwayat_stok.id_stok', 't_stok_item.nama_stok')
+            ->orderBy('t_stok_item.nama_stok')
+            ->get();
+
+        $pdf = \PDF::loadView('t_stok_laporan_pdf', compact('tgl_awal', 'tgl_akhir', 'rekap_barang', 'jenis'));
+        $pdf->setPaper('A4', 'portrait');
+
+        $label = $jenis === 'masuk' ? 'Masuk' : 'Keluar';
+
+        return $pdf->download('Laporan_Stok_' . $label . '_' . $tgl_awal . '_sd_' . $tgl_akhir . '.pdf');
     }
 }

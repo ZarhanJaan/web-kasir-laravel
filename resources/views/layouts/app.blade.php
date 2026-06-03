@@ -101,22 +101,6 @@
             <i class="mdi mdi-home menu-icon"></i>
           </a>
         </li>
-        @if(Auth::user()->hasAnyRole(['owner', 'admin', 'kasir']))
-          <li class="nav-item {{ Request::is('menu', 'menu/*') ? 'active-ref active' : '' }}">
-            <a class="nav-link" href="/menu" aria-expanded="false" aria-controls="tables">
-              <span class="menu-title">Menu</span>
-              <i class="mdi mdi-silverware menu-icon"></i>
-            </a>
-          </li>
-        @endif
-        @if(Auth::user()->hasAnyRole(['owner', 'admin']))
-          <li class="nav-item {{ Request::is('resep', 'resep/*') ? 'active-ref active' : '' }}">
-            <a class="nav-link" href="/resep">
-              <span class="menu-title">Resep Menu</span>
-              <i class="mdi mdi-book-open-page-variant menu-icon"></i>
-            </a>
-          </li>
-        @endif
 
         @if(Auth::user()->hasAnyRole(['owner', 'admin']))
           <li class="nav-item {{ Request::is('stok', 'stok/*') ? 'active-ref active' : '' }}">
@@ -137,8 +121,16 @@
                     href="/stok/riwayat">Riwayat Transaksi Stok</a></li>
                 <li class="nav-item"> <a class="nav-link {{ Request::is('stok') ? 'active' : '' }}" href="/stok">Informasi
                     Stok</a></li>
+                <li class="nav-item"> <a class="nav-link {{ Request::is('stok/laporan-grafik') ? 'active' : '' }}" href="/stok/laporan-grafik">Grafik & Laporan</a></li>
               </ul>
             </div>
+          </li>
+
+          <li class="nav-item {{ Request::is('kategori', 'kategori/*') ? 'active-ref active' : '' }}">
+            <a class="nav-link" href="/kategori">
+              <span class="menu-title">Kategori</span>
+              <i class="mdi mdi-shape menu-icon"></i>
+            </a>
           </li>
 
           <li class="nav-item {{ Request::is('manajemen-user', 'manajemen-user/*') ? 'active-ref active' : '' }}">
@@ -246,9 +238,11 @@
             href !== '#' &&
             link.target !== '_blank' &&
             !link.hasAttribute('data-bs-toggle') &&
-            // pengecualian untuk link download file
+            !link.hasAttribute('data-no-loading') &&
+            // pengecualian untuk link download / cetak file (halaman tidak pindah)
             !href.includes('/export') &&
-            !href.includes('/cetak')
+            !href.includes('/cetak') &&
+            !href.includes('/pdf')
           ) {
             overlay.classList.add('show');
           }

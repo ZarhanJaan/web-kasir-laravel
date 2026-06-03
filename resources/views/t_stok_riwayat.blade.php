@@ -54,7 +54,7 @@
                         <tr>
                             <th>No</th>
                             <th>Tanggal</th>
-                            <th>Nama Menu</th>
+                            <th>Nama Produk</th>
                             <th>Jenis</th>
                             <th>Jumlah</th>
                             <th>Satuan</th>
@@ -66,7 +66,7 @@
                             <tr>
                                 <td class="col-no">{{ $index + 1 }}</td>
                                 <td>{{ \Carbon\Carbon::parse($data->tanggal)->format('d/m/Y') }}</td>
-                                <td class="col-name">{{ $data->nama_produk ?? $data->nama_stok }}</td>
+                                <td class="col-name">{{ $data->nama_stok }}</td>
                                 <td>
                                     @if($data->jenis == 'masuk')
                                         <span class="sr-badge sr-badge-masuk">

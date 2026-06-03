@@ -1,0 +1,442 @@
+/* ===================================================================
+   STOK_EDIT.CSS
+   Styling halaman Edit Informasi Stok (t_stok_edit)
+   Selaras: stok_masuk.css · setting.css · stok_informasi.css
+   (Sidebar & Navbar dihandle oleh sidebar.css global)
+   =================================================================== */
+
+
+/* =================================================================
+   CONTENT PADDING
+   ================================================================= */
+.content-wrapper {
+    padding: 28px 32px !important;
+}
+
+.content-wrapper > .row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.content-wrapper > .row > [class*="col-"] {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+}
+
+
+/* =================================================================
+   PAGE HEADER — Breadcrumb & Back Button
+   ================================================================= */
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 28px;
+}
+
+.sm-btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 18px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1.5px solid rgba(255, 255, 255, 0.12);
+    color: var(--text-secondary) !important;
+    font-family: var(--font-family);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    letter-spacing: 0.2px;
+}
+
+.sm-btn-back:hover {
+    background: rgba(102, 126, 234, 0.12);
+    border-color: rgba(102, 126, 234, 0.35);
+    color: var(--text-primary) !important;
+    transform: translateX(-3px);
+}
+
+.sm-btn-back i { font-size: 16px; }
+
+
+/* =================================================================
+   ALERTS — Success & Danger
+   ================================================================= */
+.se-alert-success {
+    background: rgba(81, 207, 102, 0.08) !important;
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(81, 207, 102, 0.15) !important;
+    border-left: 4px solid var(--success-color) !important;
+    border-radius: 16px !important;
+    color: var(--text-secondary) !important;
+    padding: 16px 24px !important;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.se-alert-success i { color: var(--success-color) !important; font-size: 18px; }
+.se-alert-success .btn-close { filter: invert(1) !important; margin-left: auto; }
+
+.se-alert-danger {
+    background: rgba(255, 107, 107, 0.08) !important;
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 107, 107, 0.15) !important;
+    border-left: 4px solid var(--error-color) !important;
+    border-radius: 16px !important;
+    color: var(--text-secondary) !important;
+    padding: 16px 24px !important;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 24px;
+}
+.se-alert-danger i { color: var(--error-color) !important; margin-right: 8px; }
+.se-alert-danger .btn-close { filter: invert(1) !important; }
+
+
+/* =================================================================
+   MAIN FORM CARD — Glassmorphism
+   ================================================================= */
+.sm-form-card {
+    background: var(--card-bg) !important;
+    backdrop-filter: blur(20px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
+    border: 1px solid var(--card-border) !important;
+    border-radius: 24px !important;
+    box-shadow: var(--card-shadow) !important;
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+    margin-bottom: 28px;
+}
+
+.sm-form-card:hover {
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45) !important;
+}
+
+/* Accent top-glow line */
+.sm-form-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 55%; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent-start), transparent);
+    border-radius: 0 0 4px 4px;
+    opacity: 0.75;
+}
+
+.sm-form-card .card-body {
+    padding: 32px !important;
+    position: relative;
+    z-index: 1;
+}
+
+
+/* =================================================================
+   CARD HEADER
+   ================================================================= */
+.sm-card-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.sm-card-head .sm-head-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+    box-shadow: 0 6px 20px var(--accent-glow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sm-form-card:hover .sm-card-head .sm-head-icon {
+    transform: rotate(-5deg) scale(1.05);
+    box-shadow: 0 10px 28px var(--accent-glow);
+}
+
+.sm-card-head .sm-head-icon i {
+    font-size: 24px;
+    color: #fff;
+}
+
+.sm-card-head h4 {
+    margin: 0;
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: -0.3px;
+}
+
+
+/* =================================================================
+   ID BADGE — Read-only field
+   ================================================================= */
+.sm-id-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(102, 126, 234, 0.08);
+    border: 1.5px solid rgba(102, 126, 234, 0.2);
+    border-radius: 12px;
+    padding: 10px 16px;
+    color: var(--accent-start) !important;
+    font-family: var(--font-family);
+    font-size: 13.5px;
+    font-weight: 600;
+    width: 100%;
+    cursor: not-allowed;
+    letter-spacing: 0.3px;
+}
+
+.sm-id-badge i {
+    font-size: 15px;
+    opacity: 0.7;
+}
+
+
+/* =================================================================
+   FORM ELEMENTS
+   ================================================================= */
+.sm-form-label {
+    color: var(--text-secondary) !important;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    letter-spacing: 0.1px;
+}
+
+.sm-form-label i {
+    font-size: 14px;
+    color: var(--accent-start);
+    opacity: 0.8;
+}
+
+.sm-form-group {
+    margin-bottom: 22px;
+}
+
+.sm-input {
+    background: rgba(255, 255, 255, 0.07) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 12px !important;
+    color: var(--text-primary) !important;
+    font-family: var(--font-family) !important;
+    font-size: 13.5px !important;
+    padding: 11px 16px !important;
+    height: auto !important;
+    width: 100%;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.sm-input::placeholder {
+    color: var(--text-muted) !important;
+}
+
+.sm-input:focus {
+    border-color: rgba(102, 126, 234, 0.55) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12) !important;
+    color: var(--text-primary) !important;
+}
+
+.sm-input:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+
+/* =================================================================
+   CUSTOM SELECT DROPDOWN
+   ================================================================= */
+.sm-select {
+    background-color: rgba(48, 43, 99, 0.85) !important;
+    color: #ffffff !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 12px !important;
+    padding: 11px 16px !important;
+    font-family: var(--font-family) !important;
+    font-size: 13.5px !important;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    outline: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 1rem center !important;
+    background-size: 16px 12px !important;
+}
+
+.sm-select:focus {
+    border-color: rgba(102, 126, 234, 0.55) !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12) !important;
+    background-color: rgba(48, 43, 99, 1) !important;
+}
+
+.sm-select option {
+    background-color: #0f0c29 !important;
+    color: #ffffff !important;
+    padding: 10px !important;
+}
+
+
+/* =================================================================
+   VALIDATION ERROR TEXT
+   ================================================================= */
+.sm-field-error {
+    color: var(--error-color) !important;
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+
+/* =================================================================
+   FORM ACTION BAR — Save & Cancel
+   ================================================================= */
+.sm-action-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    flex-wrap: wrap;
+}
+
+/* Save Button */
+.sm-btn-submit {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+    color: #fff !important;
+    font-family: var(--font-family);
+    font-size: 13.5px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 14px var(--accent-glow);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.2px;
+    text-decoration: none;
+}
+
+.sm-btn-submit::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+    transition: left 0.5s ease;
+}
+.sm-btn-submit:hover::before { left: 100%; }
+
+.sm-btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px var(--accent-glow);
+    color: #fff !important;
+}
+
+.sm-btn-submit:active { transform: translateY(0); }
+
+/* Cancel Button */
+.sm-btn-cancel {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 12px 22px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1.5px solid rgba(255, 255, 255, 0.12);
+    color: var(--text-secondary) !important;
+    font-family: var(--font-family);
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.sm-btn-cancel:hover {
+    background: rgba(255, 107, 107, 0.1);
+    border-color: rgba(255, 107, 107, 0.3);
+    color: var(--error-color) !important;
+    transform: translateY(-1px);
+}
+
+
+/* =================================================================
+   INFO HINT BOX
+   ================================================================= */
+.sm-hint-box {
+    background: rgba(102, 126, 234, 0.06);
+    border: 1.5px dashed rgba(102, 126, 234, 0.25);
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.sm-hint-box i {
+    font-size: 17px;
+    color: var(--accent-start);
+    margin-top: 1px;
+    flex-shrink: 0;
+}
+
+.sm-hint-box p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 12.5px;
+    line-height: 1.6;
+}
+
+
+/* =================================================================
+   RESPONSIVE
+   ================================================================= */
+@media (max-width: 991px) {
+    .content-wrapper { padding: 20px 16px !important; }
+    .sm-form-card .card-body { padding: 22px !important; }
+    .sm-card-head h4 { font-size: 17px; }
+    .sm-card-head .sm-head-icon { width: 40px; height: 40px; border-radius: 12px; }
+    .sm-card-head .sm-head-icon i { font-size: 20px; }
+    .sm-action-bar { flex-direction: column; align-items: stretch; }
+    .sm-btn-submit, .sm-btn-cancel { justify-content: center; }
+    .page-header { flex-direction: column; align-items: flex-start; }
+}
+
+@media (max-width: 480px) {
+    .sm-form-card .card-body { padding: 18px !important; }
+    .sm-card-head { gap: 10px; }
+    .sm-card-head h4 { font-size: 15px; }
+}

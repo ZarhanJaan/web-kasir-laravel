@@ -1,0 +1,340 @@
+/* ===================================================================
+   STOK_LAPORAN_GRAFIK.CSS
+   Styling halaman Laporan & Grafik Stok
+   Selaras: stok_informasi.css · stok_masuk.css · setting.css
+   (Sidebar & Navbar dihandle oleh sidebar.css global)
+   =================================================================== */
+
+
+/* =================================================================
+   CONTENT PADDING
+   ================================================================= */
+.content-wrapper {
+    padding: 28px 32px !important;
+}
+
+.content-wrapper > .row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.content-wrapper > .row > [class*="col-"] {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+}
+
+
+/* =================================================================
+   CARDS — Glassmorphism
+   ================================================================= */
+.slg-card {
+    background: var(--card-bg) !important;
+    backdrop-filter: blur(20px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
+    border: 1px solid var(--card-border) !important;
+    border-radius: 24px !important;
+    box-shadow: var(--card-shadow) !important;
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+    margin-bottom: 28px;
+    width: 100%;
+}
+
+.slg-card:hover {
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45) !important;
+}
+
+/* Card Body */
+.slg-card .card-body {
+    padding: 28px 32px !important;
+    position: relative;
+    z-index: 1;
+}
+
+/* Accent Lines */
+.slg-card.slg-card-filter::before {
+    content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 50%; height: 2px;
+    background: linear-gradient(90deg, transparent, #f64f59, transparent);
+    border-radius: 0 0 4px 4px; opacity: 0.8;
+}
+
+.slg-card.slg-card-chart::before {
+    content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 50%; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent-start), transparent);
+    border-radius: 0 0 4px 4px; opacity: 0.8;
+}
+
+.slg-card.slg-card-table::before {
+    content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 50%; height: 2px;
+    background: linear-gradient(90deg, transparent, #11998e, transparent);
+    border-radius: 0 0 4px 4px; opacity: 0.8;
+}
+
+
+/* =================================================================
+   CARD HEADERS
+   ================================================================= */
+.slg-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 26px;
+    flex-wrap: wrap;
+}
+
+.slg-card-head-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.slg-head-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+
+.slg-card:hover .slg-head-icon {
+    transform: rotate(-5deg) scale(1.05);
+}
+
+.slg-card-filter .slg-head-icon {
+    background: linear-gradient(135deg, #f64f59, #c471ed);
+    box-shadow: 0 6px 18px rgba(246, 79, 89, 0.3);
+}
+
+.slg-card-chart .slg-head-icon {
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+    box-shadow: 0 6px 18px var(--accent-glow);
+}
+
+.slg-card-table .slg-head-icon {
+    background: linear-gradient(135deg, #11998e, #38ef7d);
+    box-shadow: 0 6px 18px rgba(17, 153, 142, 0.3);
+}
+
+.slg-head-icon i {
+    font-size: 22px;
+    color: #fff;
+}
+
+.slg-card-head-left h4 {
+    margin: 0 0 3px 0;
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 19px;
+    letter-spacing: -0.2px;
+}
+
+.slg-card-head-left small {
+    color: var(--text-muted);
+    font-size: 12.5px;
+}
+
+
+/* =================================================================
+   FORM FILTER ELEMENTS
+   ================================================================= */
+.slg-form-label {
+    color: var(--text-secondary);
+    font-size: 12.5px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.slg-input {
+    background: rgba(255, 255, 255, 0.07) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 10px !important;
+    color: var(--text-primary) !important;
+    font-family: var(--font-family) !important;
+    font-size: 13.5px !important;
+    padding: 10px 14px !important;
+    width: 100%;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.slg-input:focus {
+    border-color: rgba(246, 79, 89, 0.5) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 0 0 3px rgba(246, 79, 89, 0.12) !important;
+}
+
+/* Date picker icon invert for dark theme */
+.slg-input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1) opacity(0.5);
+    cursor: pointer;
+}
+
+/* Filter Button */
+.slg-btn-filter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 11px 24px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #f64f59, #c471ed);
+    color: #fff !important;
+    font-size: 13.5px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(246, 79, 89, 0.25);
+    transition: all 0.3s ease;
+    height: 42.5px; /* match input height approx */
+}
+
+.slg-btn-filter:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(246, 79, 89, 0.4);
+}
+
+
+/* =================================================================
+   CHART CANVAS
+   ================================================================= */
+.slg-chart-container {
+    position: relative;
+    height: 350px;
+    width: 100%;
+    padding-top: 10px;
+}
+
+
+/* =================================================================
+   BUTTON EXPORT PDF
+   ================================================================= */
+.slg-pdf-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.slg-btn-pdf {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 18px;
+    border-radius: 12px;
+    font-family: var(--font-family);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.slg-btn-pdf-masuk {
+    background: rgba(81, 207, 102, 0.12);
+    border: 1.5px solid rgba(81, 207, 102, 0.25);
+    color: #51cf66 !important;
+}
+
+.slg-btn-pdf-masuk:hover {
+    background: rgba(81, 207, 102, 0.2);
+    border-color: rgba(81, 207, 102, 0.45);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(81, 207, 102, 0.15);
+}
+
+.slg-btn-pdf-keluar {
+    background: rgba(246, 79, 89, 0.12);
+    border: 1.5px solid rgba(246, 79, 89, 0.25);
+    color: #ff6b6b !important;
+}
+
+.slg-btn-pdf-keluar:hover {
+    background: rgba(246, 79, 89, 0.2);
+    border-color: rgba(246, 79, 89, 0.45);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(246, 79, 89, 0.15);
+}
+
+.slg-btn-pdf i { font-size: 16px; }
+
+
+/* =================================================================
+   TABLE
+   ================================================================= */
+.slg-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 6px;
+}
+
+.slg-table thead th {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 16px;
+}
+
+.slg-table tbody tr {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    transition: all 0.25s ease;
+}
+
+.slg-table tbody tr:hover {
+    background: rgba(17, 153, 142, 0.08);
+    transform: translateX(4px);
+}
+
+.slg-table tbody td {
+    border: none;
+    padding: 14px 16px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.slg-table tbody tr td:first-child { border-radius: 12px 0 0 12px; }
+.slg-table tbody tr td:last-child  { border-radius: 0 12px 12px 0; }
+
+.slg-col-name { color: var(--text-primary); font-weight: 600; }
+.slg-col-qty { font-weight: 700; }
+
+.slg-text-masuk { color: var(--success-color); }
+.slg-text-keluar { color: var(--error-color); }
+
+
+/* =================================================================
+   EMPTY STATE
+   ================================================================= */
+.slg-empty {
+    text-align: center;
+    padding: 30px 20px;
+    color: var(--text-muted);
+}
+.slg-empty i { font-size: 40px; display: block; margin-bottom: 10px; opacity: 0.3; }
+.slg-empty p { font-size: 13.5px; margin: 0; }
+
+
+/* =================================================================
+   RESPONSIVE
+   ================================================================= */
+@media (max-width: 991px) {
+    .content-wrapper { padding: 20px 16px !important; }
+    .slg-card .card-body { padding: 22px !important; }
+    .slg-chart-container { height: 250px; }
+    .slg-card-head-left h4 { font-size: 17px; }
+    .slg-head-icon { width: 40px; height: 40px; border-radius: 12px; }
+    .slg-head-icon i { font-size: 19px; }
+}

@@ -233,8 +233,7 @@ class SetupApp extends Command
 
             "INSERT INTO `roles` (`id`, `role`, `created_at`, `updated_at`) VALUES
                 (1, 'owner', NOW(), NOW()),
-                (2, 'admin', NOW(), NOW()),
-                (3, 'kasir', NOW(), NOW())",
+                (2, 'admin', NOW(), NOW())",
 
             "CREATE TABLE `t_menu_resep` (
                 `id_resep` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -290,6 +289,7 @@ class SetupApp extends Command
                 `id_stok` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
                 `nama_stok` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
                 `stok` int NOT NULL DEFAULT '0',
+                `satuan` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
                 `created_at` timestamp NULL DEFAULT NULL,
                 `updated_at` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id_stok`)

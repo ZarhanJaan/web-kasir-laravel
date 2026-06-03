@@ -88,11 +88,40 @@
             <div class="bg-circle"></div>
             <div class="card-body">
               <div class="stat-icon">
-                <i class="mdi mdi-silverware"></i>
+                <i class="mdi mdi-package-variant"></i>
               </div>
-              <div class="stat-label">Total Menu</div>
-              <div class="stat-value">{{ $totalProduk }}</div>
-              <div class="stat-sub">Jenis bahan baku: <span>{{ count(DB::table('t_stok_item')->get()) }}</span></div>
+              <div class="stat-label">Total Stok Keseluruhan</div>
+              <div class="stat-value">{{ $totalStok }}</div>
+              <div class="stat-sub">Total jenis stok: <span>{{ $totalJenis }}</span></div>
+            </div>
+          </div>
+        </div>
+
+        {{-- Total Stok Masuk & Keluar --}}
+        <div class="stat-card-item">
+          <div class="dash-stat-card">
+            <div class="bg-circle" style="background: linear-gradient(135deg, #4e73df, #224abe);"></div>
+            <div class="card-body">
+              <div class="stat-icon" style="background: linear-gradient(135deg, #4e73df, #224abe); box-shadow: 0 8px 24px rgba(78, 115, 223, 0.3);">
+                <i class="mdi mdi-arrow-down-bold-circle-outline"></i>
+              </div>
+              <div class="stat-label">Total Stok Masuk</div>
+              <div class="stat-value">{{ $totalStokMasuk ?? 0 }}</div>
+              <div class="stat-sub">Akumulasi barang masuk</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-card-item">
+          <div class="dash-stat-card">
+            <div class="bg-circle" style="background: linear-gradient(135deg, #e74a3b, #be2617);"></div>
+            <div class="card-body">
+              <div class="stat-icon" style="background: linear-gradient(135deg, #e74a3b, #be2617); box-shadow: 0 8px 24px rgba(231, 74, 59, 0.3);">
+                <i class="mdi mdi-arrow-up-bold-circle-outline"></i>
+              </div>
+              <div class="stat-label">Total Stok Keluar</div>
+              <div class="stat-value">{{ $totalStokKeluar ?? 0 }}</div>
+              <div class="stat-sub">Akumulasi barang keluar</div>
             </div>
           </div>
         </div>
@@ -108,7 +137,7 @@
               </div>
               <div class="stat-label">Kategori: {{ $kat->kategori ?: 'Tanpa Kategori' }}</div>
               <div class="stat-value">{{ $kat->total }}</div>
-              <div class="stat-sub">Total menu kategori ini</div>
+              <div class="stat-sub">Total jenis stok kategori ini</div>
             </div>
           </div>
         </div>
@@ -122,21 +151,21 @@
             <div class="card-body">
               <div class="card-title-row">
                 <div class="title-icon">
-                  <i class="mdi mdi-star"></i>
+                  <i class="mdi mdi-package-up"></i>
                 </div>
-                <h4>Menu Terlaris</h4>
+                <h4>Stok Paling Banyak</h4>
               </div>
               <div class="table-responsive">
                 <table class="dash-table">
                   <thead>
                     <tr>
                       <th style="width: 80px;">Peringkat</th>
-                      <th>Nama Menu</th>
-                      <th style="width: 160px;">Total Terjual</th>
+                      <th>Nama Stok</th>
+                      <th style="width: 160px;">Jumlah Stok</th>
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach($menu_terlaris as $index => $menu)
+                    @foreach($stok_terbanyak as $index => $stok)
                       <tr>
                         <td>
                           @if($index == 0)
@@ -149,20 +178,20 @@
                             <span class="rank-badge normal">{{ $index + 1 }}</span>
                           @endif
                         </td>
-                        <td style="color: var(--text-primary); font-weight: 500;">{{ $menu->nama_produk }}</td>
+                        <td style="color: var(--text-primary); font-weight: 500;">{{ $stok->nama_stok }}</td>
                         <td>
-                          <span class="sold-badge">
-                            <i class="mdi mdi-check-circle"></i>
-                            {{ $menu->total_terjual }} terjual
+                          <span class="sold-badge" style="background-color: rgba(54, 185, 204, 0.1); color: #36b9cc; border: 1px solid rgba(54, 185, 204, 0.2);">
+                            <i class="mdi mdi-package"></i>
+                            {{ $stok->stok }} {{ $stok->satuan }}
                           </span>
                         </td>
                       </tr>
                     @endforeach
-                    @if(count($menu_terlaris) == 0)
+                    @if(count($stok_terbanyak) == 0)
                       <tr>
                         <td colspan="3" class="no-data">
                           <i class="mdi mdi-information-outline" style="font-size: 24px; display: block; margin-bottom: 8px; color: var(--text-muted);"></i>
-                          Belum ada data penjualan.
+                          Belum ada data stok.
                         </td>
                       </tr>
                     @endif

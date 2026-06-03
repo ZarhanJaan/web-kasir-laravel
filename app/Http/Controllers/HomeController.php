@@ -24,25 +24,27 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // Hitung total dari t_produk (Sekarang Menu)
-        $totalProduk = DB::table('t_produk')->count();
-        $totalStok = DB::table('t_stok_item')->sum('stok'); // Total bahan baku
+        // Hitung total stok (Total kuantitas barang)
+        $totalStok = DB::table('t_stok_item')->sum('stok'); 
+        
+        // Hitung total jenis barang
+        $totalJenis = DB::table('t_stok_item')->count();
 
-        // Penjabaran Kategori Menu
-        $kategoriMenu = DB::table('t_produk')
-            ->select('kategori', DB::raw('count(*) as total'))
-            ->groupBy('kategori')
+        // Penjabaran Kategori (menggunakan kolom satuan)
+        $kategoriMenu = DB::table('t_stok_item')
+            ->select('satuan as kategori', DB::raw('count(*) as total'))
+            ->groupBy('satuan')
             ->get();
 
-        // 3. Menu Terlaris (mengambil dari tabel riwayat_stok / produk)
-        $menu_terlaris = DB::table('t_riwayat_stok')
-            ->join('t_produk', 't_riwayat_stok.id_produk', '=', 't_produk.id_produk')
-            ->select('t_produk.nama_produk', DB::raw('SUM(t_riwayat_stok.jumlah) as total_terjual'))
-            ->where('t_riwayat_stok.jenis', 'keluar')
-            ->groupBy('t_produk.nama_produk')
-            ->orderBy('total_terjual', 'desc')
+        // Stok Terbanyak
+        $stok_terbanyak = DB::table('t_stok_item')
+            ->orderBy('stok', 'desc')
             ->limit(5)
             ->get();
+            
+        // Riwayat Transaksi (Stok Masuk & Keluar)
+        $totalStokMasuk = DB::table('t_riwayat_stok')->where('jenis', 'masuk')->sum('jumlah');
+        $totalStokKeluar = DB::table('t_riwayat_stok')->where('jenis', 'keluar')->sum('jumlah');
 
         // Notifikasi barang/stok menipis (Ambil dari t_stok_item)
         $stok_menipis = DB::table('t_stok_item')
@@ -50,6 +52,6 @@ class HomeController extends Controller
             ->get();
 
         // Kirim data ke view
-        return view('home', compact('totalProduk', 'totalStok', 'stok_menipis', 'menu_terlaris', 'kategoriMenu'));
+        return view('home', compact('totalJenis', 'totalStok', 'totalStokMasuk', 'totalStokKeluar', 'stok_menipis', 'stok_terbanyak', 'kategoriMenu'));
     }
 }

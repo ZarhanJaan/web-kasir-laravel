@@ -79,10 +79,14 @@
                         </div>
 
                         <div class="sm-form-group">
-                            <label class="sm-form-label">Satuan</label>
+                            <label class="sm-form-label">Kategori</label>
                             <select name="satuan" id="satuan_stok" class="form-select sm-select" required>
-                                <option value="pcs" {{ old('satuan') == 'pcs' ? 'selected' : '' }}>pcs</option>
-                                <option value="box" {{ old('satuan') == 'box' ? 'selected' : '' }}>box</option>
+                                <option value="">-- Pilih Kategori --</option>
+                                @foreach($kategori as $k)
+                                    <option value="{{ $k->nama_kategori }}" {{ old('satuan') == $k->nama_kategori ? 'selected' : '' }}>
+                                        {{ $k->nama_kategori }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
 
@@ -94,7 +98,7 @@
                         </div>
 
                         <div class="sm-form-group">
-                            <label class="sm-form-label">Harga Beli (Per Item)</label>
+                            <label class="sm-form-label">Harga Beli</label>
                             <input type="number" name="harga_beli" class="sm-input"
                                 value="{{ old('harga_beli') }}" min="0" required>
                             @error('harga_beli')
