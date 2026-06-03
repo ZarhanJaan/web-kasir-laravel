@@ -54,9 +54,9 @@
                                 <label>Kategori Menu</label>
                                 <select name="kategori" class="resep-select" required>
                                     <option value="">-- Pilih Kategori --</option>
-                                    <option value="Makanan" {{ old('kategori') == 'Makanan' ? 'selected' : '' }}>Makanan
+                                    <option value="Makanan" {{ old('kategori') == 'Makanan' ? 'selected' : '' }}>Coffee
                                     </option>
-                                    <option value="Minuman" {{ old('kategori') == 'Minuman' ? 'selected' : '' }}>Minuman
+                                    <option value="Minuman" {{ old('kategori') == 'Minuman' ? 'selected' : '' }}>Non Coffee
                                     </option>
                                 </select>
                                 <div class="resep-error">@error('kategori') {{ $message }} @enderror</div>

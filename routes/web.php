@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProdukController;
-use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\StokController;
 
 
@@ -41,16 +40,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/menu/update/{id_produk}', [ProdukController::class, 'update']);
         Route::get('/menu/delete/{id_produk}', [ProdukController::class, 'delete']);
 
-        Route::get('/riwayat-transaksi/add', [PenjualanController::class, 'add']);
-        Route::post('/riwayat-transaksi/insert', [PenjualanController::class, 'insert']);
-        Route::get('/riwayat-transaksi/edit/{id_penjualan}', [PenjualanController::class, 'edit']);
-        Route::post('/riwayat-transaksi/update/{id_penjualan}', [PenjualanController::class, 'update']);
-        Route::get('/riwayat-transaksi/delete/{id_penjualan}', [PenjualanController::class, 'delete']);
 
-        Route::get('/cetakexcel', [PenjualanController::class, 'cetakexcel_page'])->name('cetakexcel');
-        Route::get('/exportexcel', [PenjualanController::class, 'exportexcel'])->name('exportexcel');
-        Route::get('/exportexcel-tanggal', [PenjualanController::class, 'exportexcel_tanggal'])->name('exportexcel-tanggal');
-        Route::get('/exportpdf', [PenjualanController::class, 'exportpdf'])->name('exportpdf');
 
         Route::get('/stok', [StokController::class, 'dashboard'])->name('stok.dashboard');
         Route::get('/stok/add', [StokController::class, 'add'])->name('stok.add');
@@ -74,14 +64,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/resep/item/add', [App\Http\Controllers\ResepController::class, 'add_item']);
         Route::get('/resep/item/delete/{id_resep}', [App\Http\Controllers\ResepController::class, 'delete_item']);
 
-        Route::get('/datapenjualan_tgl_pdf', [PenjualanController::class, 'datapenjualan_tgl_pdf'])->name('datapenjualan_tgl_pdf');
-        Route::get('/cetak_tgl_pdf/{tglawal}/{tglakhir}', [PenjualanController::class, 'cetak_tgl_pdf'])->name('cetak_tgl_pdf');
-        Route::get('/laporan', [PenjualanController::class, 'laporan'])->name('laporan.index');
-        Route::get('/export-terlaris-pdf', [PenjualanController::class, 'exportTerlarisPdf'])->name('export-terlaris-pdf');
-        Route::get('/export-stok-pdf', [PenjualanController::class, 'exportStokPdf'])->name('export-stok-pdf');
-        Route::get('/export-stok-masuk-pdf', [PenjualanController::class, 'exportStokMasukPdf'])->name('export-stok-masuk-pdf');
-        Route::get('/export-stok-keluar-pdf', [PenjualanController::class, 'exportStokKeluarPdf'])->name('export-stok-keluar-pdf');
-        Route::get('/get-weekly-stok', [PenjualanController::class, 'getWeeklyStok'])->name('get-weekly-stok');
+
 
         Route::get('/manajemen-user', [App\Http\Controllers\UserController::class, 'index'])->name('manajemen-user');
         Route::post('/manajemen-user/update', [App\Http\Controllers\UserController::class, 'updateRole'])->name('manajemen-user.update');
@@ -94,9 +77,6 @@ Route::middleware(['auth'])->group(function () {
     // Routes accessible by Kasir as well
     Route::middleware(['role:owner,admin,kasir'])->group(function () {
         Route::get('/menu', [ProdukController::class, 'index'])->name('menu');
-        Route::get('/riwayat-transaksi', [PenjualanController::class, 'index'])->name('riwayat-transaksi');
-        Route::get('/kasir', [PenjualanController::class, 'pos'])->name('kasir');
-        Route::post('/kasir/insert', [PenjualanController::class, 'pos_insert'])->name('kasir.insert');
-        Route::get('/struk/{id_penjualan}', [PenjualanController::class, 'struk'])->name('struk');
+
     });
 });

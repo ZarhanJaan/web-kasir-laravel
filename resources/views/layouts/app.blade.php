@@ -117,22 +117,7 @@
             </a>
           </li>
         @endif
-        @if(Auth::user()->hasAnyRole(['owner', 'admin', 'kasir']))
-          <li class="nav-item {{ Request::is('kasir', 'kasir/*') ? 'active-ref active' : '' }}">
-            <a class="nav-link" href="/kasir" aria-expanded="false" aria-controls="pos">
-              <span class="menu-title text-success font-weight-bold">Kasir (transaksi)</span>
-              <i class="mdi mdi-calculator menu-icon text-success"></i>
-            </a>
-          </li>
-        @endif
-        @if(Auth::user()->hasAnyRole(['owner', 'admin', 'kasir']))
-          <li class="nav-item {{ Request::is('riwayat-transaksi', 'riwayat-transaksi/*') ? 'active-ref active' : '' }}">
-            <a class="nav-link" href="/riwayat-transaksi" aria-expanded="false" aria-controls="icons">
-              <span class="menu-title">Riwayat Transaksi</span>
-              <i class="mdi mdi-contacts menu-icon"></i>
-            </a>
-          </li>
-        @endif
+
         @if(Auth::user()->hasAnyRole(['owner', 'admin']))
           <li class="nav-item {{ Request::is('stok', 'stok/*') ? 'active-ref active' : '' }}">
             <a class="nav-link" data-bs-toggle="collapse" href="#stok-menu"
@@ -155,12 +140,7 @@
               </ul>
             </div>
           </li>
-          <li class="nav-item {{ Request::is('laporan', 'laporan/*') ? 'active-ref active' : '' }}">
-            <a class="nav-link" href="/laporan">
-              <span class="menu-title">Laporan Penjualan</span>
-              <i class="mdi mdi-format-list-bulleted menu-icon"></i>
-            </a>
-          </li>
+
           <li class="nav-item {{ Request::is('manajemen-user', 'manajemen-user/*') ? 'active-ref active' : '' }}">
             <a class="nav-link" href="/manajemen-user">
               <span class="menu-title">Manajemen User</span>
@@ -267,13 +247,8 @@
             link.target !== '_blank' &&
             !link.hasAttribute('data-bs-toggle') &&
             // pengecualian untuk link download file
-            !href.includes('/exportpdf') &&
-            !href.includes('/exportexcel') &&
-            !href.includes('/cetak_tgl_pdf') &&
-            !href.includes('/export-terlaris-pdf') &&
-            !href.includes('/export-stok-pdf') &&
-            !href.includes('/export-stok-masuk-pdf') &&
-            !href.includes('/export-stok-keluar-pdf')
+            !href.includes('/export') &&
+            !href.includes('/cetak')
           ) {
             overlay.classList.add('show');
           }
