@@ -103,14 +103,17 @@
         </li>
 
         @if(Auth::user()->hasAnyRole(['owner', 'admin']))
-          <li class="nav-item {{ Request::is('stok', 'stok/*') ? 'active-ref active' : '' }}">
+          @php
+            $stokMenuActive = Request::is('stok', 'stok/*') && !Request::is('stok/laporan-grafik', 'stok/laporan-grafik/*');
+          @endphp
+          <li class="nav-item {{ $stokMenuActive ? 'active-ref active' : '' }}">
             <a class="nav-link" data-bs-toggle="collapse" href="#stok-menu"
-              aria-expanded="{{ Request::is('stok', 'stok/*') ? 'true' : 'false' }}" aria-controls="stok-menu">
+              aria-expanded="{{ $stokMenuActive ? 'true' : 'false' }}" aria-controls="stok-menu">
               <span class="menu-title">Manajemen Stok</span>
               <i class="menu-arrow"></i>
               <i class="mdi mdi-format-list-bulleted menu-icon"></i>
             </a>
-            <div class="collapse {{ Request::is('stok', 'stok/*') ? 'show' : '' }}" id="stok-menu">
+            <div class="collapse {{ $stokMenuActive ? 'show' : '' }}" id="stok-menu">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link {{ Request::is('stok/add') ? 'active' : '' }}"
                     href="/stok/add">Stok Masuk</a></li>
@@ -121,9 +124,15 @@
                     href="/stok/riwayat">Riwayat Transaksi Stok</a></li>
                 <li class="nav-item"> <a class="nav-link {{ Request::is('stok') ? 'active' : '' }}" href="/stok">Informasi
                     Stok</a></li>
-                <li class="nav-item"> <a class="nav-link {{ Request::is('stok/laporan-grafik') ? 'active' : '' }}" href="/stok/laporan-grafik">Grafik & Laporan</a></li>
               </ul>
             </div>
+          </li>
+
+          <li class="nav-item {{ Request::is('stok/laporan-grafik', 'stok/laporan-grafik/*') ? 'active-ref active' : '' }}">
+            <a class="nav-link" href="/stok/laporan-grafik">
+              <span class="menu-title">Grafik & Laporan</span>
+              <i class="mdi mdi-chart-line menu-icon"></i>
+            </a>
           </li>
 
           <li class="nav-item {{ Request::is('kategori', 'kategori/*') ? 'active-ref active' : '' }}">
