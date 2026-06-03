@@ -131,7 +131,7 @@ class SetupApp extends Command
 
         $this->info('Rebuilding application tables...');
         $this->rebuildSchema($pdo);
-        $this->info('Database schema is ready (roles, kategori, stok, users, qris).');
+        $this->info('Database schema is ready (roles, kategori, stok, users).');
     }
 
     /**
@@ -159,7 +159,6 @@ class SetupApp extends Command
             'migrations',
             'password_resets',
             'personal_access_tokens',
-            'qris',
             'roles',
             't_kategori',
             't_riwayat_stok',
@@ -211,15 +210,6 @@ class SetupApp extends Command
                 UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
                 KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
-
-            "CREATE TABLE `qris` (
-                `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
-                `image_path` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-                `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-                `created_at` timestamp NULL DEFAULT NULL,
-                `updated_at` timestamp NULL DEFAULT NULL,
-                PRIMARY KEY (`id`)
-            ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
 
             "CREATE TABLE `roles` (
                 `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,

@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 
 class ResetData extends Command
 {
@@ -20,7 +19,7 @@ class ResetData extends Command
      *
      * @var string
      */
-    protected $description = 'Reset all business data, users, and QRIS in the database, and clean QRIS image folder.';
+    protected $description = 'Reset all business data and users in the database.';
 
     /**
      * Create a new command instance.
@@ -39,7 +38,7 @@ class ResetData extends Command
      */
     public function handle()
     {
-        if ($this->confirm('WARNING: This will delete ALL transaction data, products, users, and QRIS. Are you sure?')) {
+        if ($this->confirm('WARNING: This will delete ALL stok data and users. Are you sure?')) {
             $this->info('Resetting database data...');
 
             // Disable foreign key checks to allow truncation if needed
@@ -47,13 +46,10 @@ class ResetData extends Command
 
             // List of tables to clear
             $tables = [
-                't_penjualan',
-                't_produk',
                 't_riwayat_stok',
                 't_stok_item',
-                't_menu_resep',
+                't_kategori',
                 'users',
-                'qris',
             ];
 
             foreach ($tables as $table) {
@@ -68,18 +64,9 @@ class ResetData extends Command
             // Re-enable foreign key checks
             DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-            // Clean QRIS image folder
-            $qrisPath = public_path('images/qris');
-            if (File::isDirectory($qrisPath)) {
-                File::cleanDirectory($qrisPath);
-                $this->line("Folder cleaned: <info>public/images/qris</info>");
-            } else {
-                $this->line("Folder not found, skipping: <comment>public/images/qris</comment>");
-            }
-
             $this->info('------------------------------------------');
             $this->info('Database reset completed successfully!');
-            $this->info('All data, users, and QRIS have been cleared.');
+            $this->info('All stok data and users have been cleared.');
             $this->info('------------------------------------------');
 
             return 0;

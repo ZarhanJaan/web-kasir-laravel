@@ -50,9 +50,18 @@
                 </div>
                 <div class="col-12 col-md-3">
                     <div class="sk-form-group">
-                        <label class="sk-form-label">Nama Pelanggan / Entitas</label>
-                        <input type="text" name="nama_pelanggan" id="nama_pelanggan"
-                            class="sk-input" value="Umum" required>
+                        <label class="sk-form-label">Satuan</label>
+                        <select name="satuan" id="satuan" class="sk-select" required>
+                            <option value="">-- Pilih Kategori --</option>
+                            @foreach($kategori as $k)
+                                <option value="{{ $k->nama_kategori }}" {{ old('satuan') == $k->nama_kategori ? 'selected' : '' }}>
+                                    {{ $k->nama_kategori }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('satuan')
+                            <p class="sk-field-error"><i class="mdi mdi-alert-circle-outline"></i> {{ $message }}</p>
+                        @enderror
                     </div>
                 </div>
                 <div class="col-12 col-md-3">

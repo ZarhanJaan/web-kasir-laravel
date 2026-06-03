@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-use App\Models\Qris;
 
 class SettingController extends Controller
 {
@@ -24,42 +23,8 @@ class SettingController extends Controller
 
         $store_name = $settings['store_name'] ?? 'Toko Sembako';
         $store_address = $settings['store_address'] ?? 'Jl. Contoh Alamat No.123';
-        
-        $qris = Qris::first();
-        $qris_image = $qris ? $qris->image_path : null;
-        $qris_name = $qris ? $qris->name : null;
 
-        return view('setting', compact('store_name', 'store_address', 'qris_image', 'qris_name'));
-    }
-
-    public function updateQris(Request $request)
-    {
-        $request->validate([
-            'qris_image' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
-        ]);
-
-        if ($request->hasFile('qris_image')) {
-            $qris = Qris::first();
-
-            // Delete old QRIS if exists to save space (Optional but good practice)
-            if ($qris && File::exists(public_path($qris->image_path))) {
-                File::delete(public_path($qris->image_path));
-            }
-
-            $file = $request->file('qris_image');
-            $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-            $filename = time() . '_qris.' . $file->getClientOriginalExtension();
-            $file->move(public_path('images/qris'), $filename);
-
-            if (!$qris) {
-                $qris = new Qris();
-            }
-            $qris->image_path = 'images/qris/' . $filename;
-            $qris->name = $originalName;
-            $qris->save();
-        }
-
-        return redirect()->back()->with('success', 'Gambar QRIS berhasil diperbarui!');
+        return view('setting', compact('store_name', 'store_address'));
     }
 
     public function updateStoreName(Request $request)

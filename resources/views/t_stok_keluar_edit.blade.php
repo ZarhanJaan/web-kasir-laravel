@@ -49,10 +49,24 @@
                         </div>
 
                         <div class="sk-form-group">
-                            <label class="sk-form-label">Nama Pelanggan / Kasir</label>
-                            <input type="text" name="nama_pelanggan" class="sk-input"
-                                value="{{ old('nama_pelanggan', $riwayat->nama_pelanggan) }}">
-                            @error('nama_pelanggan')
+                            <label class="sk-form-label">Kategori</label>
+                            @php
+                                $satuanSaatIni = old('satuan', $riwayat->satuan);
+                                $adaDiKategori = $kategori->contains(fn ($k) => $k->nama_kategori === $satuanSaatIni);
+                            @endphp
+                            <select name="satuan" class="sk-select" required>
+                                <option value="">-- Pilih Kategori --</option>
+                                @if($satuanSaatIni && !$adaDiKategori)
+                                    <option value="{{ $satuanSaatIni }}" selected>{{ $satuanSaatIni }}</option>
+                                @endif
+                                @foreach($kategori as $k)
+                                    <option value="{{ $k->nama_kategori }}"
+                                        {{ old('satuan', $riwayat->satuan) == $k->nama_kategori ? 'selected' : '' }}>
+                                        {{ $k->nama_kategori }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('satuan')
                                 <p class="sk-field-error"><i class="mdi mdi-alert-circle-outline"></i> {{ $message }}</p>
                             @enderror
                         </div>

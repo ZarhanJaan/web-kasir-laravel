@@ -44,7 +44,7 @@
                         <tr>
                             <th>No</th>
                             <th>Tanggal</th>
-                            <th>Nama Pelanggan</th>
+                            <th>Satuan</th>
                             <th>Nama Produk</th>
                             <th>Stok Terpakai</th>
                             <th class="text-center">Aksi</th>
@@ -55,7 +55,7 @@
                         <tr>
                             <td class="col-no">{{ $index + 1 }}</td>
                             <td>{{ \Carbon\Carbon::parse($data->tanggal)->format('d-m-Y') }}</td>
-                            <td>{{ $data->nama_pelanggan ?? '-' }}</td>
+                            <td>{{ $data->satuan ?? '-' }}</td>
                             <td class="col-name" style="font-size: 13px;">
                                 <span class="text-white font-weight-bold">{{ $data->nama_stok }}</span>
                             </td>

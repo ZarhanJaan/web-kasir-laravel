@@ -220,7 +220,8 @@ class StokController extends Controller
     public function keluar_add()
     {
         $produk = DB::table('t_stok_item')->get();
-        return view('t_stok_keluar_add', compact('produk'));
+        $kategori = DB::table('t_kategori')->orderBy('nama_kategori')->get();
+        return view('t_stok_keluar_add', compact('produk', 'kategori'));
     }
 
     public function keluar_insert(Request $request)
@@ -230,7 +231,7 @@ class StokController extends Controller
             'id_produk' => 'required|array',
             'jumlah_barang' => 'required|array',
             'tanggal' => 'required|date',
-            'nama_pelanggan' => 'required',
+            'satuan' => 'required|string|max:255',
             'keterangan' => 'nullable'
         ]);
 
@@ -258,8 +259,7 @@ class StokController extends Controller
                         'jenis' => 'keluar',
                         'jumlah' => $jumlah,
                         'tanggal' => $request->tanggal,
-                        'nama_pelanggan' => $request->nama_pelanggan,
-                        'satuan' => 'pcs',
+                        'satuan' => $request->satuan,
                         'keterangan' => $request->keterangan ?? 'Stok Keluar Manual',
                         'created_at' => now(),
                         'updated_at' => now()
@@ -288,7 +288,8 @@ class StokController extends Controller
             return redirect()->route('stok.keluar')->with('pesan_error', 'Data tidak ditemukan.');
         }
 
-        return view('t_stok_keluar_edit', compact('riwayat'));
+        $kategori = DB::table('t_kategori')->orderBy('nama_kategori')->get();
+        return view('t_stok_keluar_edit', compact('riwayat', 'kategori'));
     }
 
     public function keluar_update(Request $request, $id)
@@ -296,7 +297,7 @@ class StokController extends Controller
         $request->validate([
             'jumlah' => 'required|numeric|min:1',
             'tanggal' => 'required|date',
-            'nama_pelanggan' => 'required',
+            'satuan' => 'required|string|max:255',
             'keterangan' => 'nullable'
         ]);
 
@@ -328,7 +329,7 @@ class StokController extends Controller
                 DB::table('t_riwayat_stok')->where('id_riwayat', $id)->update([
                     'jumlah' => $request->jumlah,
                     'tanggal' => $request->tanggal,
-                    'nama_pelanggan' => $request->nama_pelanggan,
+                    'satuan' => $request->satuan,
                     'keterangan' => $request->keterangan,
                     'updated_at' => now()
                 ]);

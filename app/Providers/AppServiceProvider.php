@@ -6,7 +6,6 @@ use Illuminate\Support\ServiceProvider;
 
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\File;
-use App\Models\Qris;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -36,21 +35,6 @@ class AppServiceProvider extends ServiceProvider
             }
         }
 
-        // We wrap database calls in a try-catch so artisan commands don't break if the table doesn't exist
-        $qrisImage = null;
-        $qrisName = null;
-        try {
-            $qris = Qris::first();
-            if ($qris) {
-                $qrisImage = $qris->image_path;
-                $qrisName = $qris->name;
-            }
-        } catch (\Exception $e) {
-            // Do nothing if table doesn't exist yet
-        }
-
         View::share('store_name', $storeName);
-        View::share('qris_image', $qrisImage);
-        View::share('qris_name', $qrisName);
     }
 }
