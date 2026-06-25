@@ -56,7 +56,7 @@
         <th>Jenis</th>
         <th>Jumlah</th>
         <th>Satuan</th>
-        <th>Nama Pelanggan / Keterangan</th>
+        <th>Sisa Stok</th>
     </tr>
   </thead>
   <tbody>
@@ -73,7 +73,7 @@
         </td>
         <td style="text-align: right;">{{ $row->jumlah }}</td>
         <td style="text-align: center;">{{ $row->satuan ?? '-' }}</td>
-        <td>{{ $row->nama_pelanggan ?: $row->keterangan }}</td>
+        <td>{{ $row->sisa_stok ?? '-' }}</td>
     </tr>
     @endforeach
   </tbody>

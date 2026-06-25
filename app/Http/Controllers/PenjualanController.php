@@ -388,6 +388,7 @@ class PenjualanController extends Controller
                 DB::raw('SUM(t_riwayat_stok.jumlah) as jumlah'),
                 DB::raw('MAX(t_produk.nama_produk) as nama_produk'),
                 DB::raw('MAX(t_stok_item.nama_stok) as nama_stok'),
+                DB::raw('MAX(t_stok_item.stok) as sisa_stok'),
                 DB::raw("NULL as nama_pelanggan"),
                 DB::raw("GROUP_CONCAT(DISTINCT COALESCE(t_riwayat_stok.nama_pelanggan, t_riwayat_stok.keterangan) SEPARATOR ', ') as keterangan")
             )
@@ -414,6 +415,7 @@ class PenjualanController extends Controller
                 DB::raw('SUM(t_riwayat_stok.jumlah) as jumlah'),
                 DB::raw('MAX(t_produk.nama_produk) as nama_produk'),
                 DB::raw('MAX(t_stok_item.nama_stok) as nama_stok'),
+                DB::raw('MAX(t_stok_item.stok) as sisa_stok'),
                 DB::raw("NULL as nama_pelanggan"),
                 DB::raw("GROUP_CONCAT(DISTINCT COALESCE(t_riwayat_stok.nama_pelanggan, t_riwayat_stok.keterangan) SEPARATOR ', ') as keterangan")
             )
@@ -441,6 +443,7 @@ class PenjualanController extends Controller
                 DB::raw('SUM(t_riwayat_stok.jumlah) as jumlah'),
                 DB::raw('MAX(t_produk.nama_produk) as nama_produk'),
                 DB::raw('MAX(t_stok_item.nama_stok) as nama_stok'),
+                DB::raw('MAX(t_stok_item.stok) as sisa_stok'),
                 DB::raw("NULL as nama_pelanggan"),
                 DB::raw("GROUP_CONCAT(DISTINCT COALESCE(t_riwayat_stok.nama_pelanggan, t_riwayat_stok.keterangan) SEPARATOR ', ') as keterangan")
             )

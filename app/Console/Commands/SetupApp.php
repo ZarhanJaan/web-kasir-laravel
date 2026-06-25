@@ -275,6 +275,7 @@ class SetupApp extends Command
                 `id_stok` bigint UNSIGNED DEFAULT NULL,
                 `jenis` enum('masuk','keluar') COLLATE utf8mb4_unicode_ci NOT NULL,
                 `jumlah` int NOT NULL,
+                `satuan` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
                 `harga_beli` decimal(15,2) DEFAULT NULL,
                 `keterangan` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
                 `tanggal` date NOT NULL,
