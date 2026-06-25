@@ -134,17 +134,26 @@ class StokController extends Controller
                         throw new \Exception('Bahan baku "' . $request->id_produk . '" belum terdaftar. Silakan isi "ID Bahan Baru" di bawah untuk mendaftarkannya secara otomatis.');
                     }
 
-                    // Registrasi bahan baru (Satuan otomatis pakai default DB: Pcs)
+                    // Registrasi bahan baru dengan kategori dari form
                     DB::table('t_stok_item')->insert([
                         'id_stok' => $request->id_stok_baru,
                         'nama_stok' => $request->id_produk,
-                        'stok' => 0, 
+                        'stok' => 0,
+                        'satuan' => $request->satuan,
                         'created_at' => now(),
                         'updated_at' => now()
                     ]);
                     $id_stok_fix = $request->id_stok_baru;
                 } else {
                     $id_stok_fix = $item->id_stok;
+
+                    // Update kategori di t_stok_item jika user memilih kategori
+                    if ($request->satuan) {
+                        DB::table('t_stok_item')->where('id_stok', $id_stok_fix)->update([
+                            'satuan' => $request->satuan,
+                            'updated_at' => now()
+                        ]);
+                    }
                 }
 
                 // Insert ke Riwayat Stok
