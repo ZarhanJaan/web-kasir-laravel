@@ -46,7 +46,8 @@ class StokController extends Controller
     public function add()
     {
         $produk = DB::table('t_stok_item')->get(); // Sekarang Stok Masuk memilih dari t_stok_item
-        return view('t_stok_tambah', compact('produk'));
+        $kategori = DB::table('t_kategori')->orderBy('nama_kategori')->get();
+        return view('t_stok_tambah', compact('produk', 'kategori'));
     }
 
     public function bahan()
@@ -201,7 +202,8 @@ class StokController extends Controller
     public function keluar_add()
     {
         $produk = DB::table('t_stok_item')->get();
-        return view('t_stok_keluar_add', compact('produk'));
+        $kategori = DB::table('t_kategori')->orderBy('nama_kategori')->get();
+        return view('t_stok_keluar_add', compact('produk', 'kategori'));
     }
 
     public function keluar_insert(Request $request)
