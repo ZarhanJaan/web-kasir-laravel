@@ -161,6 +161,7 @@ class SetupApp extends Command
             'personal_access_tokens',
             'qris',
             'roles',
+            't_kategori',
             't_menu_resep',
             't_penjualan',
             't_produk',
@@ -235,6 +236,14 @@ class SetupApp extends Command
                 (1, 'owner', NOW(), NOW()),
                 (2, 'admin', NOW(), NOW()),
                 (3, 'kasir', NOW(), NOW())",
+
+            "CREATE TABLE `t_kategori` (
+                `id_kategori` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+                `nama_kategori` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+                `created_at` timestamp NULL DEFAULT NULL,
+                `updated_at` timestamp NULL DEFAULT NULL,
+                PRIMARY KEY (`id_kategori`)
+            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
 
             "CREATE TABLE `t_menu_resep` (
                 `id_resep` bigint UNSIGNED NOT NULL AUTO_INCREMENT,

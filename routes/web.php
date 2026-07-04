@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\StokController;
+use App\Http\Controllers\KategoriController;
 
 
 /*
@@ -65,6 +66,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/stok/bahan', [StokController::class, 'bahan'])->name('stok.bahan');
         Route::post('/stok/bahan/insert', [StokController::class, 'bahan_insert'])->name('stok.bahan.insert');
         Route::get('/stok/bahan/delete/{id}', [StokController::class, 'bahan_delete'])->name('stok.bahan.delete');
+
+        Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori');
+        Route::post('/kategori/insert', [KategoriController::class, 'insert']);
+        Route::get('/kategori/delete/{id}', [KategoriController::class, 'delete']);
 
         Route::get('/resep', [App\Http\Controllers\ResepController::class, 'index'])->name('resep');
         Route::get('/resep/add', [ProdukController::class, 'add'])->name('resep.add');

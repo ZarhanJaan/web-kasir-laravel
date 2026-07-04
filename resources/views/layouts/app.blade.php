@@ -161,6 +161,12 @@
               <i class="mdi mdi-format-list-bulleted menu-icon"></i>
             </a>
           </li>
+          <li class="nav-item {{ Request::is('kategori', 'kategori/*') ? 'active-ref active' : '' }}">
+            <a class="nav-link" href="/kategori">
+              <span class="menu-title">Kategori</span>
+              <i class="mdi mdi-shape menu-icon"></i>
+            </a>
+          </li>
           <li class="nav-item {{ Request::is('manajemen-user', 'manajemen-user/*') ? 'active-ref active' : '' }}">
             <a class="nav-link" href="/manajemen-user">
               <span class="menu-title">Manajemen User</span>
