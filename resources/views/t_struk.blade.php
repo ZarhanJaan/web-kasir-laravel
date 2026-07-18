@@ -13,9 +13,30 @@
         hr { border-top: 1px dashed #000; }
         table { width: 100%; }
         td { display: table-cell; }
+
+        /* Print button — hidden when printing */
+        .btn-print {
+            display: block;
+            width: 100%;
+            margin-top: 16px;
+            padding: 10px;
+            background: #111;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: monospace;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+        }
+        .btn-print:hover { background: #333; }
+
+        @media print {
+            .btn-print { display: none !important; }
+        }
     </style>
 </head>
-<body onload="window.print()">
+<body>
     <div class="text-center mb-2">
         <h2>{{ $store_name }}</h2>
         <p>{!! nl2br(e($store_address)) !!}</p>
@@ -57,7 +78,8 @@
     <hr>
     <div class="text-center mt-2">
         <p>TERIMA KASIH ATAS KUNJUNGAN ANDA</p>
-
     </div>
+
+    <button class="btn-print" onclick="window.print()">🖨 CETAK / PRINT</button>
 </body>
 </html>
