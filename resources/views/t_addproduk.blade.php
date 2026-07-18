@@ -29,7 +29,7 @@
                             <div class="resep-form-group">
                                 <label>ID Menu (Manual)</label>
                                 <input name="id_produk" class="resep-input" value="{{ old('id_produk') }}"
-                                    placeholder="Contoh: 2001" required>
+                                    placeholder="Contoh: 1001 (jangan diawali 0)" required>
                                 <div class="resep-error">@error('id_produk') {{ $message }} @enderror</div>
                             </div>
 

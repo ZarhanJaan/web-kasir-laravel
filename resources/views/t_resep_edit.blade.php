@@ -87,11 +87,6 @@
               <input type="hidden" name="id_menu" value="{{ $menu->id_produk }}">
 
               <div class="resep-form-group">
-                <label>ID Resep (Manual)</label>
-                <input type="number" name="id_resep" class="resep-input" placeholder="Contoh: 1001" required>
-              </div>
-
-              <div class="resep-form-group">
                 <label>Pilih Bahan Baku</label>
                 <select name="id_stok" class="resep-select" required>
                   <option value="">-- Pilih Bahan --</option>

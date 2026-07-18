@@ -10,7 +10,16 @@ class ProdukModel extends Model
 {
     protected $table = 't_produk';
     protected $primaryKey = 'id_produk';
+    public $incrementing = false;
     public $timestamps = false;
+
+    /**
+     * Samakan ID dengan kolom INT (mis. "0001" → "1") agar cocok dengan t_produk & t_menu_resep.
+     */
+    public static function normalizeId($id): string
+    {
+        return (string) (int) $id;
+    }
 
     public function allData(){
 

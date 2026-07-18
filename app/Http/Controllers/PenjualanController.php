@@ -33,12 +33,16 @@ class PenjualanController extends Controller
         $produk = DB::table('t_produk as p')
             ->select('p.*', DB::raw('
                 CASE 
-                    WHEN NOT EXISTS (SELECT 1 FROM t_menu_resep mr WHERE mr.id_menu = p.id_produk) THEN 1
+                    WHEN NOT EXISTS (
+                        SELECT 1 FROM t_menu_resep mr
+                        WHERE CAST(mr.id_menu AS UNSIGNED) = CAST(p.id_produk AS UNSIGNED)
+                    ) THEN 1
                     WHEN (
                         SELECT COUNT(*) 
                         FROM t_menu_resep mr 
                         JOIN t_stok_item si ON mr.id_stok = si.id_stok 
-                        WHERE mr.id_menu = p.id_produk AND si.stok < mr.jumlah
+                        WHERE CAST(mr.id_menu AS UNSIGNED) = CAST(p.id_produk AS UNSIGNED)
+                          AND si.stok < mr.jumlah
                     ) = 0 THEN 1
                     ELSE 0
                 END as is_available
@@ -70,8 +74,10 @@ class PenjualanController extends Controller
                     
                     if(empty($id_produk) || $jumlah_beli <= 0) continue; 
                     
-                    // Ambil RESEP untuk menu ini
-                    $resep = DB::table('t_menu_resep')->where('id_menu', $id_produk)->get();
+                    // Ambil RESEP untuk menu ini (cocokkan numerik: "0001" = 1)
+                    $resep = DB::table('t_menu_resep')
+                        ->whereRaw('CAST(id_menu AS UNSIGNED) = ?', [(int) $id_produk])
+                        ->get();
                     
                     foreach ($resep as $item) {
                         $total_kebutuhan = $item->jumlah * $jumlah_beli;

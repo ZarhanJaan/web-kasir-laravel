@@ -30,7 +30,8 @@ class ProdukController extends Controller
     public function insert(Request $request)
     {
         $request->validate([
-            'id_produk' => 'required|unique:t_produk,id_produk|min:4|max:6',
+            // Kolom id_produk bertipe INT — jangan diawali 0 (0001 jadi 1 di DB)
+            'id_produk' => ['required', 'regex:/^[1-9][0-9]{3,5}$/', 'unique:t_produk,id_produk'],
             'nama_produk' => 'required',
             'harga_jual' => 'required|numeric|min:0',
             'kategori' => 'required',
@@ -41,6 +42,7 @@ class ProdukController extends Controller
             'jumlah_resep.*' => 'required|numeric|min:0.01',
         ], [
             'id_produk.required' => 'Silakan isi ID Menu.',
+            'id_produk.regex' => 'ID Menu harus 4–6 digit dan tidak boleh diawali 0. Contoh: 1001.',
             'id_produk.unique' => 'ID Menu sudah ada.',
             'nama_produk.required' => 'Silakan isi Nama Menu.',
             'harga_jual.required' => 'Silakan isi Harga Jual.',
@@ -51,9 +53,12 @@ class ProdukController extends Controller
 
         try {
             DB::transaction(function () use ($request) {
+                // Samakan dengan penyimpanan INT di t_produk
+                $idProduk = ProdukModel::normalizeId($request->id_produk);
+
                 // 1. Simpan Data Menu Utama
                 $data = [
-                    'id_produk' => $request->id_produk,
+                    'id_produk' => $idProduk,
                     'nama_produk' => $request->nama_produk,
                     'stok' => 0,
                     'harga_beli' => 0,
@@ -62,16 +67,12 @@ class ProdukController extends Controller
                 ];
                 $this->ProdukModel->addData($data);
 
-                // 2. Simpan Data Resep
+                // 2. Simpan Data Resep (id_resep via AUTO_INCREMENT)
                 foreach ($request->id_stok as $i => $id_stok) {
-                    if (empty($id_stok)) continue;
-
-                    // Generate ID Resep otomatis: IDMenu + urutan (01, 02, dst)
-                    $generated_id_resep = (int)($request->id_produk . str_pad($i + 1, 2, '0', STR_PAD_LEFT));
+                    if ($id_stok === null || $id_stok === '') continue;
 
                     DB::table('t_menu_resep')->insert([
-                        'id_resep' => $generated_id_resep,
-                        'id_menu' => $request->id_produk,
+                        'id_menu' => $idProduk,
                         'id_stok' => $id_stok,
                         'jumlah' => $request->jumlah_resep[$i],
                         'created_at' => now(),
@@ -99,21 +100,20 @@ class ProdukController extends Controller
 
     public function update($edit_produk){
         Request()->validate([
-            'id_produk' => 'required|min:4|max:6',
+            'id_produk' => ['required', 'regex:/^[1-9][0-9]{3,5}$/'],
             'nama_produk' => 'required',    
             'harga_jual' => 'required', 
             'kategori' => 'required', 
         ],[
             'id_produk.required' => 'Silakan isi ID Produk.',
-            'id_produk.min' => 'ID Produk minimal 4 karakter.',
-            'id_produk.max' => 'ID Produk maximal 6 karakter.',
+            'id_produk.regex' => 'ID Menu harus 4–6 digit dan tidak boleh diawali 0. Contoh: 1001.',
             'nama_produk.required' => 'Silakan isi Nama Produk.',
             'harga_jual.required' => 'Silakan isi Harga Jual.',
             'kategori.required' => 'Silakan pilih Kategori.',
         ]);
 
         $data = [
-            'id_produk' => Request()->id_produk,
+            'id_produk' => ProdukModel::normalizeId(Request()->id_produk),
             'nama_produk' => Request()->nama_produk,
             'harga_jual' => Request()->harga_jual,
             'kategori' => Request()->kategori,
@@ -127,8 +127,14 @@ class ProdukController extends Controller
     {
         try {
             DB::transaction(function () use ($id_produk) {
-                // 1. Hapus Resep terkait
-                DB::table('t_menu_resep')->where('id_menu', $id_produk)->delete();
+                $idNorm = ProdukModel::normalizeId($id_produk);
+
+                // 1. Hapus Resep terkait (termasuk id_menu lama ber-leading-zero)
+                DB::table('t_menu_resep')
+                    ->where('id_menu', $id_produk)
+                    ->orWhere('id_menu', $idNorm)
+                    ->orWhereRaw('CAST(id_menu AS UNSIGNED) = ?', [(int) $id_produk])
+                    ->delete();
 
                 // 2. Hapus Data Produk
                 $this->ProdukModel->deleteData($id_produk);
