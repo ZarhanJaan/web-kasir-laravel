@@ -100,42 +100,41 @@
                                     @endforeach
                                 </tbody>
                             </table>
-
-                            @if(Auth::user()->hasAnyRole(['owner', 'admin']))
-                                @foreach ($penjualan as $data)
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="delete{{ $data->id_penjualan }}" tabindex="-1"
-                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="delete">Pelanggan:
-                                                        {{ $data->nama_pelanggan }}
-                                                    </h5>
-                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p>Apakah Anda yakin ingin menghapus data tersebut?</p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-outline-secondary"
-                                                        data-bs-dismiss="modal">Cancel</button>
-                                                    <a href="/riwayat-transaksi/delete/{{ $data->id_penjualan }}"
-                                                        class="btn btn-gradient-danger">Delete</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            @endif
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    {{-- Modal di luar card/table agar tidak terhalang overflow + backdrop-filter --}}
+    @if(Auth::user()->hasAnyRole(['owner', 'admin']))
+        @foreach ($penjualan as $data)
+            <div class="modal fade" id="delete{{ $data->id_penjualan }}" tabindex="-1"
+                aria-labelledby="deleteLabel{{ $data->id_penjualan }}" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteLabel{{ $data->id_penjualan }}">Pelanggan:
+                                {{ $data->nama_pelanggan }}
+                            </h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Apakah Anda yakin ingin menghapus data tersebut?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary"
+                                data-bs-dismiss="modal">Cancel</button>
+                            <a href="/riwayat-transaksi/delete/{{ $data->id_penjualan }}"
+                                class="btn btn-gradient-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    @endif
 
 @endsection
 
