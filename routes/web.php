@@ -65,6 +65,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/stok/riwayat', [StokController::class, 'riwayat'])->name('stok.riwayat');
         Route::get('/stok/bahan', [StokController::class, 'bahan'])->name('stok.bahan');
         Route::post('/stok/bahan/insert', [StokController::class, 'bahan_insert'])->name('stok.bahan.insert');
+        Route::get('/stok/bahan/edit/{id}', [StokController::class, 'bahan_edit'])->name('stok.bahan.edit');
+        Route::post('/stok/bahan/update/{id}', [StokController::class, 'bahan_update'])->name('stok.bahan.update');
         Route::get('/stok/bahan/delete/{id}', [StokController::class, 'bahan_delete'])->name('stok.bahan.delete');
 
         Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori');

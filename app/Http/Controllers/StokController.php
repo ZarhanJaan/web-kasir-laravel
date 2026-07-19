@@ -75,6 +75,36 @@ class StokController extends Controller
         return redirect()->back()->with('pesan_sukses', 'Bahan berhasil ditambahkan.');
     }
 
+    public function bahan_edit($id)
+    {
+        $bahan = DB::table('t_stok_item')->where('id_stok', $id)->first();
+        if (!$bahan) {
+            return redirect()->route('stok.dashboard')->with('pesan_error', 'Bahan tidak ditemukan.');
+        }
+        return view('t_stok_bahan_edit', compact('bahan'));
+    }
+
+    public function bahan_update(Request $request, $id)
+    {
+        $request->validate([
+            'nama_stok' => 'required|string|max:255',
+            'stok' => 'required|numeric|min:0',
+        ]);
+
+        $bahan = DB::table('t_stok_item')->where('id_stok', $id)->first();
+        if (!$bahan) {
+            return redirect()->route('stok.dashboard')->with('pesan_error', 'Bahan tidak ditemukan.');
+        }
+
+        DB::table('t_stok_item')->where('id_stok', $id)->update([
+            'nama_stok' => $request->nama_stok,
+            'stok' => $request->stok,
+            'updated_at' => now(),
+        ]);
+
+        return redirect()->route('stok.dashboard')->with('pesan_sukses', 'Data bahan berhasil diperbarui.');
+    }
+
     public function bahan_delete($id)
     {
         DB::table('t_stok_item')->where('id_stok', $id)->delete();

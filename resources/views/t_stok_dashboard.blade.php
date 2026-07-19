@@ -84,6 +84,19 @@
             </div>
         </div>
 
+        @if (session('pesan_sukses'))
+            <div class="si-alert-success alert-dismissible fade show" role="alert">
+                <i class="mdi mdi-check-circle"></i> {{ session('pesan_sukses') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        @if (session('pesan_error'))
+            <div class="si-alert-danger alert-dismissible fade show" role="alert">
+                <i class="mdi mdi-alert-circle"></i> {{ session('pesan_error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
         {{-- Daftar Lengkap Stok --}}
         <div class="row">
             <div class="col-12 grid-margin">
@@ -104,6 +117,7 @@
                                     <th>Nama Bahan Baku</th>
                                     <th>Jumlah Stok</th>
                                     <th>Status</th>
+                                    <th class="text-center">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -126,6 +140,18 @@
                                                 <i class="mdi mdi-check-circle"></i> Tersedia
                                             </span>
                                         @endif
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="/stok/bahan/edit/{{ $s->id_stok }}"
+                                            class="si-btn si-btn-primary si-btn-sm" title="Edit Data">
+                                            <i class="mdi mdi-pencil"></i>
+                                        </a>
+                                        <a href="/stok/bahan/delete/{{ $s->id_stok }}"
+                                            class="si-btn si-btn-danger si-btn-sm ms-1"
+                                            onclick="return confirm('Yakin ingin menghapus bahan ini? Ini mungkin merusak resep menu yang sudah ada.')"
+                                            title="Hapus Data">
+                                            <i class="mdi mdi-delete"></i>
+                                        </a>
                                     </td>
                                 </tr>
                                 @endforeach
