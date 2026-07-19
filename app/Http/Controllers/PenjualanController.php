@@ -281,9 +281,52 @@ class PenjualanController extends Controller
     public function exportpdf()
     {
         $data = PenjualanModel::all();
-        view()->share('data', $data);
-        $pdf = PDF::loadview('datapenjualan_pdf', $data);
+        $judul = 'Data Penjualan';
+        $periode = 'Semua Data';
+        $pdf = PDF::loadview('datapenjualan_pdf', compact('data', 'judul', 'periode'));
         return $pdf->download('data.pdf');
+    }
+
+    public function datapenjualan_bulan_pdf()
+    {
+        return view('datapenjualan_bulan_pdf');
+    }
+
+    public function cetak_range_pdf($tglawal, $tglakhir)
+    {
+        $data = PenjualanModel::whereBetween('tanggal', [$tglawal, $tglakhir])
+            ->orderBy('tanggal', 'asc')
+            ->get();
+
+        $judul = 'Data Penjualan Per Tanggal';
+        $periode = 'Periode: ' . \Carbon\Carbon::parse($tglawal)->format('d/m/Y')
+            . ' – ' . \Carbon\Carbon::parse($tglakhir)->format('d/m/Y');
+
+        $pdf = PDF::loadview('datapenjualan_pdf', compact('data', 'judul', 'periode'));
+        return $pdf->download('laporan-penjualan-pertanggal.pdf');
+    }
+
+    public function cetak_bulan_pdf($tahun, $bulan)
+    {
+        $tahun = (int) $tahun;
+        $bulan = (int) $bulan;
+
+        $data = PenjualanModel::whereYear('tanggal', $tahun)
+            ->whereMonth('tanggal', $bulan)
+            ->orderBy('tanggal', 'asc')
+            ->get();
+
+        $namaBulan = [
+            1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+            5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+            9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember',
+        ];
+
+        $judul = 'Data Penjualan Per Bulan';
+        $periode = 'Bulan: ' . ($namaBulan[$bulan] ?? $bulan) . ' ' . $tahun;
+
+        $pdf = PDF::loadview('datapenjualan_pdf', compact('data', 'judul', 'periode'));
+        return $pdf->download('laporan-penjualan-' . strtolower($namaBulan[$bulan] ?? $bulan) . '-' . $tahun . '.pdf');
     }
 
     public function datapenjualan_tgl_pdf()

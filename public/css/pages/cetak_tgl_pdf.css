@@ -121,3 +121,45 @@
 .ctgl-btn-cetak i {
     font-size: 16px;
 }
+
+
+/* =================================================================
+   MODE TABS (Per Tanggal / Per Bulan)
+   ================================================================= */
+.ctgl-mode-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.ctgl-mode-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 18px;
+    border-radius: 12px;
+    border: 1.5px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-muted);
+    font-family: var(--font-family);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.ctgl-mode-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-primary);
+}
+
+.ctgl-mode-btn.active {
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 4px 14px var(--accent-glow);
+}
+
+.ctgl-filter-panel {
+    margin-bottom: 8px;
+}

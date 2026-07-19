@@ -28,7 +28,10 @@
 </head>
 <body>
 
-<h1>Data Penjualan</h1>
+<h1>{{ $judul ?? 'Data Penjualan' }}</h1>
+@if (!empty($periode))
+<p>{{ $periode }}</p>
+@endif
 
 <table id="customers">
   <tr>
@@ -74,5 +77,3 @@
 
 </body>
 </html>
-
-

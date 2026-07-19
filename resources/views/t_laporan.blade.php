@@ -79,8 +79,8 @@
                         <h4>Penjualan Bulanan (Tahun {{ date('Y') }}) <span class="badge badge-outline-info ms-2" style="font-size: 12px; border: 1px solid #00d2ff; color: #00d2ff; padding: 2px 8px; border-radius: 4px;">Total: Rp. {{ number_format($penjualan_bulanan->sum('total_penjualan'), 0, ',', '.') }}</span></h4>
                     </div>
                     <div class="lp-btn-group">
-                        <a href="{{ route('exportpdf') }}" class="lp-btn lp-btn-pdf">
-                            <i class="mdi mdi-file-pdf"></i> Cetak PDF Semua
+                        <a href="{{ route('datapenjualan_bulan_pdf') }}" class="lp-btn lp-btn-pdf">
+                            <i class="mdi mdi-file-pdf"></i> Cetak PDF
                         </a>
                         <a href="{{ route('cetakexcel') }}" class="lp-btn lp-btn-excel">
                             <i class="mdi mdi-file-excel"></i> Cetak Excel

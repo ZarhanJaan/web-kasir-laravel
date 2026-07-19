@@ -276,6 +276,8 @@
             !href.includes('/exportpdf') &&
             !href.includes('/exportexcel') &&
             !href.includes('/cetak_tgl_pdf') &&
+            !href.includes('/cetak_range_pdf') &&
+            !href.includes('/cetak_bulan_pdf') &&
             !href.includes('/export-terlaris-pdf') &&
             !href.includes('/export-stok-pdf') &&
             !href.includes('/export-stok-masuk-pdf') &&

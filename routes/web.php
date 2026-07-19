@@ -83,6 +83,9 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/datapenjualan_tgl_pdf', [PenjualanController::class, 'datapenjualan_tgl_pdf'])->name('datapenjualan_tgl_pdf');
         Route::get('/cetak_tgl_pdf/{tanggal}/{jamawal}/{jamakhir}', [PenjualanController::class, 'cetak_tgl_pdf'])->name('cetak_tgl_pdf');
+        Route::get('/datapenjualan_bulan_pdf', [PenjualanController::class, 'datapenjualan_bulan_pdf'])->name('datapenjualan_bulan_pdf');
+        Route::get('/cetak_range_pdf/{tglawal}/{tglakhir}', [PenjualanController::class, 'cetak_range_pdf'])->name('cetak_range_pdf');
+        Route::get('/cetak_bulan_pdf/{tahun}/{bulan}', [PenjualanController::class, 'cetak_bulan_pdf'])->name('cetak_bulan_pdf');
         Route::get('/laporan', [PenjualanController::class, 'laporan'])->name('laporan.index');
         Route::get('/export-terlaris-pdf', [PenjualanController::class, 'exportTerlarisPdf'])->name('export-terlaris-pdf');
         Route::get('/export-stok-pdf', [PenjualanController::class, 'exportStokPdf'])->name('export-stok-pdf');
