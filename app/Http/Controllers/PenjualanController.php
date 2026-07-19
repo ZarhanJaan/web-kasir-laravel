@@ -291,11 +291,20 @@ class PenjualanController extends Controller
         return view('datapenjualan_tgl_pdf');
     }
 
-    public function cetak_tgl_pdf($tglawal, $tglakhir)
+    public function cetak_tgl_pdf($tanggal, $jamawal, $jamakhir)
     {
-        $cetakpertanggal = PenjualanModel::whereBetween('tanggal', [$tglawal, $tglakhir])->get();
-        $pdf = PDF::loadview('cetak_pertanggal_pdf', compact('cetakpertanggal'));
-        return $pdf->download('laporan-penjualan-pertanggal.pdf');
+        $jamawal = (int) $jamawal;
+        $jamakhir = (int) $jamakhir;
+
+        $awal = sprintf('%s %02d:00:00', $tanggal, $jamawal);
+        $akhir = sprintf('%s %02d:59:59', $tanggal, $jamakhir);
+
+        $cetakpertanggal = PenjualanModel::whereBetween('created_at', [$awal, $akhir])
+            ->orderBy('created_at', 'asc')
+            ->get();
+
+        $pdf = PDF::loadview('cetak_pertanggal_pdf', compact('cetakpertanggal', 'tanggal', 'jamawal', 'jamakhir'));
+        return $pdf->download('laporan-penjualan-perjam.pdf');
     }
 
 

@@ -82,7 +82,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/resep/item/delete/{id_resep}', [App\Http\Controllers\ResepController::class, 'delete_item']);
 
         Route::get('/datapenjualan_tgl_pdf', [PenjualanController::class, 'datapenjualan_tgl_pdf'])->name('datapenjualan_tgl_pdf');
-        Route::get('/cetak_tgl_pdf/{tglawal}/{tglakhir}', [PenjualanController::class, 'cetak_tgl_pdf'])->name('cetak_tgl_pdf');
+        Route::get('/cetak_tgl_pdf/{tanggal}/{jamawal}/{jamakhir}', [PenjualanController::class, 'cetak_tgl_pdf'])->name('cetak_tgl_pdf');
         Route::get('/laporan', [PenjualanController::class, 'laporan'])->name('laporan.index');
         Route::get('/export-terlaris-pdf', [PenjualanController::class, 'exportTerlarisPdf'])->name('export-terlaris-pdf');
         Route::get('/export-stok-pdf', [PenjualanController::class, 'exportStokPdf'])->name('export-stok-pdf');

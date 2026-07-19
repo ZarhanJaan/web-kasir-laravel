@@ -9,7 +9,7 @@
         <h3 class="page-title">
             <span class="page-title-icon bg-gradient-primary text-white me-2">
                 <i class="mdi mdi-printer"></i>
-            </span> Laporan Penjualan Pertanggal
+            </span> Laporan Penjualan Per Jam
         </h3>
     </div>
 
@@ -19,25 +19,44 @@
                 <div class="lp-card-header">
                     <div class="lp-title-left">
                         <div class="lp-title-icon icon-danger">
-                            <i class="mdi mdi-calendar-range"></i>
+                            <i class="mdi mdi-clock-outline"></i>
                         </div>
-                        <h4>Pilih Rentang Tanggal</h4>
+                        <h4>Pilih Tanggal &amp; Rentang Jam</h4>
                     </div>
                 </div>
 
-                <div class="ctgl-form-grid">
+                <div class="ctgl-form-grid ctgl-form-grid-3">
                     <div class="ctgl-field-group">
-                        <label class="ctgl-label" for="tglawal">
-                            <i class="mdi mdi-calendar-start"></i> Tanggal Awal
+                        <label class="ctgl-label" for="tanggal">
+                            <i class="mdi mdi-calendar"></i> Tanggal
                         </label>
-                        <input name="tglawal" id="tglawal" class="ctgl-input" type="date">
+                        <input name="tanggal" id="tanggal" class="ctgl-input" type="date" value="{{ date('Y-m-d') }}">
                     </div>
 
                     <div class="ctgl-field-group">
-                        <label class="ctgl-label" for="tglakhir">
-                            <i class="mdi mdi-calendar-end"></i> Tanggal Akhir
+                        <label class="ctgl-label" for="jamawal">
+                            <i class="mdi mdi-clock-start"></i> Jam Awal
                         </label>
-                        <input name="tglakhir" id="tglakhir" class="ctgl-input" type="date">
+                        <select name="jamawal" id="jamawal" class="ctgl-input">
+                            @for ($i = 0; $i <= 23; $i++)
+                                <option value="{{ $i }}" {{ $i === 0 ? 'selected' : '' }}>
+                                    {{ sprintf('%02d:00', $i) }}
+                                </option>
+                            @endfor
+                        </select>
+                    </div>
+
+                    <div class="ctgl-field-group">
+                        <label class="ctgl-label" for="jamakhir">
+                            <i class="mdi mdi-clock-end"></i> Jam Akhir
+                        </label>
+                        <select name="jamakhir" id="jamakhir" class="ctgl-input">
+                            @for ($i = 0; $i <= 23; $i++)
+                                <option value="{{ $i }}" {{ $i === 23 ? 'selected' : '' }}>
+                                    {{ sprintf('%02d:59', $i) }}
+                                </option>
+                            @endfor
+                        </select>
                     </div>
                 </div>
 
@@ -58,19 +77,20 @@
 @section('scripts')
 <script>
     function handleCetak(el) {
-        const tglawal  = document.getElementById('tglawal').value;
-        const tglakhir = document.getElementById('tglakhir').value;
+        const tanggal  = document.getElementById('tanggal').value;
+        const jamawal  = document.getElementById('jamawal').value;
+        const jamakhir = document.getElementById('jamakhir').value;
 
-        if (!tglawal || !tglakhir) {
-            alert('Harap isi Tanggal Awal dan Tanggal Akhir terlebih dahulu.');
+        if (!tanggal) {
+            alert('Harap isi Tanggal terlebih dahulu.');
             return false;
         }
-        if (tglawal > tglakhir) {
-            alert('Tanggal Awal tidak boleh lebih besar dari Tanggal Akhir.');
+        if (parseInt(jamawal, 10) > parseInt(jamakhir, 10)) {
+            alert('Jam Awal tidak boleh lebih besar dari Jam Akhir.');
             return false;
         }
 
-        el.href = '/cetak_tgl_pdf/' + tglawal + '/' + tglakhir;
+        el.href = '/cetak_tgl_pdf/' + tanggal + '/' + jamawal + '/' + jamakhir;
         return true;
     }
 </script>

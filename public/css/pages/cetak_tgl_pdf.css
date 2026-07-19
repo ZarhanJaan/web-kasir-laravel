@@ -6,7 +6,7 @@
 
 
 /* =================================================================
-   FORM GRID (2 kolom)
+   FORM GRID (2 kolom default / 3 kolom untuk filter jam)
    ================================================================= */
 .ctgl-form-grid {
     display: grid;
@@ -15,8 +15,19 @@
     margin-bottom: 32px;
 }
 
+.ctgl-form-grid-3 {
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+@media (max-width: 991px) {
+    .ctgl-form-grid-3 {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
 @media (max-width: 767px) {
-    .ctgl-form-grid {
+    .ctgl-form-grid,
+    .ctgl-form-grid-3 {
         grid-template-columns: 1fr;
         gap: 16px;
     }
@@ -73,6 +84,11 @@
     border-color: var(--accent-start);
     background: rgba(102, 126, 234, 0.08);
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+}
+
+.ctgl-input option {
+    background: #1a1a2e;
+    color: #ffffff;
 }
 
 /* Windows Chrome date picker icon colour */

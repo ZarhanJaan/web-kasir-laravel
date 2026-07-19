@@ -56,7 +56,7 @@
                     </div>
                     <div class="lp-btn-group">
                         <a href="{{ route('datapenjualan_tgl_pdf') }}" class="lp-btn lp-btn-pdf">
-                            <i class="mdi mdi-file-pdf"></i> Cetak PDF Pertanggal
+                            <i class="mdi mdi-file-pdf"></i> Cetak PDF Per Jam
                         </a>
                     </div>
                 </div>

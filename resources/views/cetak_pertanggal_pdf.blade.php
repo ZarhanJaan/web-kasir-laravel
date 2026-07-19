@@ -28,12 +28,17 @@
 </head>
 <body>
 
-<h1>Data Penjualan</h1>
+<h1>Data Penjualan Per Jam</h1>
+<p>
+  Tanggal: {{ \Carbon\Carbon::parse($tanggal)->format('d/m/Y') }}
+  &nbsp;|&nbsp;
+  Jam: {{ sprintf('%02d:00', $jamawal) }} – {{ sprintf('%02d:59', $jamakhir) }}
+</p>
 
 <table id="customers">
   <tr>
       <th>ID Penjualan</th>
-      <th>Tanggal</th>
+      <th>Waktu</th>
       <th>Nama Pelanggan</th>
       <th>Jumlah Barang</th>
       <th>Total Harga</th>
@@ -41,7 +46,7 @@
   </tr>
  @foreach ($cetakpertanggal as $row)<tr>
 <td>{{$row->id_penjualan}}</td>
-<td>{{$row->tanggal}}</td>
+<td>{{ $row->created_at ? \Carbon\Carbon::parse($row->created_at)->format('d/m/Y H:i') : $row->tanggal }}</td>
 <td>{{$row->nama_pelanggan}}</td>
 <td>
     @php
@@ -74,5 +79,3 @@
 
 </body>
 </html>
-
-
