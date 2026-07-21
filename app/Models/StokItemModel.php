@@ -5,28 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Qris extends Model
+class StokItemModel extends Model
 {
     use HasFactory;
 
-    protected $table = 'qris';
+    protected $table = 't_stok_item';
+    protected $primaryKey = 'id_stok';
 
-    /**
-     * Attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
-        'image_path',
-        'name',
+        'nama_stok',
+        'stok',
+        'satuan',
+        'created_at',
+        'updated_at',
     ];
 
-    /**
-     * Attributes type casting.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
+        'stok'       => 'integer',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];

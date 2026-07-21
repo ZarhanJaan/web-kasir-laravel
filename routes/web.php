@@ -37,6 +37,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/setting/update-store-name', [App\Http\Controllers\SettingController::class, 'updateStoreName'])->name('setting.update-store-name');
 
         Route::get('/menu/add', [ProdukController::class, 'add']);
+        Route::get('/menu/get-next-id', [ProdukController::class, 'getNextId'])->name('menu.get-next-id');
         Route::post('/menu/insert', [ProdukController::class, 'insert']);
         Route::get('/menu/edit/{id_produk}', [ProdukController::class, 'edit']);
         Route::post('/menu/update/{id_produk}', [ProdukController::class, 'update']);

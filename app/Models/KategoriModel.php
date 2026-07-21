@@ -5,27 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Qris extends Model
+class KategoriModel extends Model
 {
     use HasFactory;
 
-    protected $table = 'qris';
+    protected $table = 't_kategori';
+    protected $primaryKey = 'id_kategori';
 
-    /**
-     * Attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
-        'image_path',
-        'name',
+        'nama_kategori',
+        'created_at',
+        'updated_at',
     ];
 
-    /**
-     * Attributes type casting.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
