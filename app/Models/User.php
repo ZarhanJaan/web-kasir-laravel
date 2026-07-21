@@ -12,6 +12,8 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $table = 'users';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -41,10 +43,12 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'created_at'        => 'datetime',
+        'updated_at'        => 'datetime',
     ];
 
     /**
-     * Get the role associated with the user.
+     * Relasi ke Role
      */
     public function role()
     {
@@ -52,23 +56,17 @@ class User extends Authenticatable
     }
 
     /**
-     * Check if the user has a specific role.
-     *
-     * @param string $role
-     * @return bool
+     * Periksa apakah user memiliki role spesifik.
      */
-    public function hasRole($role)
+    public function hasRole(string $role): bool
     {
         return $this->role && $this->role->role === $role;
     }
 
     /**
-     * Check if the user has any of the given roles.
-     *
-     * @param array $roles
-     * @return bool
+     * Periksa apakah user memiliki salah satu dari daftar role.
      */
-    public function hasAnyRole(array $roles)
+    public function hasAnyRole(array $roles): bool
     {
         return $this->role && in_array($this->role->role, $roles);
     }
