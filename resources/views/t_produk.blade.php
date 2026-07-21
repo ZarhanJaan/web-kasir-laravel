@@ -49,7 +49,6 @@
                                         <th>Nama Menu</th>
                                         <th>Harga Jual</th>
                                         <th>Kategori Menu</th>
-                                        <th>Tgl. Input</th>
                                         @if(Auth::user()->hasAnyRole(['owner', 'admin']))
                                             <th>Action</th>
                                         @endif
@@ -65,16 +64,6 @@
                                                 <span class="mu-badge {{ $data->kategori == 'Makanan' ? 'mu-badge-info' : 'mu-badge-success' }}">
                                                     {{ $data->kategori }}
                                                 </span>
-                                            </td>
-                                            <td style="font-size: 12px; color: #94a3b8; white-space: nowrap;">
-                                                @if($data->created_at)
-                                                    <i class="mdi mdi-calendar-check" style="color: #6366f1;"></i>
-                                                    {{ \Carbon\Carbon::parse($data->created_at)->locale('id')->isoFormat('D MMM YYYY') }}
-                                                    <br>
-                                                    <small style="color: #cbd5e1;">{{ \Carbon\Carbon::parse($data->created_at)->format('H:i') }}</small>
-                                                @else
-                                                    <span style="color: #cbd5e1;">—</span>
-                                                @endif
                                             </td>
                                             @if(Auth::user()->hasAnyRole(['owner', 'admin']))
                                                 <td>

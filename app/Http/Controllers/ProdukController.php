@@ -24,36 +24,14 @@ class ProdukController extends Controller
 
     public function add(){
         $stok_items = DB::table('t_stok_item')->get();
-        $dbKategori = DB::table('t_kategori')->pluck('nama_kategori')->toArray();
-        $kategori_list = array_values(array_unique(array_merge(['Makanan', 'Minuman'], $dbKategori)));
-        
-        return view('t_addproduk', compact('stok_items', 'kategori_list'));
-    }
-
-    public function getNextId(Request $request)
-    {
-        $kategori = $request->query('kategori');
-        if (!$kategori) {
-            return response()->json(['success' => false, 'message' => 'Kategori required'], 400);
-        }
-        $prefix = ProdukModel::getCategoryPrefix($kategori);
-        $nextId = ProdukModel::getNextIdForCategory($kategori);
-
-        return response()->json([
-            'success' => true,
-            'prefix' => $prefix,
-            'next_id' => $nextId
-        ]);
+        return view('t_addproduk', compact('stok_items'));
     }
 
     public function insert(Request $request)
     {
-        $expectedPrefix = ProdukModel::getCategoryPrefix($request->kategori ?? '');
-        $idRegex = '/^' . $expectedPrefix . '[0-9]{3,5}$/';
-
         $request->validate([
-            // Kolom id_produk bertipe INT — diawali angka khusus sesuai kategori (1 untuk Makanan, 2 untuk Minuman, dst.)
-            'id_produk' => ['required', 'regex:' . $idRegex, 'unique:t_produk,id_produk'],
+            // Kolom id_produk bertipe INT — jangan diawali 0 (0001 jadi 1 di DB)
+            'id_produk' => ['required', 'regex:/^[1-9][0-9]{3,5}$/', 'unique:t_produk,id_produk'],
             'nama_produk' => 'required',
             'harga_jual' => 'required|numeric|min:0',
             'kategori' => 'required',
@@ -64,7 +42,7 @@ class ProdukController extends Controller
             'jumlah_resep.*' => 'required|numeric|min:0.01',
         ], [
             'id_produk.required' => 'Silakan isi ID Menu.',
-            'id_produk.regex' => "ID Menu untuk kategori {$request->kategori} harus diawali dengan angka {$expectedPrefix} (contoh: {$expectedPrefix}001).",
+            'id_produk.regex' => 'ID Menu harus 4–6 digit dan tidak boleh diawali 0. Contoh: 1001.',
             'id_produk.unique' => 'ID Menu sudah ada.',
             'nama_produk.required' => 'Silakan isi Nama Menu.',
             'harga_jual.required' => 'Silakan isi Harga Jual.',
@@ -78,7 +56,7 @@ class ProdukController extends Controller
                 // Samakan dengan penyimpanan INT di t_produk
                 $idProduk = ProdukModel::normalizeId($request->id_produk);
 
-                // 1. Simpan Data Menu Utama dengan Tanggal Pembuatan Otomatis (created_at)
+                // 1. Simpan Data Menu Utama
                 $data = [
                     'id_produk' => $idProduk,
                     'nama_produk' => $request->nama_produk,
@@ -86,8 +64,6 @@ class ProdukController extends Controller
                     'harga_beli' => 0,
                     'harga_jual' => $request->harga_jual,
                     'kategori' => $request->kategori,
-                    'created_at' => now(),
-                    'updated_at' => now(),
                 ];
                 $this->ProdukModel->addData($data);
 

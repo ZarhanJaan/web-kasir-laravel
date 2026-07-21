@@ -11,23 +11,8 @@ class Qris extends Model
 
     protected $table = 'qris';
 
-    /**
-     * Attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'image_path',
         'name',
-    ];
-
-    /**
-     * Attributes type casting.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
     ];
 }
