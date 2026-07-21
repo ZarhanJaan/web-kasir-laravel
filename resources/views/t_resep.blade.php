@@ -29,7 +29,12 @@
           <div class="resep-card">
             <div class="card-body">
               <div class="resep-card-header">
-                <h4 class="resep-card-title"><i class="mdi mdi-silverware"></i> {{ $menu->nama_produk }}</h4>
+                <h4 class="resep-card-title">
+                  <i class="mdi mdi-silverware"></i> {{ $menu->nama_produk }}
+                  @if(count($menu->resep) > 0 && isset($menu->resep[0]->created_at))
+                    <span style="font-size: 0.7em; color: #888;"> (Dibuat: {{ \Carbon\Carbon::parse($menu->resep[0]->created_at)->format('d/m/Y') }})</span>
+                  @endif
+                </h4>
                 <div class="d-flex gap-2">
                   <a href="/resep/edit/{{ $menu->id_produk }}" class="resep-btn resep-btn-edit">
                     <i class="mdi mdi-pencil"></i> Edit Resep

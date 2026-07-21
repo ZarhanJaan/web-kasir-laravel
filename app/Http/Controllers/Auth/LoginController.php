@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
@@ -36,5 +40,21 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    /** Refuse inactive accounts while keeping a clear, login-page error message. */
+    protected function attemptLogin(Request $request)
+    {
+        $user = User::where('email', $request->input('email'))->first();
+        if ($user && !$user->status && Hash::check($request->input('password'), $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['User ini tidak aktif.'],
+            ]);
+        }
+
+        return $this->guard()->attempt(
+            $this->credentials($request) + ['status' => true],
+            $request->filled('remember')
+        );
     }
 }

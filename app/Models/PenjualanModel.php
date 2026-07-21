@@ -16,6 +16,11 @@ class PenjualanModel extends Model
     }
 
     public function addData($data){
+        $creator = auth()->user();
+        if ($creator) {
+            $data['created_by_id'] = $creator->id;
+            $data['created_by_name'] = $creator->name;
+        }
         $data['created_at'] = now();
         $data['updated_at'] = now();
         DB::table('t_penjualan')->insert($data);

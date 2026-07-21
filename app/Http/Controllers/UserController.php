@@ -46,6 +46,24 @@ class UserController extends Controller
         return redirect()->back()->with('success', 'Role user berhasil diperbarui.');
     }
 
+    public function updateStatus(Request $request)
+    {
+        $request->validate(['user_id' => 'required|exists:users,id']);
+        $user = User::with('role')->findOrFail($request->user_id);
+
+        if (auth()->id() == $user->id) {
+            return redirect()->back()->with('error', 'Anda tidak dapat menonaktifkan akun sendiri.');
+        }
+        if (auth()->user()->role->role == 'admin' && $user->role && $user->role->role == 'owner') {
+            return redirect()->back()->with('error', 'Anda tidak dapat mengubah status owner.');
+        }
+
+        $user->status = !$user->status;
+        $user->save();
+
+        return redirect()->back()->with('success', 'Status user ' . ($user->status ? 'diaktifkan.' : 'dinonaktifkan.'));
+    }
+
     /**
      * Remove the specified user from storage.
      *

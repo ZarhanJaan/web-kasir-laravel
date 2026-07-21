@@ -150,7 +150,7 @@ class StokController extends Controller
                         'nama_stok' => $request->id_produk,
                         'stok' => 0, 
                         'created_at' => now(),
-                        'updated_at' => now()
+                        'updated_at' => now(),
                     ]);
                     $id_stok_fix = $request->id_stok_baru;
                 } else {
@@ -275,7 +275,9 @@ class StokController extends Controller
                         'satuan' => 'pcs',
                         'keterangan' => $request->keterangan ?? 'Stok Keluar Manual',
                         'created_at' => now(),
-                        'updated_at' => now()
+                        'updated_at' => now(),
+                        'created_by_id' => auth()->id(),
+                        'created_by_name' => auth()->user()->name,
                     ]);
 
                     // 2. Kurangi stok

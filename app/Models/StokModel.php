@@ -22,6 +22,11 @@ class StokModel extends Model
 
     public function addData($data)
     {
+        $creator = auth()->user();
+        if ($creator) {
+            $data['created_by_id'] = $creator->id;
+            $data['created_by_name'] = $creator->name;
+        }
         DB::table('t_riwayat_stok')->insert($data);
     }
 

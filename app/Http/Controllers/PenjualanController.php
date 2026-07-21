@@ -108,7 +108,9 @@ class PenjualanController extends Controller
                             'nama_pelanggan' => $request->nama_pelanggan,
                             'satuan' => 'pcs',
                             'created_at' => now(),
-                            'updated_at' => now()
+                            'updated_at' => now(),
+                            'created_by_id' => auth()->id(),
+                            'created_by_name' => auth()->user()->name,
                         ]);
                     }
                 }
