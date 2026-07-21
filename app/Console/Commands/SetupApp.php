@@ -150,6 +150,15 @@ class SetupApp extends Command
         foreach ($this->schemaStatements() as $statement) {
             $pdo->exec($statement);
         }
+
+        // Schema dibuat langsung (bukan lewat artisan migrate), jadi migration
+        // yang efeknya sudah tercakup di schema ini harus dicatat terlebih dahulu.
+        $migrationNames = $this->schemaMigrationNames();
+        sort($migrationNames);
+        $insertMigration = $pdo->prepare('INSERT INTO migrations (migration, batch) VALUES (?, 1)');
+        foreach ($migrationNames as $migrationName) {
+            $insertMigration->execute([$migrationName]);
+        }
     }
 
     protected function schemaTables()
@@ -168,6 +177,31 @@ class SetupApp extends Command
             't_riwayat_stok',
             't_stok_item',
             'users',
+        ];
+    }
+
+    /**
+     * Migrations whose effects are represented by this SQL schema.
+     * This keeps a database created by app:setup compatible with artisan migrate.
+     */
+    protected function schemaMigrationNames()
+    {
+        return [
+            '2014_10_12_000000_create_users_table',
+            '2014_10_12_100000_create_password_resets_table',
+            '2019_08_19_000000_create_failed_jobs_table',
+            '2019_12_14_000001_create_personal_access_tokens_table',
+            '2026_04_12_000000_create_core_tables',
+            '2026_04_12_000001_add_timestamps_to_t_penjualan',
+            '2026_04_12_000002_add_metode_pembayaran_to_t_penjualan',
+            '2026_04_12_000003_create_roles_table',
+            '2026_04_12_000004_add_role_id_to_users_table',
+            '2026_04_12_000005_restore_auto_increment_to_users',
+            '2026_04_18_000000_create_qris_table',
+            '2026_05_01_000000_change_jumlah_barang_to_text_in_t_penjualan',
+            '2026_05_13_000000_add_satuan_to_t_riwayat_stok',
+            '2026_06_04_002950_create_t_kategori_table',
+            '2026_07_21_000000_add_status_and_creator_audit_columns',
         ];
     }
 
@@ -191,7 +225,7 @@ class SetupApp extends Command
                 `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
                 `batch` int NOT NULL,
                 PRIMARY KEY (`id`)
-            ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
 
             "CREATE TABLE `password_resets` (
                 `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -205,7 +239,7 @@ class SetupApp extends Command
                 `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
                 `tokenable_id` bigint UNSIGNED NOT NULL,
                 `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-                `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+                `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
                 `abilities` text COLLATE utf8mb4_unicode_ci,
                 `last_used_at` timestamp NULL DEFAULT NULL,
                 `created_at` timestamp NULL DEFAULT NULL,
@@ -229,8 +263,9 @@ class SetupApp extends Command
                 `role` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
                 `created_at` timestamp NULL DEFAULT NULL,
                 `updated_at` timestamp NULL DEFAULT NULL,
-                PRIMARY KEY (`id`)
-            ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+                PRIMARY KEY (`id`),
+                UNIQUE KEY `roles_role_unique` (`role`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
 
             "INSERT INTO `roles` (`id`, `role`, `created_at`, `updated_at`) VALUES
                 (1, 'owner', NOW(), NOW()),
@@ -242,76 +277,100 @@ class SetupApp extends Command
                 `nama_kategori` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
                 `created_at` timestamp NULL DEFAULT NULL,
                 `updated_at` timestamp NULL DEFAULT NULL,
-                PRIMARY KEY (`id_kategori`)
-            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+                PRIMARY KEY (`id_kategori`),
+                UNIQUE KEY `t_kategori_nama_kategori_unique` (`nama_kategori`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
 
             "CREATE TABLE `t_menu_resep` (
                 `id_resep` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
-                `id_menu` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+                `id_menu` int UNSIGNED NOT NULL,
                 `id_stok` bigint UNSIGNED NOT NULL,
-                `jumlah` int NOT NULL DEFAULT '1',
-                `created_at` timestamp NULL DEFAULT NULL,
+                `jumlah` int UNSIGNED NOT NULL DEFAULT '1',
+                `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 `updated_at` timestamp NULL DEFAULT NULL,
-                PRIMARY KEY (`id_resep`)
-            ) ENGINE=InnoDB AUTO_INCREMENT=200302 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+                `created_by_id` bigint UNSIGNED DEFAULT NULL,
+                `created_by_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+                PRIMARY KEY (`id_resep`),
+                KEY `t_menu_resep_id_menu_index` (`id_menu`),
+                KEY `t_menu_resep_id_stok_index` (`id_stok`),
+                KEY `t_menu_resep_created_by_id_index` (`created_by_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
 
             "CREATE TABLE `t_penjualan` (
                 `id_penjualan` int UNSIGNED NOT NULL AUTO_INCREMENT,
                 `tanggal` date NOT NULL,
-                `nama_pelanggan` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
-                `jumlah_barang` int NOT NULL,
-                `id_produk` text COLLATE utf8mb4_general_ci,
-                `total` decimal(60,0) NOT NULL,
-                `metode_pembayaran` varchar(255) COLLATE utf8mb4_general_ci DEFAULT 'Cash',
-                `created_at` timestamp NULL DEFAULT NULL,
+                `nama_pelanggan` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+                `jumlah_barang` text COLLATE utf8mb4_unicode_ci NOT NULL,
+                `id_produk` text COLLATE utf8mb4_unicode_ci,
+                `total` decimal(15,2) UNSIGNED NOT NULL,
+                `metode_pembayaran` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Cash',
+                `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 `updated_at` timestamp NULL DEFAULT NULL,
-                PRIMARY KEY (`id_penjualan`)
-            ) ENGINE=InnoDB AUTO_INCREMENT=10004 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci",
+                `created_by_id` bigint UNSIGNED DEFAULT NULL,
+                `created_by_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+                PRIMARY KEY (`id_penjualan`),
+                KEY `t_penjualan_tanggal_index` (`tanggal`),
+                KEY `t_penjualan_created_at_index` (`created_at`),
+                KEY `t_penjualan_created_by_id_index` (`created_by_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
 
             "CREATE TABLE `t_produk` (
-                `id_produk` int NOT NULL,
-                `nama_produk` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
-                `stok` int DEFAULT NULL,
-                `harga_beli` decimal(10,2) DEFAULT NULL,
-                `harga_jual` decimal(10,2) DEFAULT NULL,
-                `kategori` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-                PRIMARY KEY (`id_produk`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci",
+                `id_produk` int UNSIGNED NOT NULL,
+                `nama_produk` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+                `stok` int UNSIGNED NOT NULL DEFAULT '0',
+                `harga_beli` decimal(15,2) UNSIGNED NOT NULL DEFAULT '0.00',
+                `harga_jual` decimal(15,2) UNSIGNED NOT NULL DEFAULT '0.00',
+                `kategori` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+                `created_by_id` bigint UNSIGNED DEFAULT NULL,
+                `created_by_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+                PRIMARY KEY (`id_produk`),
+                KEY `t_produk_kategori_index` (`kategori`),
+                KEY `t_produk_created_by_id_index` (`created_by_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
 
             "CREATE TABLE `t_riwayat_stok` (
                 `id_riwayat` int UNSIGNED NOT NULL AUTO_INCREMENT,
                 `id_produk` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
                 `id_stok` bigint UNSIGNED DEFAULT NULL,
                 `jenis` enum('masuk','keluar') COLLATE utf8mb4_unicode_ci NOT NULL,
-                `jumlah` int NOT NULL,
+                `jumlah` int UNSIGNED NOT NULL DEFAULT '1',
                 `satuan` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-                `harga_beli` decimal(15,2) DEFAULT NULL,
-                `keterangan` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+                `harga_beli` decimal(15,2) UNSIGNED DEFAULT NULL,
+                `keterangan` text COLLATE utf8mb4_unicode_ci,
                 `tanggal` date NOT NULL,
                 `created_at` timestamp NULL DEFAULT NULL,
                 `updated_at` timestamp NULL DEFAULT NULL,
                 `nama_pelanggan` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-                `total_harga` int DEFAULT NULL,
-                PRIMARY KEY (`id_riwayat`)
-            ) ENGINE=InnoDB AUTO_INCREMENT=1000302 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+                `total_harga` decimal(15,2) UNSIGNED NOT NULL DEFAULT '0.00',
+                `created_by_id` bigint UNSIGNED DEFAULT NULL,
+                `created_by_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+                PRIMARY KEY (`id_riwayat`),
+                KEY `t_riwayat_stok_tanggal_index` (`tanggal`),
+                KEY `t_riwayat_stok_id_produk_index` (`id_produk`),
+                KEY `t_riwayat_stok_id_stok_index` (`id_stok`),
+                KEY `t_riwayat_stok_created_by_id_index` (`created_by_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
 
             "CREATE TABLE `t_stok_item` (
                 `id_stok` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
                 `nama_stok` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-                `stok` int NOT NULL DEFAULT '0',
+                `stok` int UNSIGNED NOT NULL DEFAULT '0',
+                `satuan` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Pcs',
                 `created_at` timestamp NULL DEFAULT NULL,
                 `updated_at` timestamp NULL DEFAULT NULL,
-                PRIMARY KEY (`id_stok`)
-            ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+                PRIMARY KEY (`id_stok`),
+                KEY `t_stok_item_nama_stok_index` (`nama_stok`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
 
             "CREATE TABLE `users` (
                 `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
                 `role_id` bigint UNSIGNED DEFAULT NULL,
+                `status` tinyint(1) NOT NULL DEFAULT '1',
                 `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
                 `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
                 `email_verified_at` timestamp NULL DEFAULT NULL,
                 `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-                `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+                `remember_token` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
                 `created_at` timestamp NULL DEFAULT NULL,
                 `updated_at` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`),

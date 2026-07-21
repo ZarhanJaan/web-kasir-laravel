@@ -71,12 +71,15 @@ class ResepController extends Controller
             return redirect()->back()->with('pesan_error', 'Bahan ini sudah ada di resep.');
         }
 
+        $creator = auth()->user();
         DB::table('t_menu_resep')->insert([
             'id_menu' => $idMenu,
             'id_stok' => $request->id_stok,
             'jumlah' => $request->jumlah,
             'created_at' => now(),
-            'updated_at' => now()
+            'updated_at' => now(),
+            'created_by_id' => $creator->id,
+            'created_by_name' => $creator->name,
         ]);
 
         return redirect()->back()->with('pesan_sukses', 'Bahan berhasil ditambahkan ke resep.');

@@ -27,10 +27,27 @@
                             </div>
 
                             <div class="resep-form-group">
-                                <label>ID Menu (Manual)</label>
-                                <input name="id_produk" class="resep-input" value="{{ old('id_produk') }}"
-                                    placeholder="Contoh: 1001 (jangan diawali 0)" required>
-                                <div class="resep-error">@error('id_produk') {{ $message }} @enderror</div>
+                                <label>Kategori Menu</label>
+                                <select name="id_kategori" class="resep-select" id="id_kategori" required>
+                                    <option value="">-- Pilih Kategori --</option>
+                                    @foreach($kategori as $item)
+                                        <option value="{{ $item->id_kategori }}" {{ old('id_kategori') == $item->id_kategori ? 'selected' : '' }}>
+                                            {{ $item->nama_kategori }} (ID: {{ $item->id_kategori }})
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <div class="resep-error">@error('id_kategori') {{ $message }} @enderror</div>
+                            </div>
+
+                            <div class="resep-form-group">
+                                <label>ID Menu</label>
+                                <div class="resep-input-group">
+                                    <span class="resep-input-prefix" id="kategori-prefix">-</span>
+                                    <input name="id_menu_suffix" id="id_menu_suffix" class="resep-input" value="{{ old('id_menu_suffix') }}"
+                                        placeholder="Nomor menu, contoh: 101" required disabled>
+                                </div>
+                                <small style="color: white;">Awalan ID dibuat otomatis dari kategori yang dipilih.</small>
+                                <div class="resep-error">@error('id_menu_suffix') {{ $message }} @enderror</div>
                             </div>
 
                             <div class="resep-form-group">
@@ -50,17 +67,6 @@
                                 <div class="resep-error">@error('harga_jual') {{ $message }} @enderror</div>
                             </div>
 
-                            <div class="resep-form-group">
-                                <label>Kategori Menu</label>
-                                <select name="kategori" class="resep-select" required>
-                                    <option value="">-- Pilih Kategori --</option>
-                                    <option value="Makanan" {{ old('kategori') == 'Makanan' ? 'selected' : '' }}>Makanan
-                                    </option>
-                                    <option value="Minuman" {{ old('kategori') == 'Minuman' ? 'selected' : '' }}>Minuman
-                                    </option>
-                                </select>
-                                <div class="resep-error">@error('kategori') {{ $message }} @enderror</div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -145,6 +151,17 @@
             document.addEventListener('DOMContentLoaded', function () {
                 const body = document.getElementById('resep-body');
                 const btnAdd = document.getElementById('btn-add-bahan');
+                const kategori = document.getElementById('id_kategori');
+                const prefix = document.getElementById('kategori-prefix');
+                const suffix = document.getElementById('id_menu_suffix');
+
+                function updateMenuIdState() {
+                    prefix.textContent = kategori.value || '-';
+                    suffix.disabled = !kategori.value;
+                }
+
+                kategori.addEventListener('change', updateMenuIdState);
+                updateMenuIdState();
 
                 // Add row
                 btnAdd.addEventListener('click', function () {
